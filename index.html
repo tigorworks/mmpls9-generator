@@ -30,10 +30,7 @@ body {
     margin-bottom: 8px;
 }
 
-h1 {
-    margin: 0;
-    font-weight: 600;
-}
+h1 { margin: 0; font-weight: 600; }
 
 .refresh-btn {
     background: #3b82f6;
@@ -44,9 +41,7 @@ h1 {
     cursor: pointer;
 }
 
-.refresh-btn:hover {
-    background: #2563eb;
-}
+.refresh-btn:hover { background: #2563eb; }
 
 .last-update {
     margin-bottom: 24px;
@@ -63,10 +58,7 @@ h1 {
 }
 
 /* CTA */
-.register-cta {
-    margin-top: 30px;
-    text-align: center;
-}
+.register-cta { margin-top: 30px; text-align: center; }
 
 .register-cta a {
     display: inline-block;
@@ -79,9 +71,7 @@ h1 {
     transition: 0.2s ease;
 }
 
-.register-cta a:hover {
-    transform: translateY(-2px);
-}
+.register-cta a:hover { transform: translateY(-2px); }
 
 /* TOOLBAR */
 .dataTables_wrapper .dataTables_length,
@@ -141,15 +131,18 @@ table.dataTable tbody td {
     border-bottom: 1px solid #2b3142;
 }
 
+/* ACCORDION ICON */
 td.details-control {
     cursor: pointer;
     text-align: center;
-    width: 30px;
+    width: 35px;
 }
 
 .expand-icon {
+    font-size: 14px;
     font-weight: 600;
     color: #f59e0b;
+    transition: transform 0.15s ease;
 }
 
 /* STATUS */
@@ -169,9 +162,6 @@ td.details-control {
 
 /* WHATSAPP */
 .wa-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
     color: #25D366;
     text-decoration: none;
     font-weight: 500;
@@ -274,13 +264,12 @@ function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
     let clean = normalized.replace("+","");
-    return `
-        <a class="wa-link"
-           href="https://wa.me/${clean}"
-           target="_blank"
-           rel="noopener noreferrer">
-           ${normalized}
-        </a>`;
+    return `<a class="wa-link"
+              href="https://wa.me/${clean}"
+              target="_blank"
+              rel="noopener noreferrer">
+              ${normalized}
+            </a>`;
 }
 
 function renderStatus(val){
@@ -309,9 +298,9 @@ function loadData(){
         table=$('#teamTable').DataTable({
             destroy:true,
             data:response.teams,
-            pageLength: 10,   // 🔥 Default 10 entries
+            pageLength:10,
             columns:[
-                {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">&gt;</span>'},
+                {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
                 {data:'team_name'},
                 {data:'captain_name'},
                 {data:'captain_whatsapp',render:d=>renderWA(d)},
@@ -329,18 +318,18 @@ function loadData(){
             if(row.child.isShown()){
                 row.child.hide();
                 tr.removeClass('shown');
-                icon.html('&gt;');
+                icon.text('▶');
             }else{
                 table.rows().every(function(){
                     if(this.child.isShown()){
                         $(this.node()).removeClass('shown');
-                        $(this.node()).find('.expand-icon').html('&gt;');
+                        $(this.node()).find('.expand-icon').text('▶');
                         this.child.hide();
                     }
                 });
                 row.child(format(row.data().members)).show();
                 tr.addClass('shown');
-                icon.html('v');
+                icon.text('▼');
             }
         });
 
