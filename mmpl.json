@@ -1,51 +1,48 @@
 {
-	"lastupdate": "2026-03-02 16:35:18",
+	"lastupdate": "2026-03-02 17:33:10",
 	"teams": [
 		{
-			"team_name": "BABI AIR",
-			"captain_name": "FERRY",
-			"captain_whatsapp": "81288818123818",
-			"captain_email": "BABI@AIR.COM",
+			"team_name": "MEGAKING: ENDGAME",
+			"captain_name": "Ferry Adhy A",
+			"captain_whatsapp": "85730950229.0",
+			"captain_email": "einsthonk@gmail.com",
 			"logo": false,
 			"idcard": false,
 			"members": [
 				{
-					"full_name": "FERRY",
-					"nip": "9928882322",
+					"full_name": "Ferry Adhy A",
+					"nip": "1390520070.0",
 					"join from": null,
-					"game_id": "11223344",
-					"game_nick": "BABI AIR"
+					"game_id": "10875707.0",
+					"game_nick": "KING SWALLOW"
 				},
 				{
-					"full_name": "BABI NGEPET",
-					"nip": "998888391",
+					"full_name": "Reshaldo Shafwanatha Shalahuddin Lubis",
+					"nip": "2300799699.0",
 					"join from": null,
-					"game_id": "882777221",
-					"game_nick": "BABI NGEPET NICK"
-				}
-			]
-		},
-		{
-			"team_name": "TBRN HOKI",
-			"captain_name": "ROBY",
-			"captain_whatsapp": "81288818123818",
-			"captain_email": "BABI@AIR.COM",
-			"logo": false,
-			"idcard": false,
-			"members": [
-				{
-					"full_name": "ROBY",
-					"nip": "9928882322",
-					"join from": null,
-					"game_id": "11223344",
-					"game_nick": "ROBY AIR"
+					"game_id": "71259989.0",
+					"game_nick": "KING CHAPPIE"
 				},
 				{
-					"full_name": "REY",
-					"nip": "11245151",
+					"full_name": "David Harryson Siahaan",
+					"nip": "1392160200.0",
 					"join from": null,
-					"game_id": "882777221",
-					"game_nick": "REY AIR"
+					"game_id": "156779986.0",
+					"game_nick": "KING KONG"
+				},
+				{
+					"full_name": "Rian Aldi Syahputra",
+					"nip": "2298777160.0",
+					"join from": null,
+					"game_id": "42496754.0",
+					"game_nick": "KING MBG"
+				},
+				{
+					"full_name": "Hafiz Gibran",
+					"nip": "2397560392.0",
+					"join from": null,
+					"game_id": "64498986.0",
+					"game_nick": "KING COPOL"
 				}
 			]
 		}
