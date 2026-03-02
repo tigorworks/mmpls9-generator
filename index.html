@@ -22,7 +22,6 @@ body {
     font-size: 14.5px;
 }
 
-/* HEADER */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -49,7 +48,6 @@ h1 { margin: 0; font-weight: 600; }
     color: #9ca3af;
 }
 
-/* CARD */
 .table-container {
     background: #1f2430;
     padding: 28px;
@@ -57,7 +55,6 @@ h1 { margin: 0; font-weight: 600; }
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* CTA */
 .register-cta { margin-top: 30px; text-align: center; }
 
 .register-cta a {
@@ -73,7 +70,6 @@ h1 { margin: 0; font-weight: 600; }
 
 .register-cta a:hover { transform: translateY(-2px); }
 
-/* TOOLBAR */
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     margin-bottom: 20px;
@@ -97,7 +93,6 @@ h1 { margin: 0; font-weight: 600; }
     padding: 6px 10px;
 }
 
-/* TABLE */
 table.dataTable thead {
     background: #252b3a;
 }
@@ -126,7 +121,6 @@ table.dataTable tbody td {
     border-bottom: 1px solid #2b3142;
 }
 
-/* ACCORDION */
 td.details-control {
     cursor: pointer;
     text-align: center;
@@ -138,7 +132,6 @@ td.details-control {
     color: #f59e0b;
 }
 
-/* STATUS */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -153,7 +146,6 @@ td.details-control {
 .status-true { background: #16a34a; color: white; }
 .status-false { background: #dc2626; color: white; }
 
-/* WA */
 .wa-link {
     color: #25D366;
     text-decoration: none;
@@ -165,7 +157,6 @@ td.details-control {
     font-weight: 600;
 }
 
-/* CHILD */
 table.dataTable tbody tr td.child {
     background: #161b24 !important;
     border-left: 4px solid #f59e0b;
@@ -187,7 +178,6 @@ table.dataTable tbody tr td.child {
     border-bottom: 1px solid #2b3142;
 }
 
-/* HIGHLIGHT */
 .search-highlight {
     background-color: #f59e0b;
     color: #1f2430;
@@ -195,7 +185,6 @@ table.dataTable tbody tr td.child {
     border-radius: 4px;
 }
 
-/* FOOTER */
 .footer {
     text-align: center;
     margin-top: 40px;
@@ -297,6 +286,7 @@ function buildMemberSearch(members){
 }
 
 function loadData(){
+
     document.getElementById("lastUpdateText").innerText="Loading...";
 
     fetch('mmpl.json?v='+Date.now())
@@ -325,16 +315,39 @@ function loadData(){
             ]
         });
 
-        /* 🔥 Highlight search */
-        table.on('draw', function() {
+        table.on('draw', function(){
+
             let keyword = table.search();
-            if (keyword) {
-                $('#teamTable tbody').unmark().mark(keyword, {
-                    className: 'search-highlight'
+            $('#teamTable tbody').unmark();
+
+            if(!keyword){
+                table.rows().every(function(){
+                    if(this.child.isShown()){
+                        this.child.hide();
+                        $(this.node()).removeClass('shown');
+                        $(this.node()).find('.expand-icon').text('▶');
+                    }
                 });
-            } else {
-                $('#teamTable tbody').unmark();
+                return;
             }
+
+            table.rows({search:'applied'}).every(function(){
+                let data = this.data();
+                if(data.member_search &&
+                   data.member_search.toLowerCase().includes(keyword.toLowerCase())){
+
+                    if(!this.child.isShown()){
+                        this.child(format(data.members)).show();
+                        $(this.node()).addClass('shown');
+                        $(this.node()).find('.expand-icon').text('▼');
+                    }
+                }
+            });
+
+            $('#teamTable tbody').mark(keyword, {
+                className:'search-highlight'
+            });
+
         });
 
         $('#teamTable tbody').off('click').on('click','td.details-control',function(){
