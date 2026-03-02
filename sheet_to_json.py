@@ -38,21 +38,19 @@ except Exception as e:
     raise RuntimeError(f"Gagal membaca Google Sheet: {e}")
 
 # =========================
-# VALIDATION SECTION
+# VALIDATION
 # =========================
 
-# Drop baris yang benar-benar kosong
 df = df.dropna(how="all")
 
-# Jika hanya header (tidak ada data)
 if df.empty:
     raise ValueError("Sheet hanya berisi header atau kosong. Upload dibatalkan.")
 
-# Validasi kolom wajib
 required_columns = [
     "Nama Team",
     "Nama Kapten",
-    "No Whatsapp",
+    "Email Kapten",
+    "No Whatsapp Kapten",
     "Logo Team",
     "Berkas ID Card",
     "Nama Lengkap",
@@ -69,7 +67,6 @@ teams = []
 
 for _, row in df.iterrows():
 
-    # Skip baris tanpa nama team
     if pd.isna(row["Nama Team"]) or str(row["Nama Team"]).strip() == "":
         continue
 
@@ -102,14 +99,14 @@ for _, row in df.iterrows():
 
         members.append(member)
 
-    # Skip tim tanpa member valid
     if not members:
         continue
 
     team = {
         "team_name": str(row["Nama Team"]).strip(),
         "captain_name": str(row["Nama Kapten"]).strip(),
-        "whatsapp_number": str(row["No Whatsapp"]).strip(),
+        "captain_whatsapp": str(row["No Whatsapp Kapten"]).strip(),
+        "captain_email": str(row["Email Kapten"]).strip(),
         "logo": has_value(row["Logo Team"]),
         "idcard": has_value(row["Berkas ID Card"]),
         "members": members
@@ -117,12 +114,11 @@ for _, row in df.iterrows():
 
     teams.append(team)
 
-# Kalau setelah filtering tidak ada tim valid → STOP
 if not teams:
     raise ValueError("Tidak ada tim valid ditemukan. Upload dibatalkan.")
 
 # =========================
-# LAST UPDATE (Asia/Jakarta UTC+7)
+# LAST UPDATE (Asia/Jakarta)
 # =========================
 jakarta_time = datetime.now(ZoneInfo("Asia/Jakarta"))
 last_update = jakarta_time.strftime("%Y-%m-%d %H:%M:%S")
