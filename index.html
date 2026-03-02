@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Daftar Tim MMPL S9</title>
+
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<style>
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1c1f26;
+    margin: 0;
+    padding: 40px;
+    color: #e6e6e6;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+h1 {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.refresh-btn {
+    background: #4f8cff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.refresh-btn:hover {
+    background: #3b6fd8;
+}
+
+.last-update {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.last-update span {
+    color: #e6e6e6;
+    font-weight: 500;
+}
+
+.table-container {
+    background: #232733;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+table.dataTable thead {
+    background: #2c3140;
+}
+
+table.dataTable tbody tr {
+    background-color: #232733;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #2f3445;
+}
+
+tr.shown {
+    background-color: #2a3040 !important;
+}
+
+.dataTables_filter input,
+.dataTables_length select {
+    background: #2c3140;
+    border: 1px solid #3a4052;
+    color: #e6e6e6;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: #2c3140 !important;
+    color: #e6e6e6 !important;
+    border-radius: 8px !important;
+    border: 1px solid #3a4052 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #4f8cff !important;
+    color: white !important;
+    border: none !important;
+}
+
+td.details-control {
+    cursor: pointer;
+    text-align: center;
+    width: 30px;
+}
+
+.expand-icon {
+    font-weight: bold;
+    color: #4f8cff;
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-true {
+    background-color: #16a34a;
+    color: white;
+}
+
+.status-false {
+    background-color: #dc2626;
+    color: white;
+}
+
+/* WhatsApp */
+.wa-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #25D366;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.wa-link svg {
+    width: 16px;
+    height: 16px;
+    fill: #25D366;
+}
+
+.wa-link:hover {
+    text-decoration: underline;
+}
+
+/* Child area */
+table.dataTable tbody tr td.child {
+    background: #202531 !important;
+    border-left: 4px solid #4f8cff;
+    padding: 15px 20px !important;
+}
+
+.child-table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #1b1f2a;
+}
+
+.child-table th,
+.child-table td {
+    padding: 8px 12px;
+    border: 1px solid #3a4052;
+}
+
+.child-table th {
+    background: #2c3140;
+}
+
+.child-table tbody tr:nth-child(even) {
+    background-color: #232837;
+}
+
+.child-table tbody tr:nth-child(odd) {
+    background-color: #1b1f2a;
+}
+
+.child-table tbody tr:hover {
+    background-color: #2c3448;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-container">
+    <h1>Daftar Tim MMPL S9</h1>
+    <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
+</div>
+
+<div class="last-update">
+    Last Update:
+    <span id="lastUpdateText">-</span>
+    <span>(UTC+7 - Jakarta)</span>
+</div>
+
+<div class="table-container">
+<table id="teamTable" class="display" style="width:100%">
+<thead>
+<tr>
+<th></th>
+<th>Team Name</th>
+<th>Captain</th>
+<th>Whatsapp</th>
+<th>Logo</th>
+<th>ID Card</th>
+<th>Total Member</th>
+</tr>
+</thead>
+</table>
+</div>
+
+<script>
+
+let table;
+
+function formatPhone(number) {
+    if (!number) return "-";
+    number = number.replace(/^0/, "");
+    return "+62" + number;
+}
+
+function renderWA(number) {
+    if (!number) return "-";
+
+    let formatted = formatPhone(number);
+    let cleanNumber = formatted.replace("+", "");
+
+    return `
+        <a class="wa-link" href="https://wa.me/${cleanNumber}" target="_blank">
+            ${formatted}
+            <svg viewBox="0 0 32 32">
+                <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4zm0 28.5c-2.4 0-4.6-.6-6.5-1.7l-.5-.3-5 1.3 1.3-4.9-.3-.5c-1.2-2-1.8-4.2-1.8-6.6C3.2 8.1 8.1 3.2 16 3.2S28.8 8.1 28.8 16 23.9 28.9 16 28.9z"/>
+            </svg>
+        </a>
+    `;
+}
+
+function format(members) {
+    let html = '<table class="child-table">';
+    html += `
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Game ID</th>
+                <th>Game Nick</th>
+            </tr>
+        </thead><tbody>
+    `;
+    members.forEach(m => {
+        html += `
+            <tr>
+                <td>${m.full_name}</td>
+                <td>${m.game_id}</td>
+                <td>${m.game_nick}</td>
+            </tr>
+        `;
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderStatus(value) {
+    return value
+        ? '<span class="status-badge status-true">✓</span>'
+        : '<span class="status-badge status-false">✕</span>';
+}
+
+function loadData() {
+
+    document.getElementById("lastUpdateText").innerText = "Loading...";
+
+    fetch('mmpl.json?v=' + Date.now())
+    .then(res => res.json())
+    .then(response => {
+
+        document.getElementById("lastUpdateText").innerText =
+            response.lastupdate || "Unknown";
+
+        const data = response.teams;
+
+        table = $('#teamTable').DataTable({
+            destroy: true,
+            data: data,
+            pageLength: 25,
+            columns: [
+                {
+                    className: 'details-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<span class="expand-icon">&gt;</span>'
+                },
+                { data: 'team_name' },
+                { data: 'captain_name' },
+                { data: 'captain_whatsapp', render: d => renderWA(d) },
+                { data: 'logo', render: d => renderStatus(d) },
+                { data: 'idcard', render: d => renderStatus(d) },
+                { data: 'members', render: d => d.length }
+            ]
+        });
+
+        // ACCORDION MODE
+        $('#teamTable tbody').off('click').on('click', 'td.details-control', function () {
+
+            let tr = $(this).closest('tr');
+            let row = table.row(tr);
+            let icon = $(this).find('.expand-icon');
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                icon.html('&gt;');
+            } else {
+
+                // Tutup semua row lain
+                table.rows().every(function () {
+                    if (this.child.isShown()) {
+                        $(this.node()).removeClass('shown');
+                        $(this.node()).find('.expand-icon').html('&gt;');
+                        this.child.hide();
+                    }
+                });
+
+                row.child(format(row.data().members)).show();
+                tr.addClass('shown');
+                icon.html('v');
+            }
+
+        });
+
+    });
+
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
