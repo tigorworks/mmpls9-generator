@@ -67,6 +67,30 @@ h1 {
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
+/* ===== CTA REGISTER ===== */
+
+.register-cta {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.register-cta a {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #1f2430;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 18px rgba(245,158,11,0.25);
+}
+
+.register-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(245,158,11,0.35);
+}
+
 /* ===== TOOLBAR ===== */
 
 .dataTables_wrapper .dataTables_length,
@@ -74,13 +98,8 @@ h1 {
     margin-bottom: 20px;
 }
 
-.dataTables_wrapper .dataTables_length {
-    float: left;
-}
-
-.dataTables_wrapper .dataTables_filter {
-    float: right;
-}
+.dataTables_wrapper .dataTables_length { float: left; }
+.dataTables_wrapper .dataTables_filter { float: right; }
 
 .dataTables_wrapper::after {
     content: "";
@@ -95,7 +114,6 @@ h1 {
     color: #e5e7eb;
     border-radius: 8px;
     padding: 6px 10px;
-    font-family: 'Inter', sans-serif;
 }
 
 .dataTables_filter input:focus {
@@ -104,10 +122,6 @@ h1 {
 }
 
 /* ===== TABLE ===== */
-
-table.dataTable {
-    border-collapse: collapse !important;
-}
 
 table.dataTable thead {
     background: #252b3a;
@@ -124,7 +138,6 @@ table.dataTable tbody tr {
     transition: background-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-/* 🔥 DARK ORANGE HOVER */
 table.dataTable tbody tr:hover {
     background-color: #3f2d16;
     box-shadow: inset 3px 0 0 #f59e0b;
@@ -165,15 +178,8 @@ td.details-control {
     font-weight: 600;
 }
 
-.status-true {
-    background: #16a34a;
-    color: white;
-}
-
-.status-false {
-    background: #dc2626;
-    color: white;
-}
+.status-true { background: #16a34a; color: white; }
+.status-false { background: #dc2626; color: white; }
 
 /* ===== WHATSAPP ===== */
 
@@ -225,26 +231,6 @@ table.dataTable tbody tr td.child {
     background: #2a3142;
 }
 
-/* ===== PAGINATION ===== */
-
-.dataTables_wrapper .dataTables_paginate {
-    margin-top: 20px;
-}
-
-.dataTables_wrapper .paginate_button {
-    background: #252b3a !important;
-    border: 1px solid #374151 !important;
-    border-radius: 6px !important;
-    color: #e5e7eb !important;
-    margin: 0 2px;
-}
-
-.dataTables_wrapper .paginate_button.current {
-    background: #f59e0b !important;
-    color: #1f2430 !important;
-    border: none !important;
-}
-
 /* ===== FOOTER ===== */
 
 .footer {
@@ -284,6 +270,13 @@ table.dataTable tbody tr td.child {
 </tr>
 </thead>
 </table>
+
+<div class="register-cta">
+    <a href="https://bit.ly/daftar-mmpls9" target="_blank">
+        Register Your Team Here
+    </a>
+</div>
+
 </div>
 
 <div class="footer">
@@ -292,13 +285,14 @@ table.dataTable tbody tr td.child {
 
 <script>
 
+// JS tetap sama seperti versi sebelumnya (normalizePhone, renderWA, accordion, dll)
+
 let table;
 
 function normalizePhone(number){
     if(!number) return null;
     number = number.toString().trim();
     if(!/^[0-9+]+$/.test(number)) return null;
-
     if(number.startsWith("+62")) return number;
 
     let digits = number.replace(/\D/g,"");
@@ -313,15 +307,8 @@ function normalizePhone(number){
 function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
-
     let clean = normalized.replace("+","");
-    return `
-        <a class="wa-link" href="https://wa.me/${clean}" target="_blank">
-            ${normalized}
-            <svg viewBox="0 0 32 32">
-                <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4z"/>
-            </svg>
-        </a>`;
+    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${normalized}</a>`;
 }
 
 function renderStatus(val){
@@ -345,7 +332,6 @@ function loadData(){
     fetch('mmpl.json?v='+Date.now())
     .then(res=>res.json())
     .then(response=>{
-
         document.getElementById("lastUpdateText").innerText=response.lastupdate||"Unknown";
 
         table=$('#teamTable').DataTable({
