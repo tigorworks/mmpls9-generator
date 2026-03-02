@@ -29,11 +29,48 @@ def has_value(val):
     return True
 
 print("Fetching Google Sheet...")
-df = pd.read_csv(csv_url)
+
+try:
+    df = pd.read_csv(csv_url)
+except Exception as e:
+    raise RuntimeError(f"Gagal membaca Google Sheet: {e}")
+
+# =========================
+# VALIDATION SECTION
+# =========================
+
+# Drop baris yang benar-benar kosong
+df = df.dropna(how="all")
+
+# Jika hanya header (tidak ada data)
+if df.empty:
+    raise ValueError("Sheet hanya berisi header atau kosong. Upload dibatalkan.")
+
+# Validasi kolom wajib
+required_columns = [
+    "Nama Team",
+    "Nama Kapten",
+    "No Whatsapp",
+    "Logo Team",
+    "Berkas ID Card",
+    "Nama Lengkap",
+    "NIP",
+    "Nick In-Game",
+    "ID Game"
+]
+
+missing = [col for col in required_columns if col not in df.columns]
+if missing:
+    raise ValueError(f"Kolom wajib tidak ditemukan: {missing}")
 
 teams = []
 
 for _, row in df.iterrows():
+
+    # Skip baris tanpa nama team
+    if pd.isna(row["Nama Team"]) or str(row["Nama Team"]).strip() == "":
+        continue
+
     members = []
 
     for i in range(1, 11):
@@ -50,7 +87,7 @@ for _, row in df.iterrows():
 
         full_name = row.get(nama_col)
 
-        if pd.isna(full_name):
+        if pd.isna(full_name) or str(full_name).strip() == "":
             continue
 
         member = {
@@ -63,16 +100,24 @@ for _, row in df.iterrows():
 
         members.append(member)
 
+    # Kalau tidak ada member valid → skip tim
+    if not members:
+        continue
+
     team = {
-        "team_name": row["Nama Team"],
-        "captain_name": row["Nama Kapten"],
-        "whatsapp_number": str(row["No Whatsapp"]),
+        "team_name": str(row["Nama Team"]).strip(),
+        "captain_name": str(row["Nama Kapten"]).strip(),
+        "whatsapp_number": str(row["No Whatsapp"]).strip(),
         "logo": has_value(row["Logo Team"]),
         "idcard": has_value(row["Berkas ID Card"]),
         "members": members
     }
 
     teams.append(team)
+
+# Kalau setelah filtering tidak ada tim valid → STOP
+if not teams:
+    raise ValueError("Tidak ada tim valid ditemukan. Upload dibatalkan.")
 
 final_json = {"teams": teams}
 
@@ -83,6 +128,9 @@ with open(local_file, "w", encoding="utf-8") as f:
 
 print("JSON generated successfully")
 
+# =========================
+# UPLOAD VIA FTPS
+# =========================
 print("Uploading via FTPS...")
 
 ftps = FTP_TLS()
@@ -95,4 +143,4 @@ with open(local_file, "rb") as f:
 
 ftps.quit()
 
-print("Upload successful")
+print("Upload successful ✅")
