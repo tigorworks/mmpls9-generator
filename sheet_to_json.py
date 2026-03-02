@@ -12,7 +12,8 @@ csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 print("Fetching Google Sheet...")
 
 try:
-    df = pd.read_csv(csv_url)
+    # 👇 PENTING: paksa semua jadi string
+    df = pd.read_csv(csv_url, dtype=str)
 except Exception as e:
     raise RuntimeError(f"Gagal membaca Google Sheet: {e}")
 
@@ -22,14 +23,17 @@ df = df.dropna(how="all")
 if df.empty:
     raise ValueError("Sheet hanya berisi header atau kosong. Generate dibatalkan.")
 
-def has_value(val):
-    if pd.isna(val):
-        return False
-    if isinstance(val, str) and val.strip() == "":
-        return False
-    return True
+def clean(val):
+    if val is None:
+        return ""
+    return str(val).strip()
 
-# Validasi kolom minimal
+def has_value(val):
+    if val is None:
+        return False
+    return str(val).strip() != ""
+
+# Validasi minimal
 required_columns = [
     "Nama Team",
     "Nama Kapten",
@@ -57,7 +61,7 @@ teams = []
 
 for _, row in df.iterrows():
 
-    if pd.isna(row["Nama Team"]) or str(row["Nama Team"]).strip() == "":
+    if not has_value(row["Nama Team"]):
         continue
 
     members = []
@@ -71,7 +75,7 @@ for _, row in df.iterrows():
 
         full_name = row.get(name_cols[i])
 
-        if pd.isna(full_name) or str(full_name).strip() == "":
+        if not has_value(full_name):
             continue
 
         nip_val = row.get(nip_cols[i]) if i < len(nip_cols) else ""
@@ -79,11 +83,11 @@ for _, row in df.iterrows():
         game_id_val = row.get(game_id_cols[i]) if i < len(game_id_cols) else ""
 
         member = {
-            "full_name": str(full_name).strip(),
-            "nip": str(nip_val).strip(),
+            "full_name": clean(full_name),
+            "nip": clean(nip_val),
             "join from": None,
-            "game_id": str(game_id_val).strip(),
-            "game_nick": str(nick_val).strip()
+            "game_id": clean(game_id_val),
+            "game_nick": clean(nick_val)
         }
 
         members.append(member)
@@ -92,10 +96,10 @@ for _, row in df.iterrows():
         continue
 
     team = {
-        "team_name": str(row["Nama Team"]).strip(),
-        "captain_name": str(row["Nama Kapten"]).strip(),
-        "captain_whatsapp": str(row["No Whatsapp"]).strip(),
-        "captain_email": str(row["Email Kapten"]).strip(),
+        "team_name": clean(row["Nama Team"]),
+        "captain_name": clean(row["Nama Kapten"]),
+        "captain_whatsapp": clean(row["No Whatsapp"]),
+        "captain_email": clean(row["Email Kapten"]),
         "logo": has_value(row.get("Logo Team")),
         "idcard": has_value(row.get("Berkas ID Card")),
         "members": members
@@ -117,9 +121,6 @@ final_json = {
     "teams": teams
 }
 
-# =========================
-# SAVE LOCAL FILE
-# =========================
 with open("mmpl.json", "w", encoding="utf-8") as f:
     json.dump(final_json, f, indent="\t", ensure_ascii=False)
 
