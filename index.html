@@ -5,7 +5,6 @@
 <title>Daftar Tim MMPL S9</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <link rel="stylesheet"
 href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
@@ -24,7 +23,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 
 .header-container {
     display: flex;
@@ -59,7 +58,7 @@ h1 {
     color: #9ca3af;
 }
 
-/* Card */
+/* ===== CARD ===== */
 
 .table-container {
     background: #1f2430;
@@ -68,7 +67,7 @@ h1 {
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* ===== Toolbar Styling ===== */
+/* ===== TOOLBAR ===== */
 
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
@@ -101,10 +100,10 @@ h1 {
 
 .dataTables_filter input:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: #f59e0b;
 }
 
-/* ===== Table ===== */
+/* ===== TABLE ===== */
 
 table.dataTable {
     border-collapse: collapse !important;
@@ -122,11 +121,13 @@ table.dataTable thead th {
 
 table.dataTable tbody tr {
     background-color: #1f2430;
-    transition: background 0.2s ease;
+    transition: background-color 0.18s ease, box-shadow 0.18s ease;
 }
 
+/* 🔥 DARK ORANGE HOVER */
 table.dataTable tbody tr:hover {
-    background-color: #2a3142;
+    background-color: #3f2d16;
+    box-shadow: inset 3px 0 0 #f59e0b;
 }
 
 tr.shown {
@@ -138,7 +139,7 @@ table.dataTable tbody td {
     border-bottom: 1px solid #2b3142;
 }
 
-/* Expand icon */
+/* ===== EXPAND ICON ===== */
 
 td.details-control {
     cursor: pointer;
@@ -148,10 +149,10 @@ td.details-control {
 
 .expand-icon {
     font-weight: 600;
-    color: #3b82f6;
+    color: #f59e0b;
 }
 
-/* Status */
+/* ===== STATUS BADGE ===== */
 
 .status-badge {
     display: inline-flex;
@@ -174,7 +175,7 @@ td.details-control {
     color: white;
 }
 
-/* WhatsApp */
+/* ===== WHATSAPP ===== */
 
 .wa-link {
     display: inline-flex;
@@ -196,11 +197,11 @@ td.details-control {
     font-weight: 600;
 }
 
-/* Child Table */
+/* ===== CHILD TABLE ===== */
 
 table.dataTable tbody tr td.child {
     background: #161b24 !important;
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid #f59e0b;
     padding: 18px !important;
 }
 
@@ -221,10 +222,10 @@ table.dataTable tbody tr td.child {
 }
 
 .child-table tr:hover {
-    background: #232a38;
+    background: #2a3142;
 }
 
-/* Pagination */
+/* ===== PAGINATION ===== */
 
 .dataTables_wrapper .dataTables_paginate {
     margin-top: 20px;
@@ -239,12 +240,12 @@ table.dataTable tbody tr td.child {
 }
 
 .dataTables_wrapper .paginate_button.current {
-    background: #3b82f6 !important;
-    color: white !important;
+    background: #f59e0b !important;
+    color: #1f2430 !important;
     border: none !important;
 }
 
-/* Footer */
+/* ===== FOOTER ===== */
 
 .footer {
     text-align: center;
@@ -286,7 +287,7 @@ table.dataTable tbody tr td.child {
 </div>
 
 <div class="footer">
-    Powered by <span>Tigor M Manurung</span>
+    Powered by <strong>Tigor M Manurung</strong>
 </div>
 
 <script>
