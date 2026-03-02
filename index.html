@@ -142,7 +142,6 @@ td.details-control {
     font-size: 14px;
     font-weight: 600;
     color: #f59e0b;
-    transition: transform 0.15s ease;
 }
 
 /* STATUS */
@@ -287,13 +286,26 @@ function format(members){
     return html;
 }
 
+function buildMemberSearch(members){
+    let combined="";
+    members.forEach(m=>{
+        combined += `${m.full_name} ${m.game_id} ${m.game_nick} `;
+    });
+    return combined;
+}
+
 function loadData(){
     document.getElementById("lastUpdateText").innerText="Loading...";
 
     fetch('mmpl.json?v='+Date.now())
     .then(res=>res.json())
     .then(response=>{
+
         document.getElementById("lastUpdateText").innerText=response.lastupdate||"Unknown";
+
+        response.teams.forEach(team=>{
+            team.member_search = buildMemberSearch(team.members);
+        });
 
         table=$('#teamTable').DataTable({
             destroy:true,
@@ -306,7 +318,8 @@ function loadData(){
                 {data:'captain_whatsapp',render:d=>renderWA(d)},
                 {data:'logo',render:d=>renderStatus(d)},
                 {data:'idcard',render:d=>renderStatus(d)},
-                {data:'members',render:d=>d.length}
+                {data:'members',render:d=>d.length},
+                {data:'member_search',visible:false,searchable:true}
             ]
         });
 
