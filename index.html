@@ -10,7 +10,6 @@ href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
 
 <style>
 body {
@@ -178,13 +177,6 @@ table.dataTable tbody tr td.child {
     border-bottom: 1px solid #2b3142;
 }
 
-.search-highlight {
-    background-color: #f59e0b;
-    color: #1f2430;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
 .footer {
     text-align: center;
     margin-top: 40px;
@@ -303,9 +295,6 @@ function loadData(){
             destroy:true,
             data:response.teams,
             pageLength:10,
-            search: {
-                smart: false   // 🔥 FIX utama
-            },
             columns:[
                 {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
                 {data:'team_name'},
@@ -321,7 +310,6 @@ function loadData(){
         table.on('draw', function(){
 
             let keyword = $('.dataTables_filter input').val();
-            $('#teamTable tbody').unmark();
 
             if(!keyword){
                 table.rows().every(function(){
@@ -345,12 +333,6 @@ function loadData(){
                         $(this.node()).find('.expand-icon').text('▼');
                     }
                 }
-            });
-
-            $('#teamTable tbody').mark(keyword, {
-                separateWordSearch: false,
-                caseSensitive: false,
-                className:'search-highlight'
             });
 
         });
