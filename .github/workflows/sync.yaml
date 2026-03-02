@@ -1,4 +1,4 @@
-name: Sync MMPL JSON
+name: Sync Data MMPL S9
 
 on:
   schedule:
