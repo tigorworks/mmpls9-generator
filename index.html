@@ -89,19 +89,6 @@ tr.shown {
     padding: 6px 10px;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: #2c3140 !important;
-    color: #e6e6e6 !important;
-    border-radius: 8px !important;
-    border: 1px solid #3a4052 !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #4f8cff !important;
-    color: white !important;
-    border: none !important;
-}
-
 td.details-control {
     cursor: pointer;
     text-align: center;
@@ -113,7 +100,6 @@ td.details-control {
     color: #4f8cff;
 }
 
-/* Status badge */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -135,7 +121,6 @@ td.details-control {
     color: white;
 }
 
-/* WhatsApp */
 .wa-link {
     display: inline-flex;
     align-items: center;
@@ -151,11 +136,11 @@ td.details-control {
     fill: #25D366;
 }
 
-.wa-link:hover {
-    text-decoration: underline;
+.invalid-wa {
+    color: #ef4444;
+    font-weight: bold;
 }
 
-/* Child area */
 table.dataTable tbody tr td.child {
     background: #202531 !important;
     border-left: 4px solid #4f8cff;
@@ -176,18 +161,6 @@ table.dataTable tbody tr td.child {
 
 .child-table th {
     background: #2c3140;
-}
-
-.child-table tbody tr:nth-child(even) {
-    background-color: #232837;
-}
-
-.child-table tbody tr:nth-child(odd) {
-    background-color: #1b1f2a;
-}
-
-.child-table tbody tr:hover {
-    background-color: #2c3448;
 }
 
 </style>
@@ -226,23 +199,54 @@ table.dataTable tbody tr td.child {
 
 let table;
 
-function formatPhone(number) {
-    if (!number) return "-";
-    number = number.replace(/^0/, "");
-    return "+62" + number;
+/* VALIDASI KETAT */
+function normalizePhone(number) {
+
+    if (!number) return null;
+
+    number = number.toString().trim();
+
+    // Jika mengandung huruf atau simbol aneh
+    if (!/^[0-9+]+$/.test(number)) {
+        return null;
+    }
+
+    if (number.startsWith("+62")) {
+        return number;
+    }
+
+    let digits = number.replace(/\D/g, "");
+
+    if (digits.startsWith("62")) {
+        return "+" + digits;
+    }
+
+    if (digits.startsWith("0")) {
+        return "+62" + digits.substring(1);
+    }
+
+    if (digits.startsWith("8")) {
+        return "+62" + digits;
+    }
+
+    return null;
 }
 
 function renderWA(number) {
-    if (!number) return "-";
 
-    let formatted = formatPhone(number);
-    let cleanNumber = formatted.replace("+", "");
+    let normalized = normalizePhone(number);
+
+    if (!normalized) {
+        return '<span class="invalid-wa">x</span>';
+    }
+
+    let cleanNumber = normalized.replace("+", "");
 
     return `
         <a class="wa-link" href="https://wa.me/${cleanNumber}" target="_blank">
-            ${formatted}
+            ${normalized}
             <svg viewBox="0 0 32 32">
-                <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4zm0 28.5c-2.4 0-4.6-.6-6.5-1.7l-.5-.3-5 1.3 1.3-4.9-.3-.5c-1.2-2-1.8-4.2-1.8-6.6C3.2 8.1 8.1 3.2 16 3.2S28.8 8.1 28.8 16 23.9 28.9 16 28.9z"/>
+                <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4z"/>
             </svg>
         </a>
     `;
@@ -324,7 +328,6 @@ function loadData() {
                 icon.html('&gt;');
             } else {
 
-                // Tutup semua row lain
                 table.rows().every(function () {
                     if (this.child.isShown()) {
                         $(this.node()).removeClass('shown');
