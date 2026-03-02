@@ -24,4 +24,4 @@ jobs:
       - name: Run Script
         env:
           FTP_PASS: ${{ secrets.FTP_PASS }}
-        run: python script.py
+        run: python sheet_to_json.py
