@@ -303,6 +303,9 @@ function loadData(){
             destroy:true,
             data:response.teams,
             pageLength:10,
+            search: {
+                smart: false   // 🔥 FIX utama
+            },
             columns:[
                 {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
                 {data:'team_name'},
@@ -317,7 +320,7 @@ function loadData(){
 
         table.on('draw', function(){
 
-            let keyword = table.search();
+            let keyword = $('.dataTables_filter input').val();
             $('#teamTable tbody').unmark();
 
             if(!keyword){
