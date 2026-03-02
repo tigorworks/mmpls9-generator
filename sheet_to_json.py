@@ -1,7 +1,5 @@
 import pandas as pd
 import json
-import os
-from ftplib import FTP_TLS
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -10,25 +8,6 @@ from zoneinfo import ZoneInfo
 # =========================
 sheet_id = "1RSHx8uxaW4qhrVAaeiJNmbuZAVyxlmQR_VSoOeirmBs"
 csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-
-# =========================
-# FTP CONFIG (FROM ENV)
-# =========================
-FTP_HOST = "ftp.dunuw.com"
-FTP_USER = "mmpls9@dunuw.com"
-FTP_PASS = os.getenv("FTP_PASS")
-FTP_PORT = 21
-REMOTE_FILE = "mmpl.json"
-
-if not FTP_PASS:
-    raise ValueError("FTP_PASS environment variable not set")
-
-def has_value(val):
-    if pd.isna(val):
-        return False
-    if isinstance(val, str) and val.strip() == "":
-        return False
-    return True
 
 print("Fetching Google Sheet...")
 
@@ -41,7 +20,14 @@ except Exception as e:
 df = df.dropna(how="all")
 
 if df.empty:
-    raise ValueError("Sheet hanya berisi header atau kosong. Upload dibatalkan.")
+    raise ValueError("Sheet hanya berisi header atau kosong. Generate dibatalkan.")
+
+def has_value(val):
+    if pd.isna(val):
+        return False
+    if isinstance(val, str) and val.strip() == "":
+        return False
+    return True
 
 # Validasi kolom minimal
 required_columns = [
@@ -118,7 +104,7 @@ for _, row in df.iterrows():
     teams.append(team)
 
 if not teams:
-    raise ValueError("Tidak ada tim valid ditemukan. Upload dibatalkan.")
+    raise ValueError("Tidak ada tim valid ditemukan. Generate dibatalkan.")
 
 # =========================
 # LAST UPDATE (Asia/Jakarta UTC+7)
@@ -131,30 +117,10 @@ final_json = {
     "teams": teams
 }
 
-local_file = "mmpl.json"
-
-with open(local_file, "w", encoding="utf-8") as f:
+# =========================
+# SAVE LOCAL FILE
+# =========================
+with open("mmpl.json", "w", encoding="utf-8") as f:
     json.dump(final_json, f, indent="\t", ensure_ascii=False)
 
-print("JSON generated successfully")
-
-# =========================
-# UPLOAD VIA FTPS
-# =========================
-print("Uploading via FTPS...")
-
-try:
-    ftps = FTP_TLS()
-    ftps.connect(FTP_HOST, FTP_PORT)
-    ftps.login(FTP_USER, FTP_PASS)
-    ftps.prot_p()
-
-    with open(local_file, "rb") as f:
-        ftps.storbinary(f"STOR {REMOTE_FILE}", f)
-
-    ftps.quit()
-
-    print("Upload successful ✅")
-
-except Exception as e:
-    raise RuntimeError(f"Upload FTPS gagal: {e}")
+print("mmpl.json berhasil dibuat ✅")
