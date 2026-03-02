@@ -1,374 +1,127 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>MMPL Season 9 Registered Teams</title>
+import pandas as pd
+import json
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet"
-href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+# =========================
+# GOOGLE SHEET CONFIG
+# =========================
+sheet_id = "1RSHx8uxaW4qhrVAaeiJNmbuZAVyxlmQR_VSoOeirmBs"
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+print("Fetching Google Sheet...")
 
-<style>
+try:
+    # 👇 PENTING: paksa semua jadi string
+    df = pd.read_csv(csv_url, dtype=str)
+except Exception as e:
+    raise RuntimeError(f"Gagal membaca Google Sheet: {e}")
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #181c23;
-    margin: 0;
-    padding: 40px;
-    color: #e5e7eb;
-    font-size: 14.5px;
-    -webkit-font-smoothing: antialiased;
+# Drop baris kosong total
+df = df.dropna(how="all")
+
+if df.empty:
+    raise ValueError("Sheet hanya berisi header atau kosong. Generate dibatalkan.")
+
+def clean(val):
+    if val is None:
+        return ""
+    return str(val).strip()
+
+def has_value(val):
+    if val is None:
+        return False
+    return str(val).strip() != ""
+
+# Validasi minimal
+required_columns = [
+    "Nama Team",
+    "Nama Kapten",
+    "Email Kapten",
+    "No Whatsapp",
+]
+
+missing = [col for col in required_columns if col not in df.columns]
+if missing:
+    raise ValueError(f"Kolom wajib tidak ditemukan: {missing}")
+
+# =========================
+# DETEKSI KOLOM MEMBER DINAMIS
+# =========================
+
+name_cols = [c for c in df.columns if c.startswith("Nama Lengkap")]
+nip_cols = [c for c in df.columns if c.startswith("NIP")]
+nick_cols = [c for c in df.columns if "Nick" in c]
+game_id_cols = [c for c in df.columns if "ID Game" in c]
+
+if not name_cols:
+    raise ValueError("Tidak ditemukan kolom Nama Lengkap.")
+
+teams = []
+
+for _, row in df.iterrows():
+
+    if not has_value(row["Nama Team"]):
+        continue
+
+    members = []
+
+    max_member = max(len(name_cols), len(nip_cols), len(nick_cols), len(game_id_cols))
+
+    for i in range(max_member):
+
+        if i >= len(name_cols):
+            continue
+
+        full_name = row.get(name_cols[i])
+
+        if not has_value(full_name):
+            continue
+
+        nip_val = row.get(nip_cols[i]) if i < len(nip_cols) else ""
+        nick_val = row.get(nick_cols[i]) if i < len(nick_cols) else ""
+        game_id_val = row.get(game_id_cols[i]) if i < len(game_id_cols) else ""
+
+        member = {
+            "full_name": clean(full_name),
+            "nip": clean(nip_val),
+            "join from": None,
+            "game_id": clean(game_id_val),
+            "game_nick": clean(nick_val)
+        }
+
+        members.append(member)
+
+    if not members:
+        continue
+
+    team = {
+        "team_name": clean(row["Nama Team"]),
+        "captain_name": clean(row["Nama Kapten"]),
+        "captain_whatsapp": clean(row["No Whatsapp"]),
+        "captain_email": clean(row["Email Kapten"]),
+        "logo": has_value(row.get("Logo Team")),
+        "idcard": has_value(row.get("Berkas ID Card")),
+        "members": members
+    }
+
+    teams.append(team)
+
+if not teams:
+    raise ValueError("Tidak ada tim valid ditemukan. Generate dibatalkan.")
+
+# =========================
+# LAST UPDATE (Asia/Jakarta UTC+7)
+# =========================
+jakarta_time = datetime.now(ZoneInfo("Asia/Jakarta"))
+last_update = jakarta_time.strftime("%Y-%m-%d %H:%M:%S")
+
+final_json = {
+    "lastupdate": last_update,
+    "teams": teams
 }
 
-/* HEADER */
+with open("mmpl.json", "w", encoding="utf-8") as f:
+    json.dump(final_json, f, indent="\t", ensure_ascii=False)
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-h1 {
-    margin: 0;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-}
-
-.refresh-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.refresh-btn:hover {
-    background: #2563eb;
-}
-
-.last-update {
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: #9ca3af;
-}
-
-/* CARD */
-
-.table-container {
-    background: #1f2430;
-    padding: 28px;
-    border-radius: 14px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-}
-
-/* CTA */
-
-.register-cta {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.register-cta a {
-    display: inline-block;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #1f2430;
-    font-weight: 600;
-    padding: 12px 22px;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: 0.2s ease;
-}
-
-.register-cta a:hover {
-    transform: translateY(-2px);
-}
-
-/* TOOLBAR */
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-    margin-bottom: 20px;
-}
-
-.dataTables_wrapper .dataTables_length { float: left; }
-.dataTables_wrapper .dataTables_filter { float: right; }
-
-.dataTables_wrapper::after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-.dataTables_length select,
-.dataTables_filter input {
-    background: #252b3a;
-    border: 1px solid #374151;
-    color: #e5e7eb;
-    border-radius: 8px;
-    padding: 6px 10px;
-}
-
-.dataTables_filter input:focus {
-    outline: none;
-    border-color: #f59e0b;
-}
-
-/* TABLE */
-
-table.dataTable thead {
-    background: #252b3a;
-}
-
-table.dataTable thead th {
-    padding: 12px 10px;
-    border-bottom: 1px solid #374151;
-}
-
-table.dataTable tbody tr {
-    background-color: #1f2430;
-    transition: 0.18s ease;
-}
-
-table.dataTable tbody tr:hover {
-    background-color: #3f2d16;
-    box-shadow: inset 3px 0 0 #f59e0b;
-}
-
-tr.shown {
-    background-color: #2f374b !important;
-}
-
-table.dataTable tbody td {
-    padding: 11px 10px;
-    border-bottom: 1px solid #2b3142;
-}
-
-td.details-control {
-    cursor: pointer;
-    text-align: center;
-    width: 30px;
-}
-
-.expand-icon {
-    font-weight: 600;
-    color: #f59e0b;
-}
-
-/* STATUS */
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.status-true { background: #16a34a; color: white; }
-.status-false { background: #dc2626; color: white; }
-
-/* WHATSAPP */
-
-.wa-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #25D366;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.invalid-wa {
-    color: #ef4444;
-    font-weight: 600;
-}
-
-/* CHILD */
-
-table.dataTable tbody tr td.child {
-    background: #161b24 !important;
-    border-left: 4px solid #f59e0b;
-    padding: 18px !important;
-}
-
-.child-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.child-table th {
-    background: #252b3a;
-    padding: 8px;
-}
-
-.child-table td {
-    padding: 8px;
-    border-bottom: 1px solid #2b3142;
-}
-
-/* FOOTER */
-
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 12.5px;
-    color: #6b7280;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="header-container">
-    <h1>MMPL Season 9 Registered Teams</h1>
-    <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
-</div>
-
-<div class="last-update">
-    Last Update:
-    <span id="lastUpdateText">-</span>
-    (UTC+7 - Jakarta)
-</div>
-
-<div class="table-container">
-<table id="teamTable" class="display" style="width:100%">
-<thead>
-<tr>
-<th></th>
-<th>Team Name</th>
-<th>Captain</th>
-<th>Whatsapp</th>
-<th>Logo</th>
-<th>ID Card</th>
-<th>Total Member</th>
-</tr>
-</thead>
-</table>
-
-<div class="register-cta">
-    <a href="https://bit.ly/daftar-mmpls9"
-       target="_blank"
-       rel="noopener noreferrer">
-       Register Your Team Here!
-    </a>
-</div>
-
-</div>
-
-<div class="footer">
-    Powered by <strong>Tigor M Manurung</strong>
-</div>
-
-<script>
-
-let table;
-
-function normalizePhone(number){
-    if(!number) return null;
-    number = number.toString().trim();
-    if(!/^[0-9+]+$/.test(number)) return null;
-    if(number.startsWith("+62")) return number;
-
-    let digits = number.replace(/\D/g,"");
-
-    if(digits.startsWith("62")) return "+"+digits;
-    if(digits.startsWith("0")) return "+62"+digits.substring(1);
-    if(digits.startsWith("8")) return "+62"+digits;
-
-    return null;
-}
-
-function renderWA(number){
-    let normalized = normalizePhone(number);
-    if(!normalized) return '<span class="invalid-wa">x</span>';
-
-    let clean = normalized.replace("+","");
-
-    return `
-        <a class="wa-link"
-           href="https://wa.me/${clean}"
-           target="_blank"
-           rel="noopener noreferrer">
-           ${normalized}
-        </a>`;
-}
-
-function renderStatus(val){
-    return val
-        ? '<span class="status-badge status-true">✓</span>'
-        : '<span class="status-badge status-false">✕</span>';
-}
-
-function format(members){
-    let html='<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
-    members.forEach(m=>{
-        html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></tr>`;
-    });
-    html+='</tbody></table>';
-    return html;
-}
-
-function loadData(){
-    document.getElementById("lastUpdateText").innerText="Loading...";
-
-    fetch('mmpl.json?v='+Date.now())
-    .then(res=>res.json())
-    .then(response=>{
-        document.getElementById("lastUpdateText").innerText=response.lastupdate||"Unknown";
-
-        table=$('#teamTable').DataTable({
-            destroy:true,
-            data:response.teams,
-            pageLength:25,
-            columns:[
-                {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">&gt;</span>'},
-                {data:'team_name'},
-                {data:'captain_name'},
-                {data:'captain_whatsapp',render:d=>renderWA(d)},
-                {data:'logo',render:d=>renderStatus(d)},
-                {data:'idcard',render:d=>renderStatus(d)},
-                {data:'members',render:d=>d.length}
-            ]
-        });
-
-        $('#teamTable tbody').off('click').on('click','td.details-control',function(){
-            let tr=$(this).closest('tr');
-            let row=table.row(tr);
-            let icon=$(this).find('.expand-icon');
-
-            if(row.child.isShown()){
-                row.child.hide();
-                tr.removeClass('shown');
-                icon.html('&gt;');
-            }else{
-                table.rows().every(function(){
-                    if(this.child.isShown()){
-                        $(this.node()).removeClass('shown');
-                        $(this.node()).find('.expand-icon').html('&gt;');
-                        this.child.hide();
-                    }
-                });
-                row.child(format(row.data().members)).show();
-                tr.addClass('shown');
-                icon.html('v');
-            }
-        });
-
-    });
-}
-
-loadData();
-
-</script>
-
-</body>
-</html>
+print("mmpl.json berhasil dibuat ✅")
