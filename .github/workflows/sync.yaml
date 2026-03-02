@@ -5,8 +5,11 @@ on:
     - cron: "0 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  sync:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +24,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Script
-        env:
-          FTP_PASS: ${{ secrets.FTP_PASS }}
+      - name: Run script
         run: python sheet_to_json.py
+
+      - name: Commit mmpl.json if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add mmpl.json
+          git diff --cached --quiet || git commit -m "Auto update mmpl.json"
+          git push
