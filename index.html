@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Daftar Tim MMPL S9</title>
 
-<!-- Inter Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
@@ -16,33 +15,32 @@ href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <style>
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #1c1f26;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #181c23;
     margin: 0;
     padding: 40px;
-    color: #e6e6e6;
+    color: #e5e7eb;
     font-size: 14.5px;
-
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header */
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 h1 {
     margin: 0;
     font-weight: 600;
     letter-spacing: -0.3px;
-    color: #ffffff;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
 }
 
 .refresh-btn {
-    background: #4f8cff;
+    background: #3b82f6;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -52,59 +50,95 @@ h1 {
 }
 
 .refresh-btn:hover {
-    background: #3b6fd8;
+    background: #2563eb;
 }
 
 .last-update {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     font-size: 13px;
     color: #9ca3af;
 }
 
-.last-update span {
-    color: #e6e6e6;
-    font-weight: 500;
-}
+/* Card */
 
 .table-container {
-    background: #232733;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    background: #1f2430;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* DataTable styling */
+/* ===== Toolbar Styling ===== */
 
-table.dataTable {
-    letter-spacing: 0.2px;
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px;
 }
 
-table.dataTable thead {
-    background: #2c3140;
-    font-weight: 500;
+.dataTables_wrapper .dataTables_length {
+    float: left;
 }
 
-table.dataTable tbody tr {
-    background-color: #232733;
+.dataTables_wrapper .dataTables_filter {
+    float: right;
 }
 
-table.dataTable tbody tr:hover {
-    background-color: #2f3445;
+.dataTables_wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
 }
 
-tr.shown {
-    background-color: #2a3040 !important;
-}
-
-.dataTables_filter input,
-.dataTables_length select {
-    background: #2c3140;
-    border: 1px solid #3a4052;
-    color: #e6e6e6;
+.dataTables_length select,
+.dataTables_filter input {
+    background: #252b3a;
+    border: 1px solid #374151;
+    color: #e5e7eb;
     border-radius: 8px;
     padding: 6px 10px;
     font-family: 'Inter', sans-serif;
 }
+
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+/* ===== Table ===== */
+
+table.dataTable {
+    border-collapse: collapse !important;
+}
+
+table.dataTable thead {
+    background: #252b3a;
+}
+
+table.dataTable thead th {
+    font-weight: 500;
+    padding: 12px 10px;
+    border-bottom: 1px solid #374151;
+}
+
+table.dataTable tbody tr {
+    background-color: #1f2430;
+    transition: background 0.2s ease;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #2a3142;
+}
+
+tr.shown {
+    background-color: #2f374b !important;
+}
+
+table.dataTable tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid #2b3142;
+}
+
+/* Expand icon */
 
 td.details-control {
     cursor: pointer;
@@ -114,10 +148,10 @@ td.details-control {
 
 .expand-icon {
     font-weight: 600;
-    color: #4f8cff;
+    color: #3b82f6;
 }
 
-/* Status Badge */
+/* Status */
 
 .status-badge {
     display: inline-flex;
@@ -131,12 +165,12 @@ td.details-control {
 }
 
 .status-true {
-    background-color: #16a34a;
+    background: #16a34a;
     color: white;
 }
 
 .status-false {
-    background-color: #dc2626;
+    background: #dc2626;
     color: white;
 }
 
@@ -157,10 +191,6 @@ td.details-control {
     fill: #25D366;
 }
 
-.wa-link:hover {
-    text-decoration: underline;
-}
-
 .invalid-wa {
     color: #ef4444;
     font-weight: 600;
@@ -169,41 +199,58 @@ td.details-control {
 /* Child Table */
 
 table.dataTable tbody tr td.child {
-    background: #202531 !important;
-    border-left: 4px solid #4f8cff;
-    padding: 15px 20px !important;
+    background: #161b24 !important;
+    border-left: 4px solid #3b82f6;
+    padding: 18px !important;
 }
 
 .child-table {
-    border-collapse: collapse;
     width: 100%;
-    background: #1b1f2a;
-}
-
-.child-table th,
-.child-table td {
-    padding: 8px 12px;
-    border: 1px solid #3a4052;
+    border-collapse: collapse;
 }
 
 .child-table th {
-    background: #2c3140;
+    background: #252b3a;
+    padding: 8px;
     font-weight: 500;
+}
+
+.child-table td {
+    padding: 8px;
+    border-bottom: 1px solid #2b3142;
+}
+
+.child-table tr:hover {
+    background: #232a38;
+}
+
+/* Pagination */
+
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 20px;
+}
+
+.dataTables_wrapper .paginate_button {
+    background: #252b3a !important;
+    border: 1px solid #374151 !important;
+    border-radius: 6px !important;
+    color: #e5e7eb !important;
+    margin: 0 2px;
+}
+
+.dataTables_wrapper .paginate_button.current {
+    background: #3b82f6 !important;
+    color: white !important;
+    border: none !important;
 }
 
 /* Footer */
 
 .footer {
     text-align: center;
-    margin-top: 45px;
+    margin-top: 40px;
     font-size: 12.5px;
     color: #6b7280;
-    letter-spacing: 0.4px;
-}
-
-.footer span {
-    color: #9ca3af;
-    font-weight: 500;
 }
 
 </style>
@@ -219,7 +266,7 @@ table.dataTable tbody tr td.child {
 <div class="last-update">
     Last Update:
     <span id="lastUpdateText">-</span>
-    <span>(UTC+7 - Jakarta)</span>
+    (UTC+7 - Jakarta)
 </div>
 
 <div class="table-container">
@@ -246,137 +293,99 @@ table.dataTable tbody tr td.child {
 
 let table;
 
-function normalizePhone(number) {
-
-    if (!number) return null;
-
+function normalizePhone(number){
+    if(!number) return null;
     number = number.toString().trim();
+    if(!/^[0-9+]+$/.test(number)) return null;
 
-    if (!/^[0-9+]+$/.test(number)) return null;
+    if(number.startsWith("+62")) return number;
 
-    if (number.startsWith("+62")) return number;
+    let digits = number.replace(/\D/g,"");
 
-    let digits = number.replace(/\D/g, "");
-
-    if (digits.startsWith("62")) return "+" + digits;
-    if (digits.startsWith("0")) return "+62" + digits.substring(1);
-    if (digits.startsWith("8")) return "+62" + digits;
+    if(digits.startsWith("62")) return "+"+digits;
+    if(digits.startsWith("0")) return "+62"+digits.substring(1);
+    if(digits.startsWith("8")) return "+62"+digits;
 
     return null;
 }
 
-function renderWA(number) {
-
+function renderWA(number){
     let normalized = normalizePhone(number);
+    if(!normalized) return '<span class="invalid-wa">x</span>';
 
-    if (!normalized) {
-        return '<span class="invalid-wa">x</span>';
-    }
-
-    let cleanNumber = normalized.replace("+", "");
-
+    let clean = normalized.replace("+","");
     return `
-        <a class="wa-link" href="https://wa.me/${cleanNumber}" target="_blank">
+        <a class="wa-link" href="https://wa.me/${clean}" target="_blank">
             ${normalized}
             <svg viewBox="0 0 32 32">
                 <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4z"/>
             </svg>
-        </a>
-    `;
+        </a>`;
 }
 
-function format(members) {
-    let html = '<table class="child-table">';
-    html += `
-        <thead>
-            <tr>
-                <th>Full Name</th>
-                <th>Game ID</th>
-                <th>Game Nick</th>
-            </tr>
-        </thead><tbody>
-    `;
-    members.forEach(m => {
-        html += `
-            <tr>
-                <td>${m.full_name}</td>
-                <td>${m.game_id}</td>
-                <td>${m.game_nick}</td>
-            </tr>
-        `;
-    });
-    html += '</tbody></table>';
-    return html;
-}
-
-function renderStatus(value) {
-    return value
+function renderStatus(val){
+    return val
         ? '<span class="status-badge status-true">✓</span>'
         : '<span class="status-badge status-false">✕</span>';
 }
 
-function loadData() {
+function format(members){
+    let html='<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
+    members.forEach(m=>{
+        html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></tr>`;
+    });
+    html+='</tbody></table>';
+    return html;
+}
 
-    document.getElementById("lastUpdateText").innerText = "Loading...";
+function loadData(){
+    document.getElementById("lastUpdateText").innerText="Loading...";
 
-    fetch('mmpl.json?v=' + Date.now())
-    .then(res => res.json())
-    .then(response => {
+    fetch('mmpl.json?v='+Date.now())
+    .then(res=>res.json())
+    .then(response=>{
 
-        document.getElementById("lastUpdateText").innerText =
-            response.lastupdate || "Unknown";
+        document.getElementById("lastUpdateText").innerText=response.lastupdate||"Unknown";
 
-        const data = response.teams;
-
-        table = $('#teamTable').DataTable({
-            destroy: true,
-            data: data,
-            pageLength: 25,
-            columns: [
-                {
-                    className: 'details-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: '<span class="expand-icon">&gt;</span>'
-                },
-                { data: 'team_name' },
-                { data: 'captain_name' },
-                { data: 'captain_whatsapp', render: d => renderWA(d) },
-                { data: 'logo', render: d => renderStatus(d) },
-                { data: 'idcard', render: d => renderStatus(d) },
-                { data: 'members', render: d => d.length }
+        table=$('#teamTable').DataTable({
+            destroy:true,
+            data:response.teams,
+            pageLength:25,
+            columns:[
+                {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">&gt;</span>'},
+                {data:'team_name'},
+                {data:'captain_name'},
+                {data:'captain_whatsapp',render:d=>renderWA(d)},
+                {data:'logo',render:d=>renderStatus(d)},
+                {data:'idcard',render:d=>renderStatus(d)},
+                {data:'members',render:d=>d.length}
             ]
         });
 
-        $('#teamTable tbody').off('click').on('click', 'td.details-control', function () {
+        $('#teamTable tbody').off('click').on('click','td.details-control',function(){
+            let tr=$(this).closest('tr');
+            let row=table.row(tr);
+            let icon=$(this).find('.expand-icon');
 
-            let tr = $(this).closest('tr');
-            let row = table.row(tr);
-            let icon = $(this).find('.expand-icon');
-
-            if (row.child.isShown()) {
+            if(row.child.isShown()){
                 row.child.hide();
                 tr.removeClass('shown');
                 icon.html('&gt;');
-            } else {
-
-                table.rows().every(function () {
-                    if (this.child.isShown()) {
+            }else{
+                table.rows().every(function(){
+                    if(this.child.isShown()){
                         $(this.node()).removeClass('shown');
                         $(this.node()).find('.expand-icon').html('&gt;');
                         this.child.hide();
                     }
                 });
-
                 row.child(format(row.data().members)).show();
                 tr.addClass('shown');
                 icon.html('v');
             }
-
         });
 
     });
-
 }
 
 loadData();
