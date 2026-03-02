@@ -163,13 +163,11 @@ table.dataTable tbody tr td.child {
     background: #2c3140;
 }
 
-/* Footer */
 .footer {
     text-align: center;
     margin-top: 40px;
     font-size: 13px;
     color: #6b7280;
-    letter-spacing: 0.5px;
 }
 
 .footer span {
@@ -215,9 +213,148 @@ table.dataTable tbody tr td.child {
 
 <script>
 
-// (JavaScript tetap sama seperti sebelumnya — tidak berubah)
-// Demi ringkas, gunakan script terakhir yang sudah kamu pakai.
-// Tidak ada perubahan logic di bagian JS.
+let table;
+
+/* SMART VALIDATION */
+function normalizePhone(number) {
+
+    if (!number) return null;
+
+    number = number.toString().trim();
+
+    if (!/^[0-9+]+$/.test(number)) {
+        return null;
+    }
+
+    if (number.startsWith("+62")) return number;
+
+    let digits = number.replace(/\D/g, "");
+
+    if (digits.startsWith("62")) return "+" + digits;
+
+    if (digits.startsWith("0")) return "+62" + digits.substring(1);
+
+    if (digits.startsWith("8")) return "+62" + digits;
+
+    return null;
+}
+
+function renderWA(number) {
+
+    let normalized = normalizePhone(number);
+
+    if (!normalized) {
+        return '<span class="invalid-wa">x</span>';
+    }
+
+    let cleanNumber = normalized.replace("+", "");
+
+    return `
+        <a class="wa-link" href="https://wa.me/${cleanNumber}" target="_blank">
+            ${normalized}
+            <svg viewBox="0 0 32 32">
+                <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.8.7 5.4 2 7.7L0 32l8.5-2.2c2.2 1.2 4.7 1.9 7.5 1.9 8.7 0 15.6-6.9 15.6-15.6S24.7.4 16 .4z"/>
+            </svg>
+        </a>
+    `;
+}
+
+function format(members) {
+    let html = '<table class="child-table">';
+    html += `
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Game ID</th>
+                <th>Game Nick</th>
+            </tr>
+        </thead><tbody>
+    `;
+    members.forEach(m => {
+        html += `
+            <tr>
+                <td>${m.full_name}</td>
+                <td>${m.game_id}</td>
+                <td>${m.game_nick}</td>
+            </tr>
+        `;
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderStatus(value) {
+    return value
+        ? '<span class="status-badge status-true">✓</span>'
+        : '<span class="status-badge status-false">✕</span>';
+}
+
+function loadData() {
+
+    document.getElementById("lastUpdateText").innerText = "Loading...";
+
+    fetch('mmpl.json?v=' + Date.now())
+    .then(res => res.json())
+    .then(response => {
+
+        document.getElementById("lastUpdateText").innerText =
+            response.lastupdate || "Unknown";
+
+        const data = response.teams;
+
+        table = $('#teamTable').DataTable({
+            destroy: true,
+            data: data,
+            pageLength: 25,
+            columns: [
+                {
+                    className: 'details-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<span class="expand-icon">&gt;</span>'
+                },
+                { data: 'team_name' },
+                { data: 'captain_name' },
+                { data: 'captain_whatsapp', render: d => renderWA(d) },
+                { data: 'logo', render: d => renderStatus(d) },
+                { data: 'idcard', render: d => renderStatus(d) },
+                { data: 'members', render: d => d.length }
+            ]
+        });
+
+        // ACCORDION MODE
+        $('#teamTable tbody').off('click').on('click', 'td.details-control', function () {
+
+            let tr = $(this).closest('tr');
+            let row = table.row(tr);
+            let icon = $(this).find('.expand-icon');
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                icon.html('&gt;');
+            } else {
+
+                table.rows().every(function () {
+                    if (this.child.isShown()) {
+                        $(this.node()).removeClass('shown');
+                        $(this.node()).find('.expand-icon').html('&gt;');
+                        this.child.hide();
+                    }
+                });
+
+                row.child(format(row.data().members)).show();
+                tr.addClass('shown');
+                icon.html('v');
+            }
+
+        });
+
+    });
+
+}
+
+loadData();
 
 </script>
 
