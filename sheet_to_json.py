@@ -50,7 +50,7 @@ required_columns = [
     "Nama Team",
     "Nama Kapten",
     "Email Kapten",
-    "No Whatsapp Kapten",
+    "No Whatsapp",      # <-- disesuaikan
     "Logo Team",
     "Berkas ID Card",
     "Nama Lengkap",
@@ -105,7 +105,7 @@ for _, row in df.iterrows():
     team = {
         "team_name": str(row["Nama Team"]).strip(),
         "captain_name": str(row["Nama Kapten"]).strip(),
-        "captain_whatsapp": str(row["No Whatsapp Kapten"]).strip(),
+        "captain_whatsapp": str(row["No Whatsapp"]).strip(),  # <-- disesuaikan
         "captain_email": str(row["Email Kapten"]).strip(),
         "logo": has_value(row["Logo Team"]),
         "idcard": has_value(row["Berkas ID Card"]),
