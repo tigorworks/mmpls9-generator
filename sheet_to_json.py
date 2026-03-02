@@ -2,6 +2,8 @@ import pandas as pd
 import json
 import os
 from ftplib import FTP_TLS
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # =========================
 # GOOGLE SHEET CONFIG
@@ -91,16 +93,16 @@ for _, row in df.iterrows():
             continue
 
         member = {
-            "full_name": str(full_name),
-            "nip": str(row.get(nip_col, "")),
+            "full_name": str(full_name).strip(),
+            "nip": str(row.get(nip_col, "")).strip(),
             "join from": None,
-            "game_id": str(row.get(game_id_col, "")),
-            "game_nick": str(row.get(nick_col, ""))
+            "game_id": str(row.get(game_id_col, "")).strip(),
+            "game_nick": str(row.get(nick_col, "")).strip()
         }
 
         members.append(member)
 
-    # Kalau tidak ada member valid → skip tim
+    # Skip tim tanpa member valid
     if not members:
         continue
 
@@ -119,7 +121,16 @@ for _, row in df.iterrows():
 if not teams:
     raise ValueError("Tidak ada tim valid ditemukan. Upload dibatalkan.")
 
-final_json = {"teams": teams}
+# =========================
+# LAST UPDATE (Asia/Jakarta UTC+7)
+# =========================
+jakarta_time = datetime.now(ZoneInfo("Asia/Jakarta"))
+last_update = jakarta_time.strftime("%Y-%m-%d %H:%M:%S")
+
+final_json = {
+    "lastupdate": last_update,
+    "teams": teams
+}
 
 local_file = "mmpl.json"
 
@@ -133,14 +144,18 @@ print("JSON generated successfully")
 # =========================
 print("Uploading via FTPS...")
 
-ftps = FTP_TLS()
-ftps.connect(FTP_HOST, FTP_PORT)
-ftps.login(FTP_USER, FTP_PASS)
-ftps.prot_p()
+try:
+    ftps = FTP_TLS()
+    ftps.connect(FTP_HOST, FTP_PORT)
+    ftps.login(FTP_USER, FTP_PASS)
+    ftps.prot_p()
 
-with open(local_file, "rb") as f:
-    ftps.storbinary(f"STOR {REMOTE_FILE}", f)
+    with open(local_file, "rb") as f:
+        ftps.storbinary(f"STOR {REMOTE_FILE}", f)
 
-ftps.quit()
+    ftps.quit()
 
-print("Upload successful ✅")
+    print("Upload successful ✅")
+
+except Exception as e:
+    raise RuntimeError(f"Upload FTPS gagal: {e}")
