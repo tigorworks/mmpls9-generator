@@ -259,31 +259,21 @@ table.dataTable tbody tr td.child {
 
 let table;
 
-/* 🔥 ROBUST NORMALIZER */
 function normalizePhone(number){
-
     if(number === null || number === undefined) return null;
-
     number = String(number);
-
-    // Hapus semua selain angka
     let digits = number.replace(/\D/g,'');
-
     if(digits.length < 8) return null;
-
     if(digits.startsWith("62")) return "+" + digits;
     if(digits.startsWith("0")) return "+62" + digits.substring(1);
     if(digits.startsWith("8")) return "+62" + digits;
-
     return null;
 }
 
 function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
-
     let clean = normalized.replace("+","");
-
     return `
         <a class="wa-link"
            href="https://wa.me/${clean}"
@@ -319,7 +309,7 @@ function loadData(){
         table=$('#teamTable').DataTable({
             destroy:true,
             data:response.teams,
-            pageLength:25,
+            pageLength: 10,   // 🔥 Default 10 entries
             columns:[
                 {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">&gt;</span>'},
                 {data:'team_name'},
