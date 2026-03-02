@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-02 20:54:54",
+	"lastupdate": "2026-03-02 23:37:16",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -43,6 +43,58 @@
 					"join from": null,
 					"game_id": "64498986",
 					"game_nick": "KING COPOL"
+				}
+			]
+		},
+		{
+			"team_name": "AKU SENANG DIRIMU SENANG",
+			"captain_name": "ANDRE NOVALUDIN PURBA",
+			"captain_whatsapp": "081931530992",
+			"captain_email": "APURBA@GMAIL.COM",
+			"logo": false,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "ANDRE NOVALUDIN PURBA",
+					"nip": "2399798875",
+					"join from": null,
+					"game_id": "71676641",
+					"game_nick": "CRYSTALLIZEEE"
+				},
+				{
+					"full_name": "RAIHAN",
+					"nip": "2200112234",
+					"join from": null,
+					"game_id": "722344592",
+					"game_nick": "UDINPETOT"
+				},
+				{
+					"full_name": "RESIK INDRA",
+					"nip": "1898123349",
+					"join from": null,
+					"game_id": "182301238",
+					"game_nick": "RAISEHIM"
+				},
+				{
+					"full_name": "ADKEN GUSTI",
+					"nip": "1921561012",
+					"join from": null,
+					"game_id": "78912348",
+					"game_nick": "REIMTADA"
+				},
+				{
+					"full_name": "HENRY SIREGAR",
+					"nip": "1897102345",
+					"join from": null,
+					"game_id": "8912239213",
+					"game_nick": "HENRYTZY"
+				},
+				{
+					"full_name": "RENATA",
+					"nip": "2403129321",
+					"join from": null,
+					"game_id": "9912038549",
+					"game_nick": "TYZSWERY"
 				}
 			]
 		}
