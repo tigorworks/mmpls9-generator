@@ -20,6 +20,7 @@ body {
     font-size: 14.5px;
 }
 
+/* Header */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -53,22 +54,34 @@ h1 { margin: 0; font-weight: 600; }
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
+/* Hover */
 table.dataTable tbody tr:hover {
     background-color: #3f2d16;
     box-shadow: inset 3px 0 0 #f59e0b;
 }
 
+/* Expand Icon (Modern) */
 td.details-control {
     cursor: pointer;
     text-align: center;
-    width: 35px;
+    width: 40px;
 }
 
 .expand-icon {
-    font-weight: 600;
-    color: #f59e0b;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 8px solid #f59e0b;
+    display: inline-block;
+    transition: transform 0.25s ease;
 }
 
+tr.shown .expand-icon {
+    transform: rotate(90deg);
+}
+
+/* Status */
 .status-badge {
     display:inline-flex;
     align-items:center;
@@ -79,38 +92,36 @@ td.details-control {
     font-size:13px;
     font-weight:600;
 }
-
 .status-true { background:#16a34a; color:white; }
 .status-false { background:#dc2626; color:white; }
 
+/* WA */
 .wa-link {
     color:#25D366;
     text-decoration:none;
     font-weight:500;
 }
-
 .invalid-wa { color:#ef4444; font-weight:600; }
 
+/* Child */
 .child-table {
     width:100%;
     border-collapse:collapse;
 }
-
 .child-table th {
     background:#252b3a;
     padding:8px;
 }
-
 .child-table td {
     padding:8px;
     border-bottom:1px solid #2b3142;
 }
 
+/* Register */
 .register-cta {
     margin-top:30px;
     text-align:center;
 }
-
 .register-cta a {
     display:inline-block;
     background:linear-gradient(135deg,#f59e0b,#d97706);
@@ -121,6 +132,7 @@ td.details-control {
     text-decoration:none;
 }
 
+/* Disclaimer */
 .disclaimer {
     margin-top:40px;
     font-size:12.5px;
@@ -171,9 +183,7 @@ td.details-control {
 </table>
 
 <div class="register-cta">
-    <a href="https://bit.ly/daftar-mmpls9"
-       target="_blank"
-       rel="noopener noreferrer">
+    <a href="https://bit.ly/daftar-mmpls9" target="_blank">
        Register Your Team Here!
     </a>
 </div>
@@ -207,7 +217,7 @@ function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
     let clean = normalized.replace("+","");
-    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer">${normalized}</a>`;
+    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${normalized}</a>`;
 }
 
 function renderStatus(val){
@@ -234,7 +244,6 @@ async function loadData(){
     btn.innerText = "Refreshing...";
 
     try {
-
         const res = await fetch('mmpl.json?v=' + Date.now());
         const response = await res.json();
 
@@ -245,9 +254,8 @@ async function loadData(){
             table = $('#teamTable').DataTable({
                 data: teams,
                 pageLength: 10,
-                search: { smart:false },
                 columns:[
-                    {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
+                    {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon"></span>'},
                     {data:'team_name'},
                     {data:'captain_name'},
                     {data:'captain_whatsapp',render:d=>renderWA(d)},
@@ -260,23 +268,19 @@ async function loadData(){
             $('#teamTable tbody').on('click','td.details-control',function(){
                 let tr=$(this).closest('tr');
                 let row=table.row(tr);
-                let icon=$(this).find('.expand-icon');
 
                 if(row.child.isShown()){
                     row.child.hide();
                     tr.removeClass('shown');
-                    icon.text('▶');
                 }else{
                     table.rows().every(function(){
                         if(this.child.isShown()){
                             $(this.node()).removeClass('shown');
-                            $(this.node()).find('.expand-icon').text('▶');
                             this.child.hide();
                         }
                     });
                     row.child(format(row.data().members)).show();
                     tr.addClass('shown');
-                    icon.text('▼');
                 }
             });
 
