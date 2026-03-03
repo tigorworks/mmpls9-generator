@@ -1,51 +1,6 @@
 {
-	"lastupdate": "2026-03-03 12:30:47",
+	"lastupdate": "2026-03-03 12:33:40",
 	"teams": [
-		{
-			"team_name": "MEGAKING: ENDGAME",
-			"captain_name": "Ferry Adhy A",
-			"captain_whatsapp": "085730950229",
-			"captain_email": "einsthonk@gmail.com",
-			"logo": false,
-			"idcard": false,
-			"members": [
-				{
-					"full_name": "Ferry Adhy A",
-					"nip": "1390520070",
-					"join_from": null,
-					"game_id": "10875707",
-					"game_nick": "KING SWALLOW"
-				},
-				{
-					"full_name": "Reshaldo Shafwanatha Shalahuddin Lubis",
-					"nip": "2300799699",
-					"join_from": null,
-					"game_id": "71259989",
-					"game_nick": "KING CHAPPIE"
-				},
-				{
-					"full_name": "David Harryson Siahaan",
-					"nip": "1392160200",
-					"join_from": null,
-					"game_id": "156779986",
-					"game_nick": "KING KONG"
-				},
-				{
-					"full_name": "Rian Aldi Syahputra",
-					"nip": "2298777160",
-					"join_from": null,
-					"game_id": "42496754",
-					"game_nick": "KING MBG"
-				},
-				{
-					"full_name": "Hafiz Gibran",
-					"nip": "2397560392",
-					"join_from": null,
-					"game_id": "64498986",
-					"game_nick": "KING COPOL"
-				}
-			]
-		},
 		{
 			"team_name": "MEGAKING",
 			"captain_name": "Ferry Adhy A",
