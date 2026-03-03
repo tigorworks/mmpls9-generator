@@ -212,6 +212,7 @@ table.dataTable tbody tr td.child {
 <th>Total Member</th>
 </tr>
 </thead>
+<tbody></tbody>
 </table>
 
 <div class="register-cta">
@@ -281,6 +282,12 @@ function loadData(){
 
     document.getElementById("lastUpdateText").innerText="Loading...";
 
+    // 🔥 Destroy table lama jika ada
+    if ($.fn.DataTable.isDataTable('#teamTable')) {
+        $('#teamTable').DataTable().clear().destroy();
+        $('#teamTable tbody').empty();
+    }
+
     fetch('mmpl.json?v='+Date.now())
     .then(res=>res.json())
     .then(response=>{
@@ -292,7 +299,6 @@ function loadData(){
         });
 
         table=$('#teamTable').DataTable({
-            destroy:true,
             data:response.teams,
             pageLength:10,
             columns:[
@@ -305,36 +311,6 @@ function loadData(){
                 {data:'members',render:d=>d.length},
                 {data:'member_search',visible:false,searchable:true}
             ]
-        });
-
-        table.on('draw', function(){
-
-            let keyword = $('.dataTables_filter input').val();
-
-            if(!keyword){
-                table.rows().every(function(){
-                    if(this.child.isShown()){
-                        this.child.hide();
-                        $(this.node()).removeClass('shown');
-                        $(this.node()).find('.expand-icon').text('▶');
-                    }
-                });
-                return;
-            }
-
-            table.rows({search:'applied'}).every(function(){
-                let data = this.data();
-                if(data.member_search &&
-                   data.member_search.toLowerCase().includes(keyword.toLowerCase())){
-
-                    if(!this.child.isShown()){
-                        this.child(format(data.members)).show();
-                        $(this.node()).addClass('shown');
-                        $(this.node()).find('.expand-icon').text('▼');
-                    }
-                }
-            });
-
         });
 
         $('#teamTable tbody').off('click').on('click','td.details-control',function(){
