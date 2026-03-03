@@ -38,10 +38,7 @@ h1 { margin: 0; font-weight: 600; }
     cursor: pointer;
 }
 
-.refresh-btn:disabled {
-    opacity: 0.6;
-}
-
+.refresh-btn:disabled { opacity: 0.6; }
 .refresh-btn:hover { background: #2563eb; }
 
 .last-update {
@@ -57,7 +54,7 @@ h1 { margin: 0; font-weight: 600; }
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* Register CTA */
+/* Register Button */
 .register-cta {
     margin-top: 30px;
     text-align: center;
@@ -78,118 +75,22 @@ h1 { margin: 0; font-weight: 600; }
     transform: translateY(-2px);
 }
 
-/* DataTable Styling */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-    margin-bottom: 20px;
-}
-
-.dataTables_wrapper .dataTables_length { float: left; }
-.dataTables_wrapper .dataTables_filter { float: right; }
-
-.dataTables_wrapper::after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-.dataTables_length select,
-.dataTables_filter input {
-    background: #252b3a;
-    border: 1px solid #374151;
-    color: #e5e7eb;
-    border-radius: 8px;
-    padding: 6px 10px;
-}
-
-table.dataTable thead {
-    background: #252b3a;
-}
-
-table.dataTable thead th {
-    padding: 12px 10px;
-    border-bottom: 1px solid #374151;
-}
-
-table.dataTable tbody tr {
-    background-color: #1f2430;
-    transition: 0.18s ease;
-}
-
-table.dataTable tbody tr:hover {
-    background-color: #3f2d16;
-    box-shadow: inset 3px 0 0 #f59e0b;
-}
-
-tr.shown {
-    background-color: #2f374b !important;
-}
-
-table.dataTable tbody td {
-    padding: 11px 10px;
-    border-bottom: 1px solid #2b3142;
-}
-
-td.details-control {
-    cursor: pointer;
-    text-align: center;
-    width: 35px;
-}
-
-.expand-icon {
-    font-weight: 600;
-    color: #f59e0b;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.status-true { background: #16a34a; color: white; }
-.status-false { background: #dc2626; color: white; }
-
-.wa-link {
-    color: #25D366;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.invalid-wa {
-    color: #ef4444;
-    font-weight: 600;
-}
-
-table.dataTable tbody tr td.child {
-    background: #161b24 !important;
+/* Disclaimer */
+.disclaimer {
+    margin-top: 40px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #9ca3af;
+    background: #141821;
+    padding: 16px 20px;
+    border-radius: 10px;
     border-left: 4px solid #f59e0b;
-    padding: 18px !important;
 }
 
-.child-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.child-table th {
-    background: #252b3a;
-    padding: 8px;
-}
-
-.child-table td {
-    padding: 8px;
-    border-bottom: 1px solid #2b3142;
-}
-
+/* Footer */
 .footer {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
     font-size: 12.5px;
     color: #6b7280;
 }
@@ -232,7 +133,13 @@ table.dataTable tbody tr td.child {
        Register Your Team Here!
     </a>
 </div>
+</div>
 
+<!-- T&C -->
+<div class="disclaimer">
+The data presented on this website is not updated in real time and may contain inaccuracies. 
+The information is sourced from an Excel file that is updated once per day and processed automatically, 
+which may result in occasional processing errors.
 </div>
 
 <div class="footer">
@@ -240,41 +147,7 @@ table.dataTable tbody tr td.child {
 </div>
 
 <script>
-
 let table = null;
-
-function normalizePhone(number){
-    if(number == null) return null;
-    number = String(number);
-    let digits = number.replace(/\D/g,'');
-    if(digits.length < 8) return null;
-    if(digits.startsWith("62")) return "+" + digits;
-    if(digits.startsWith("0")) return "+62" + digits.substring(1);
-    if(digits.startsWith("8")) return "+62" + digits;
-    return null;
-}
-
-function renderWA(number){
-    let normalized = normalizePhone(number);
-    if(!normalized) return '<span class="invalid-wa">x</span>';
-    let clean = normalized.replace("+","");
-    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer">${normalized}</a>`;
-}
-
-function renderStatus(val){
-    return val
-        ? '<span class="status-badge status-true">✓</span>'
-        : '<span class="status-badge status-false">✕</span>';
-}
-
-function format(members){
-    let html='<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
-    (members || []).forEach(m=>{
-        html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></tr>`;
-    });
-    html+='</tbody></table>';
-    return html;
-}
 
 async function loadData(){
 
@@ -285,54 +158,26 @@ async function loadData(){
     btn.innerText = "Refreshing...";
 
     try {
-
         const res = await fetch('mmpl.json?v=' + Date.now());
         const response = await res.json();
 
         let teams = Array.isArray(response.teams)
             ? response.teams
-            : Array.isArray(response)
-                ? response
-                : [];
+            : [];
 
         if(!table){
             table = $('#teamTable').DataTable({
                 data: teams,
                 pageLength: 10,
                 columns:[
-                    {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
                     {data:'team_name'},
                     {data:'captain_name'},
-                    {data:'captain_whatsapp',render:d=>renderWA(d)},
-                    {data:'logo',render:d=>renderStatus(d)},
-                    {data:'idcard',render:d=>renderStatus(d)},
+                    {data:'captain_whatsapp'},
+                    {data:'logo'},
+                    {data:'idcard'},
                     {data:'members',render:d=>d.length}
                 ]
             });
-
-            $('#teamTable tbody').on('click','td.details-control',function(){
-                let tr=$(this).closest('tr');
-                let row=table.row(tr);
-                let icon=$(this).find('.expand-icon');
-
-                if(row.child.isShown()){
-                    row.child.hide();
-                    tr.removeClass('shown');
-                    icon.text('▶');
-                }else{
-                    table.rows().every(function(){
-                        if(this.child.isShown()){
-                            $(this.node()).removeClass('shown');
-                            $(this.node()).find('.expand-icon').text('▶');
-                            this.child.hide();
-                        }
-                    });
-                    row.child(format(row.data().members)).show();
-                    tr.addClass('shown');
-                    icon.text('▼');
-                }
-            });
-
         } else {
             table.clear().rows.add(teams).draw();
         }
@@ -348,7 +193,6 @@ async function loadData(){
 }
 
 loadData();
-
 </script>
 
 </body>
