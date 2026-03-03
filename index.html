@@ -40,7 +40,6 @@ h1 { margin: 0; font-weight: 600; }
 
 .refresh-btn:disabled {
     opacity: 0.6;
-    cursor: default;
 }
 
 .refresh-btn:hover { background: #2563eb; }
@@ -58,6 +57,28 @@ h1 { margin: 0; font-weight: 600; }
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
+/* Register CTA */
+.register-cta {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.register-cta a {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #1f2430;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.register-cta a:hover {
+    transform: translateY(-2px);
+}
+
+/* DataTable Styling */
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     margin-bottom: 20px;
@@ -203,6 +224,15 @@ table.dataTable tbody tr td.child {
 </thead>
 <tbody></tbody>
 </table>
+
+<div class="register-cta">
+    <a href="https://bit.ly/daftar-mmpls9"
+       target="_blank"
+       rel="noopener noreferrer">
+       Register Your Team Here!
+    </a>
+</div>
+
 </div>
 
 <div class="footer">
@@ -228,7 +258,7 @@ function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
     let clean = normalized.replace("+","");
-    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${normalized}</a>`;
+    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer">${normalized}</a>`;
 }
 
 function renderStatus(val){
@@ -244,14 +274,6 @@ function format(members){
     });
     html+='</tbody></table>';
     return html;
-}
-
-function buildMemberSearch(members){
-    let combined="";
-    (members || []).forEach(m=>{
-        combined += `${m.full_name} ${m.game_id} ${m.game_nick} `;
-    });
-    return combined;
 }
 
 async function loadData(){
@@ -273,15 +295,10 @@ async function loadData(){
                 ? response
                 : [];
 
-        teams.forEach(team=>{
-            team.member_search = buildMemberSearch(team.members);
-        });
-
         if(!table){
             table = $('#teamTable').DataTable({
                 data: teams,
                 pageLength: 10,
-                search: { smart:false },
                 columns:[
                     {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
                     {data:'team_name'},
@@ -289,8 +306,7 @@ async function loadData(){
                     {data:'captain_whatsapp',render:d=>renderWA(d)},
                     {data:'logo',render:d=>renderStatus(d)},
                     {data:'idcard',render:d=>renderStatus(d)},
-                    {data:'members',render:d=>d.length},
-                    {data:'member_search',visible:false,searchable:true}
+                    {data:'members',render:d=>d.length}
                 ]
             });
 
