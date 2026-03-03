@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-03 09:33:47",
+	"lastupdate": "2026-03-03 09:50:54",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -12,35 +12,35 @@
 				{
 					"full_name": "Ferry Adhy A",
 					"nip": "1390520070",
-					"join from": null,
+					"join_from": null,
 					"game_id": "10875707",
 					"game_nick": "KING SWALLOW"
 				},
 				{
 					"full_name": "Reshaldo Shafwanatha Shalahuddin Lubis",
 					"nip": "2300799699",
-					"join from": null,
+					"join_from": null,
 					"game_id": "71259989",
 					"game_nick": "KING CHAPPIE"
 				},
 				{
 					"full_name": "David Harryson Siahaan",
 					"nip": "1392160200",
-					"join from": null,
+					"join_from": null,
 					"game_id": "156779986",
 					"game_nick": "KING KONG"
 				},
 				{
 					"full_name": "Rian Aldi Syahputra",
 					"nip": "2298777160",
-					"join from": null,
+					"join_from": null,
 					"game_id": "42496754",
 					"game_nick": "KING MBG"
 				},
 				{
 					"full_name": "Hafiz Gibran",
 					"nip": "2397560392",
-					"join from": null,
+					"join_from": null,
 					"game_id": "64498986",
 					"game_nick": "KING COPOL"
 				}
