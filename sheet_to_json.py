@@ -96,7 +96,7 @@ for _, row in df.iterrows():
         member = {
             "full_name": full_name,
             "nip": nip_val,
-            "join from": None,
+            "join_from": None,
             "game_id": game_id_val,
             "game_nick": nick_val
         }
