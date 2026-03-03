@@ -5,8 +5,7 @@
 <title>MMPL Season 9 Registered Teams</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet"
-href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -21,6 +20,7 @@ body {
     font-size: 14.5px;
 }
 
+/* HEADER */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -39,6 +39,11 @@ h1 { margin: 0; font-weight: 600; }
     cursor: pointer;
 }
 
+.refresh-btn[disabled] {
+    opacity: 0.6;
+    cursor: default;
+}
+
 .refresh-btn:hover { background: #2563eb; }
 
 .last-update {
@@ -47,6 +52,7 @@ h1 { margin: 0; font-weight: 600; }
     color: #9ca3af;
 }
 
+/* CARD */
 .table-container {
     background: #1f2430;
     padding: 28px;
@@ -54,6 +60,7 @@ h1 { margin: 0; font-weight: 600; }
     box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
+/* CTA */
 .register-cta { margin-top: 30px; text-align: center; }
 
 .register-cta a {
@@ -69,19 +76,14 @@ h1 { margin: 0; font-weight: 600; }
 
 .register-cta a:hover { transform: translateY(-2px); }
 
+/* TOOLBAR */
 .dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-    margin-bottom: 20px;
-}
+.dataTables_wrapper .dataTables_filter { margin-bottom: 20px; }
 
 .dataTables_wrapper .dataTables_length { float: left; }
 .dataTables_wrapper .dataTables_filter { float: right; }
 
-.dataTables_wrapper::after {
-    content: "";
-    display: block;
-    clear: both;
-}
+.dataTables_wrapper::after { content: ""; display: block; clear: both; }
 
 .dataTables_length select,
 .dataTables_filter input {
@@ -92,9 +94,8 @@ h1 { margin: 0; font-weight: 600; }
     padding: 6px 10px;
 }
 
-table.dataTable thead {
-    background: #252b3a;
-}
+/* TABLE */
+table.dataTable thead { background: #252b3a; }
 
 table.dataTable thead th {
     padding: 12px 10px;
@@ -111,26 +112,19 @@ table.dataTable tbody tr:hover {
     box-shadow: inset 3px 0 0 #f59e0b;
 }
 
-tr.shown {
-    background-color: #2f374b !important;
-}
+tr.shown { background-color: #2f374b !important; }
 
 table.dataTable tbody td {
     padding: 11px 10px;
     border-bottom: 1px solid #2b3142;
 }
 
-td.details-control {
-    cursor: pointer;
-    text-align: center;
-    width: 35px;
-}
+/* ACCORDION ICON */
+td.details-control { cursor: pointer; text-align: center; width: 35px; }
 
-.expand-icon {
-    font-weight: 600;
-    color: #f59e0b;
-}
+.expand-icon { font-weight: 600; color: #f59e0b; }
 
+/* STATUS */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -145,38 +139,22 @@ td.details-control {
 .status-true { background: #16a34a; color: white; }
 .status-false { background: #dc2626; color: white; }
 
-.wa-link {
-    color: #25D366;
-    text-decoration: none;
-    font-weight: 500;
-}
+.wa-link { color: #25D366; text-decoration: none; font-weight: 500; }
+.invalid-wa { color: #ef4444; font-weight: 600; }
 
-.invalid-wa {
-    color: #ef4444;
-    font-weight: 600;
-}
-
+/* CHILD */
 table.dataTable tbody tr td.child {
     background: #161b24 !important;
     border-left: 4px solid #f59e0b;
     padding: 18px !important;
 }
 
-.child-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+.child-table { width: 100%; border-collapse: collapse; }
 
-.child-table th {
-    background: #252b3a;
-    padding: 8px;
-}
+.child-table th { background: #252b3a; padding: 8px; }
+.child-table td { padding: 8px; border-bottom: 1px solid #2b3142; }
 
-.child-table td {
-    padding: 8px;
-    border-bottom: 1px solid #2b3142;
-}
-
+/* FOOTER */
 .footer {
     text-align: center;
     margin-top: 40px;
@@ -190,7 +168,7 @@ table.dataTable tbody tr td.child {
 
 <div class="header-container">
     <h1>MMPL Season 9 Registered Teams</h1>
-    <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
+    <button id="refreshBtn" class="refresh-btn" onclick="loadData()">Refresh Data</button>
 </div>
 
 <div class="last-update">
@@ -200,28 +178,26 @@ table.dataTable tbody tr td.child {
 </div>
 
 <div class="table-container">
-<table id="teamTable" class="display" style="width:100%">
-<thead>
-<tr>
-<th></th>
-<th>Team Name</th>
-<th>Captain</th>
-<th>Whatsapp</th>
-<th>Logo</th>
-<th>ID Card</th>
-<th>Total Member</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+    <table id="teamTable" class="display" style="width:100%">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Team Name</th>
+        <th>Captain</th>
+        <th>Whatsapp</th>
+        <th>Logo</th>
+        <th>ID Card</th>
+        <th>Total Member</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+    </table>
 
-<div class="register-cta">
-    <a href="https://bit.ly/daftar-mmpls9"
-       target="_blank"
-       rel="noopener noreferrer">
-       Register Your Team Here!
-    </a>
-</div>
+    <div class="register-cta">
+        <a href="https://bit.ly/daftar-mmpls9" target="_blank" rel="noopener noreferrer">
+           Register Your Team Here!
+        </a>
+    </div>
 </div>
 
 <div class="footer">
@@ -229,9 +205,9 @@ table.dataTable tbody tr td.child {
 </div>
 
 <script>
+let table = null;
 
-let table;
-
+/* util: normalize WA number */
 function normalizePhone(number){
     if(number === null || number === undefined) return null;
     number = String(number);
@@ -247,82 +223,126 @@ function renderWA(number){
     let normalized = normalizePhone(number);
     if(!normalized) return '<span class="invalid-wa">x</span>';
     let clean = normalized.replace("+","");
-    return `<a class="wa-link"
-              href="https://wa.me/${clean}"
-              target="_blank"
-              rel="noopener noreferrer">
-              ${normalized}
-            </a>`;
+    return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer">${normalized}</a>`;
 }
 
 function renderStatus(val){
-    return val
-        ? '<span class="status-badge status-true">✓</span>'
-        : '<span class="status-badge status-false">✕</span>';
+    return val ? '<span class="status-badge status-true">✓</span>' : '<span class="status-badge status-false">✕</span>';
 }
 
 function format(members){
-    let html='<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
-    members.forEach(m=>{
-        html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></tr>`;
+    let html = '<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
+    (members||[]).forEach(m=>{
+        html += `<tr><td>${m.full_name||''}</td><td>${m.game_id||''}</td><td>${m.game_nick||''}</td></tr>`;
     });
-    html+='</tbody></table>';
+    html += '</tbody></table>';
     return html;
 }
 
 function buildMemberSearch(members){
-    let combined="";
-    members.forEach(m=>{
-        combined += `${m.full_name} ${m.game_id} ${m.game_nick} `;
+    let combined = "";
+    (members||[]).forEach(m=>{
+        combined += `${m.full_name||''} ${m.game_id||''} ${m.game_nick||''} `;
     });
     return combined;
 }
 
-function loadData(){
+/* LOAD DATA: fetch first, then destroy/init datatable only on success */
+async function loadData(){
+    const refreshBtn = document.getElementById('refreshBtn');
+    const lastUpdateEl = document.getElementById('lastUpdateText');
 
-    document.getElementById("lastUpdateText").innerText="Loading...";
+    // UI feedback
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = 'Refreshing...';
+    lastUpdateEl.innerText = 'Loading...';
 
-    // 🔥 Destroy table lama jika ada
-    if ($.fn.DataTable.isDataTable('#teamTable')) {
-        $('#teamTable').DataTable().clear().destroy();
-        $('#teamTable tbody').empty();
-    }
+    try {
+        const res = await fetch('mmpl.json?v=' + Date.now());
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const response = await res.json();
 
-    fetch('mmpl.json?v='+Date.now())
-    .then(res=>res.json())
-    .then(response=>{
+        // minimal validation
+        if(!response || !Array.isArray(response.teams)) {
+            throw new Error('mmpl.json: missing teams array or invalid structure');
+        }
 
-        document.getElementById("lastUpdateText").innerText=response.lastupdate||"Unknown";
-
-        response.teams.forEach(team=>{
-            team.member_search = buildMemberSearch(team.members);
+        // prepare searchable string for members
+        response.teams.forEach(team => {
+            team.member_search = buildMemberSearch(team.members || []);
         });
 
-        table=$('#teamTable').DataTable({
-            data:response.teams,
-            pageLength:10,
-            columns:[
-                {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon">▶</span>'},
-                {data:'team_name'},
-                {data:'captain_name'},
-                {data:'captain_whatsapp',render:d=>renderWA(d)},
-                {data:'logo',render:d=>renderStatus(d)},
-                {data:'idcard',render:d=>renderStatus(d)},
-                {data:'members',render:d=>d.length},
-                {data:'member_search',visible:false,searchable:true}
-            ]
+        // destroy existing datatable (if any) AFTER successful fetch to avoid empty state on failure
+        if ($.fn.DataTable.isDataTable('#teamTable')) {
+            $('#teamTable').DataTable().clear().destroy();
+            $('#teamTable tbody').empty();
+            table = null;
+        }
+
+        // init datatable
+        table = $('#teamTable').DataTable({
+            data: response.teams,
+            pageLength: 10,
+            // turn off smart search to avoid regex splitting behavior
+            search: { smart: false },
+            columns: [
+                { className:'details-control', orderable:false, data:null, defaultContent:'<span class="expand-icon">▶</span>' },
+                { data: 'team_name' },
+                { data: 'captain_name' },
+                { data: 'captain_whatsapp', render: d => renderWA(d) },
+                { data: 'logo', render: d => renderStatus(d) },
+                { data: 'idcard', render: d => renderStatus(d) },
+                { data: 'members', render: d => (Array.isArray(d) ? d.length : 0) },
+                { data: 'member_search', visible:false, searchable:true } // hidden searchable column
+            ],
+            // keep layout tidy
+            autoWidth: false,
+            order: []
         });
 
-        $('#teamTable tbody').off('click').on('click','td.details-control',function(){
-            let tr=$(this).closest('tr');
-            let row=table.row(tr);
-            let icon=$(this).find('.expand-icon');
+        // set last update text (always include timezone note)
+        lastUpdateEl.innerText = (response.lastupdate || 'Unknown') + ' (UTC+7 - Jakarta)';
+
+        // draw-time behavior: auto-expand matching rows (member-level search supported)
+        table.on('draw', function(){
+            const keyword = $('.dataTables_filter input').val();
+            if(!keyword) {
+                // collapse any open child rows when search empty
+                table.rows().every(function(){
+                    if(this.child.isShown()){
+                        this.child.hide();
+                        $(this.node()).removeClass('shown');
+                        $(this.node()).find('.expand-icon').text('▶');
+                    }
+                });
+                return;
+            }
+
+            // auto-expand rows where member_search contains keyword
+            table.rows({search:'applied'}).every(function(){
+                const data = this.data();
+                if(data.member_search && data.member_search.toLowerCase().includes(keyword.toLowerCase())){
+                    if(!this.child.isShown()){
+                        this.child(format(data.members)).show();
+                        $(this.node()).addClass('shown');
+                        $(this.node()).find('.expand-icon').text('▼');
+                    }
+                }
+            });
+        });
+
+        // row expand/collapse click handler (single-open accordion)
+        $('#teamTable tbody').off('click').on('click','td.details-control', function(){
+            const tr = $(this).closest('tr');
+            const row = table.row(tr);
+            const icon = $(this).find('.expand-icon');
 
             if(row.child.isShown()){
                 row.child.hide();
                 tr.removeClass('shown');
                 icon.text('▶');
-            }else{
+            } else {
+                // close any other opened rows
                 table.rows().every(function(){
                     if(this.child.isShown()){
                         $(this.node()).removeClass('shown');
@@ -336,9 +356,19 @@ function loadData(){
             }
         });
 
-    });
+    } catch (err) {
+        // show helpful message without nuking existing UI
+        console.error('Error loading mmpl.json:', err);
+        lastUpdateEl.innerText = 'Failed to refresh data';
+        // optional: alert user
+        // alert('Gagal memuat data. Cek console untuk detail.');
+    } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = 'Refresh Data';
+    }
 }
 
+/* initial load on page open */
 loadData();
 
 </script>
