@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-04 23:34:29",
+	"lastupdate": "2026-03-04 23:44:00",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -272,6 +272,65 @@
 					"join_from": null,
 					"game_id": "49628515",
 					"game_nick": "•Reckha•"
+				}
+			]
+		},
+		{
+			"team_name": "suka nyawIT",
+			"captain_name": "Agus",
+			"captain_whatsapp": "089612311020",
+			"captain_email": "",
+			"logo": false,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Agustinus Banjarnahor",
+					"nip": "2401810874",
+					"join_from": null,
+					"game_id": "138137591",
+					"game_nick": "Aki Hayakawa."
+				},
+				{
+					"full_name": "Rens Junior Sibarani",
+					"nip": "2301788956",
+					"join_from": null,
+					"game_id": "54466807",
+					"game_nick": "BigBoss."
+				},
+				{
+					"full_name": "Fawaz Adiwida",
+					"nip": "2401810957",
+					"join_from": null,
+					"game_id": "52162239",
+					"game_nick": "Lautreamont, S.Mat."
+				},
+				{
+					"full_name": "Carlo Tupa Indriauan",
+					"nip": "2300783214",
+					"join_from": null,
+					"game_id": "16912566",
+					"game_nick": "zer0ne"
+				},
+				{
+					"full_name": "Muhamad Salman Alfarizi",
+					"nip": "2401809520",
+					"join_from": null,
+					"game_id": "3674666",
+					"game_nick": "Mannn."
+				},
+				{
+					"full_name": "Hubert Louis",
+					"nip": "2299748680",
+					"join_from": null,
+					"game_id": "972083587",
+					"game_nick": "Saya Murid Tazz"
+				},
+				{
+					"full_name": "Andra Syarif Fadlurrohman",
+					"nip": "2402351171",
+					"join_from": null,
+					"game_id": "3482820",
+					"game_nick": "Dragg."
 				}
 			]
 		}
