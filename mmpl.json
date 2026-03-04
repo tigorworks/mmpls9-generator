@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-04 21:33:51",
+	"lastupdate": "2026-03-04 23:06:31",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -220,6 +220,58 @@
 					"join_from": null,
 					"game_id": "523404745",
 					"game_nick": "Saintess Lidia."
+				}
+			]
+		},
+		{
+			"team_name": "EJS REBORN",
+			"captain_name": "Deni Subandi",
+			"captain_whatsapp": "+62 878-1306-8875",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Deni Subandi",
+					"nip": "2297450748",
+					"join_from": null,
+					"game_id": "101813909",
+					"game_nick": "Ashsensen"
+				},
+				{
+					"full_name": "Muhammad Rafiq",
+					"nip": "2398796458",
+					"join_from": null,
+					"game_id": "123820325",
+					"game_nick": "Quinzell"
+				},
+				{
+					"full_name": "Firman Syah",
+					"nip": "1793662958",
+					"join_from": null,
+					"game_id": "259314715",
+					"game_nick": "Lefere"
+				},
+				{
+					"full_name": "Ikhwanus Suffa",
+					"nip": "2599542837",
+					"join_from": null,
+					"game_id": "268962354",
+					"game_nick": "iWayKyboooe"
+				},
+				{
+					"full_name": "Muhammad Rizky Nugroho",
+					"nip": "2402822209",
+					"join_from": null,
+					"game_id": "31371091",
+					"game_nick": "Rizkay"
+				},
+				{
+					"full_name": "Akbar Ramadhan",
+					"nip": "2396540532",
+					"join_from": null,
+					"game_id": "49628515",
+					"game_nick": "•Reckha•"
 				}
 			]
 		}
