@@ -75,9 +75,41 @@ cursor:default;
 
 .table-container{
 background:#1f2430;
-padding:22px;
+padding:24px;
 border-radius:12px;
 box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+/* DATA TABLE TOOLBAR SPACING */
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter{
+margin-bottom:18px;
+}
+
+.dataTables_wrapper .dataTables_length{
+float:left;
+}
+
+.dataTables_wrapper .dataTables_filter{
+float:right;
+}
+
+.dataTables_wrapper::after{
+content:"";
+display:block;
+clear:both;
+}
+
+/* INPUT STYLE */
+
+.dataTables_length select,
+.dataTables_filter input{
+background:#252b3a;
+border:1px solid #374151;
+color:#e5e7eb;
+padding:6px 10px;
+border-radius:8px;
 }
 
 /* TABLE FIX WIDTH */
@@ -137,7 +169,7 @@ tr.shown .expand-icon{
 transform:rotate(90deg);
 }
 
-/* STATUS ICON */
+/* STATUS */
 
 .status-badge{
 display:inline-flex;
@@ -213,11 +245,6 @@ background:linear-gradient(135deg,#f59e0b,#d97706);
 color:#1f2430;
 font-weight:600;
 text-decoration:none;
-transition:0.2s;
-}
-
-.register-cta a:hover{
-transform:translateY(-2px);
 }
 
 /* DISCLAIMER */
@@ -263,7 +290,6 @@ Last Updated <span id="lastUpdateText">-</span> (UTC+7)
 
 </div>
 
-
 <div class="table-container">
 
 <table id="teamTable" class="display">
@@ -305,39 +331,26 @@ Powered by <strong>Tigor M Manurung</strong>
 let table=null;
 
 function normalizePhone(number){
-
 if(number==null) return null;
-
 let digits=String(number).replace(/\D/g,'');
-
 if(digits.length<8) return null;
-
 if(digits.startsWith("62")) return "+"+digits;
 if(digits.startsWith("0")) return "+62"+digits.substring(1);
 if(digits.startsWith("8")) return "+62"+digits;
-
 return null;
-
 }
 
 function renderWA(number){
-
 let n=normalizePhone(number);
-
 if(!n) return '<span class="invalid-wa">x</span>';
-
 let clean=n.replace("+","");
-
 return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${n}</a>`;
-
 }
 
 function renderStatus(val){
-
 return val
 ? '<span class="status-badge status-true">✓</span>'
 : '<span class="status-badge status-false">✕</span>';
-
 }
 
 function formatChild(members){
@@ -349,21 +362,16 @@ html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></
 });
 
 html+='</tbody></table>';
-
 return html;
 
 }
 
 function buildMemberSearch(members){
-
 let combined="";
-
 members.forEach(m=>{
 combined+=`${m.full_name} ${m.game_id} ${m.game_nick} `;
 });
-
 return combined;
-
 }
 
 async function loadData(){
@@ -430,12 +438,10 @@ tr.removeClass('shown');
 }else{
 
 table.rows().every(function(){
-
 if(this.child.isShown()){
 $(this.node()).removeClass('shown');
 this.child.hide();
 }
-
 });
 
 row.child(formatChild(row.data().members)).show();
