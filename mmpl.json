@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-04 13:37:20",
+	"lastupdate": "2026-03-04 15:30:25",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -43,6 +43,131 @@
 					"join_from": null,
 					"game_id": "64498986",
 					"game_nick": "KING COPOL"
+				}
+			]
+		},
+		{
+			"team_name": "Taoism",
+			"captain_name": "Muhamad Fariduddin Syafiq",
+			"captain_whatsapp": "08881645922",
+			"captain_email": "",
+			"logo": false,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Abel Maylio Yosevino Tampubolon",
+					"nip": "2301788733",
+					"join_from": null,
+					"game_id": "32032483",
+					"game_nick": "タカムラ"
+				},
+				{
+					"full_name": "Paulus Martua Lawrenzo Pratama Tambunan",
+					"nip": "2301789202",
+					"join_from": null,
+					"game_id": "2301789202",
+					"game_nick": "Backburners"
+				},
+				{
+					"full_name": "Gessel Leon Bremana",
+					"nip": "2400809000",
+					"join_from": null,
+					"game_id": "570181607",
+					"game_nick": "somnus.yeyo"
+				},
+				{
+					"full_name": "Gilbert",
+					"nip": "2598834380",
+					"join_from": null,
+					"game_id": "50788502",
+					"game_nick": "Vyyy."
+				},
+				{
+					"full_name": "Muhamad Fariduddin Syafiq",
+					"nip": "2400809505",
+					"join_from": null,
+					"game_id": "191907612",
+					"game_nick": "Sangtip"
+				}
+			]
+		},
+		{
+			"team_name": "BGST",
+			"captain_name": "Rian",
+			"captain_whatsapp": "089666773620",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Rianda Ambi Putra",
+					"nip": "2094734019",
+					"join_from": null,
+					"game_id": "64348036",
+					"game_nick": "LaMarzocco"
+				},
+				{
+					"full_name": "Rochmadi Eko Susilo",
+					"nip": "2297759334",
+					"join_from": null,
+					"game_id": "83170598",
+					"game_nick": "sinchan"
+				},
+				{
+					"full_name": "Octafani Dydha Utama",
+					"nip": "1893701458",
+					"join_from": null,
+					"game_id": "42825876",
+					"game_nick": "Rengoku"
+				},
+				{
+					"full_name": "Pranowo Amboro Putro",
+					"nip": "1994726594",
+					"join_from": null,
+					"game_id": "92618193",
+					"game_nick": "cuplahey"
+				},
+				{
+					"full_name": "Andhika Kurniawan Putra",
+					"nip": "2096734009",
+					"join_from": null,
+					"game_id": "11275073",
+					"game_nick": "Zelgius"
+				},
+				{
+					"full_name": "Muhammad Hanif Azfareza",
+					"nip": "2025082001",
+					"join_from": null,
+					"game_id": "68582000",
+					"game_nick": "Rapsgood"
+				},
+				{
+					"full_name": "Mohammad Arfan Radiansyah",
+					"nip": "OUT050625",
+					"join_from": null,
+					"game_id": "74652665",
+					"game_nick": "MenteriBUMN"
+				},
+				{
+					"full_name": "Difrian Sjukman Ramadhan",
+					"nip": "2297759375",
+					"join_from": null,
+					"game_id": "111671362",
+					"game_nick": "Ayashi"
+				},
+				{
+					"full_name": "Nur Azhanil",
+					"nip": "249811983",
+					"join_from": null,
+					"game_id": "112394392",
+					"game_nick": "S A L M O N"
+				},
+				{
+					"full_name": "Armando",
+					"nip": "2025012001",
+					"join_from": null,
+					"game_id": "223908928",
+					"game_nick": "Pendar"
 				}
 			]
 		}
