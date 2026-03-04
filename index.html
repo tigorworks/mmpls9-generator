@@ -12,22 +12,19 @@
 
 <style>
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  background: #181c23;
-  color: #e5e7eb;
-  padding: 36px;
-  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background:#181c23;
+  color:#e5e7eb;
+  padding:36px;
+  margin:0;
 }
 
-/* Header */
 .header-container {
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:10px;
 }
-
-h1 { margin:0; font-weight:600; font-size:20px; }
 
 .refresh-btn {
   background:#3b82f6;
@@ -37,12 +34,13 @@ h1 { margin:0; font-weight:600; font-size:20px; }
   border-radius:8px;
   cursor:pointer;
 }
-.refresh-btn:disabled { opacity:0.6; }
-.refresh-btn:hover:not(:disabled){ background:#2563eb; }
 
-.last-update { margin-bottom:18px; color:#9ca3af; font-size:13px; }
+.last-update {
+  margin-bottom:18px;
+  color:#9ca3af;
+  font-size:13px;
+}
 
-/* Card */
 .table-container {
   background:#1f2430;
   padding:22px;
@@ -50,96 +48,52 @@ h1 { margin:0; font-weight:600; font-size:20px; }
   box-shadow:0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* DataTables spacing */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-  margin-bottom:18px;
-}
-
-.dataTables_length select,
-.dataTables_filter input {
-  background:#252b3a;
-  border:1px solid #374151;
-  color:#e5e7eb;
-  padding:6px 10px;
-  border-radius:8px;
-}
-
-/* Table */
 table.dataTable thead { background:#252b3a; }
-table.dataTable thead th {
-  padding:12px 10px;
-  border-bottom:1px solid #374151;
-}
-table.dataTable tbody td {
-  padding:10px 10px;
-  border-bottom:1px solid #2b3142;
-}
-table.dataTable tbody tr {
-  background:#1f2430;
-  transition:0.12s ease;
-}
+table.dataTable thead th { padding:12px 10px; }
+table.dataTable tbody td { padding:10px; }
 table.dataTable tbody tr:hover {
   background:#3f2d16;
   box-shadow: inset 3px 0 0 #f59e0b;
 }
 
-/* Expand icon */
 td.details-control {
   cursor:pointer;
   text-align:center;
 }
 
 .expand-icon {
-  width:0;
-  height:0;
+  width:0;height:0;
   border-top:6px solid transparent;
   border-bottom:6px solid transparent;
   border-left:8px solid #f59e0b;
   display:inline-block;
-  transition: transform .2s ease;
+  transition:.2s ease;
 }
-tr.shown .expand-icon { transform: rotate(90deg); }
 
-/* Status */
+tr.shown .expand-icon { transform:rotate(90deg); }
+
 .status-badge {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:24px;
-  height:24px;
+  width:24px;height:24px;
   border-radius:50%;
   font-weight:700;
-  font-size:13px;
 }
-.status-true { background:#16a34a; color:white; }
-.status-false { background:#dc2626; color:white; }
+.status-true { background:#16a34a;color:white; }
+.status-false { background:#dc2626;color:white; }
 
-/* WA */
-.wa-link { color:#25D366; text-decoration:none; }
-.invalid-wa { color:#ef4444; font-weight:700; }
+.wa-link { color:#25D366;text-decoration:none; }
+.invalid-wa { color:#ef4444;font-weight:700; }
 
-/* Child */
-table.dataTable tbody tr td.child {
-  background:#161b24 !important;
-  border-left:4px solid #f59e0b;
-  padding:18px !important;
-}
 .child-table {
   width:100%;
   border-collapse:collapse;
 }
-.child-table th {
-  background:#252b3a;
-  padding:8px;
-}
-.child-table td {
-  padding:8px;
-  border-bottom:1px solid #2b3142;
-}
+.child-table th { background:#252b3a;padding:8px; }
+.child-table td { padding:8px;border-bottom:1px solid #2b3142; }
 
-/* CTA */
-.register-cta { margin-top:18px; text-align:center; }
+.register-cta { margin-top:18px;text-align:center; }
 .register-cta a {
   display:inline-block;
   padding:12px 22px;
@@ -150,11 +104,9 @@ table.dataTable tbody tr td.child {
   text-decoration:none;
 }
 
-/* Disclaimer */
 .disclaimer {
   margin-top:20px;
   font-size:13px;
-  line-height:1.5;
   color:#9ca3af;
   background:#141821;
   padding:14px 16px;
@@ -170,12 +122,11 @@ table.dataTable tbody tr td.child {
 }
 </style>
 </head>
-
 <body>
 
 <div class="header-container">
   <h1>MMPL Season 9 Registered Teams</h1>
-  <button id="refreshBtn" class="refresh-btn" onclick="loadData()">Refresh Data</button>
+  <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
 </div>
 
 <div class="last-update">
@@ -199,7 +150,7 @@ table.dataTable tbody tr td.child {
 </table>
 
 <div class="register-cta">
-<a href="https://bit.ly/daftar-mmpls9" target="_blank" rel="noopener noreferrer">
+<a href="https://bit.ly/daftar-mmpls9" target="_blank">
 Register Your Team Here!
 </a>
 </div>
@@ -215,22 +166,20 @@ Powered by <strong>Tigor M Manurung</strong>
 
 <script>
 
-let table = null;
-
 function normalizePhone(number){
-  if(number == null) return null;
-  const digits = String(number).replace(/\D/g,'');
-  if(digits.length < 8) return null;
-  if(digits.startsWith('62')) return '+' + digits;
-  if(digits.startsWith('0')) return '+62' + digits.substring(1);
-  if(digits.startsWith('8')) return '+62' + digits;
+  if(number==null) return null;
+  let digits=String(number).replace(/\D/g,'');
+  if(digits.length<8) return null;
+  if(digits.startsWith("62")) return "+"+digits;
+  if(digits.startsWith("0")) return "+62"+digits.substring(1);
+  if(digits.startsWith("8")) return "+62"+digits;
   return null;
 }
 
 function renderWA(number){
-  const n = normalizePhone(number);
+  let n=normalizePhone(number);
   if(!n) return '<span class="invalid-wa">x</span>';
-  const clean = n.replace('+','');
+  let clean=n.replace("+","");
   return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${n}</a>`;
 }
 
@@ -249,26 +198,41 @@ function formatChild(members){
   return html;
 }
 
+function buildMemberSearch(members){
+  let combined="";
+  members.forEach(m=>{
+    combined+=`${m.full_name} ${m.game_id} ${m.game_nick} `;
+  });
+  return combined;
+}
+
+let table=null;
+
 async function loadData(){
 
-  const res = await fetch('mmpl.json?v='+Date.now());
-  const data = await res.json();
-  const teams = Array.isArray(data.teams) ? data.teams : [];
+  const res=await fetch('mmpl.json?v='+Date.now());
+  const data=await res.json();
+  const teams=Array.isArray(data.teams)?data.teams:[];
+
+  teams.forEach(t=>{
+    t.member_search=buildMemberSearch(t.members);
+  });
 
   if(!table){
 
-    table = $('#teamTable').DataTable({
-      data: teams,
-      pageLength: 10,
-      autoWidth: false,
-      columnDefs: [
-        { width: "40px", targets: 0 },
-        { width: "22%", targets: 1 },
-        { width: "18%", targets: 2 },
-        { width: "20%", targets: 3 },
-        { width: "10%", targets: 4, className:"dt-center" },
-        { width: "10%", targets: 5, className:"dt-center" },
-        { width: "10%", targets: 6, className:"dt-center" }
+    table=$('#teamTable').DataTable({
+      data:teams,
+      pageLength:10,
+      autoWidth:false,
+      search:{smart:false},
+      columnDefs:[
+        {width:"40px",targets:0},
+        {width:"22%",targets:1},
+        {width:"18%",targets:2},
+        {width:"20%",targets:3},
+        {width:"10%",targets:4,className:"dt-center"},
+        {width:"10%",targets:5,className:"dt-center"},
+        {width:"10%",targets:6,className:"dt-center"}
       ],
       columns:[
         {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon"></span>'},
@@ -277,7 +241,8 @@ async function loadData(){
         {data:'captain_whatsapp',render:d=>renderWA(d)},
         {data:'logo',render:d=>renderStatus(d)},
         {data:'idcard',render:d=>renderStatus(d)},
-        {data:'members',render:d=>d.length}
+        {data:'members',render:d=>d.length},
+        {data:'member_search',visible:false,searchable:true}
       ]
     });
 
@@ -300,12 +265,12 @@ async function loadData(){
       }
     });
 
-  } else {
+  }else{
     table.clear().rows.add(teams).draw(false);
   }
 
-  document.getElementById('lastUpdateText').innerText =
-    (data.lastupdate || 'Unknown') + ' (UTC+7 - Jakarta)';
+  document.getElementById("lastUpdateText").innerText=
+    (data.lastupdate||"Unknown")+" (UTC+7 - Jakarta)";
 }
 
 loadData();
