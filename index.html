@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>MMPL Season 9 Registered Teams</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -20,7 +20,68 @@ padding:36px;
 margin:0;
 }
 
-/* fixed table width */
+/* HEADER */
+
+.header-container{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:24px;
+}
+
+.header-left{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+h1{
+margin:0;
+font-size:30px;
+font-weight:700;
+letter-spacing:0.3px;
+}
+
+.header-meta{
+font-size:14px;
+color:#9ca3af;
+}
+
+.header-meta span{
+color:#facc15;
+font-weight:500;
+}
+
+.refresh-btn{
+background:#3b82f6;
+color:white;
+border:0;
+padding:8px 16px;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+}
+
+.refresh-btn:hover{
+background:#2563eb;
+}
+
+.refresh-btn:disabled{
+opacity:.6;
+cursor:default;
+}
+
+/* CARD */
+
+.table-container{
+background:#1f2430;
+padding:22px;
+border-radius:12px;
+box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+/* TABLE FIX WIDTH */
+
 #teamTable{
 table-layout:fixed!important;
 width:100%!important;
@@ -32,64 +93,8 @@ text-overflow:ellipsis;
 white-space:nowrap;
 }
 
-/* HEADER */
-.header-container{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px;
-gap:20px;
-}
-
-.title-area{
-display:flex;
-align-items:center;
-gap:18px;
-flex-wrap:wrap;
-}
-
-h1{
-margin:0;
-font-size:20px;
-font-weight:600;
-}
-
-.last-update{
-font-size:13px;
-color:#9ca3af;
-}
-
-.refresh-btn{
-background:#3b82f6;
-color:white;
-border:0;
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-}
-
-.refresh-btn:disabled{
-opacity:.6;
-cursor:default;
-}
-
-/* TEAM COUNT */
-.team-count{
-margin-bottom:18px;
-font-size:14px;
-color:#facc15;
-font-weight:500;
-}
-
-/* CARD */
-.table-container{
-background:#1f2430;
-padding:22px;
-border-radius:12px;
-box-shadow:0 12px 30px rgba(0,0,0,0.35);
-}
-
 /* TABLE */
+
 table.dataTable thead{
 background:#252b3a;
 }
@@ -102,12 +107,17 @@ table.dataTable tbody td{
 padding:10px;
 }
 
+table.dataTable tbody tr{
+background:#1f2430;
+}
+
 table.dataTable tbody tr:hover{
 background:#3f2d16;
 box-shadow: inset 3px 0 0 #f59e0b;
 }
 
 /* EXPAND ICON */
+
 td.details-control{
 cursor:pointer;
 text-align:center;
@@ -127,7 +137,8 @@ tr.shown .expand-icon{
 transform:rotate(90deg);
 }
 
-/* STATUS */
+/* STATUS ICON */
+
 .status-badge{
 display:inline-flex;
 align-items:center;
@@ -138,19 +149,38 @@ border-radius:50%;
 font-weight:700;
 }
 
-.status-true{background:#16a34a;color:white;}
-.status-false{background:#dc2626;color:white;}
+.status-true{
+background:#16a34a;
+color:white;
+}
 
-/* WA */
-.wa-link{color:#25D366;text-decoration:none;}
-.invalid-wa{color:#ef4444;font-weight:700;}
+.status-false{
+background:#dc2626;
+color:white;
+}
 
-/* CHILD */
+/* WHATSAPP */
+
+.wa-link{
+color:#25D366;
+text-decoration:none;
+font-weight:500;
+}
+
+.invalid-wa{
+color:#ef4444;
+font-weight:700;
+}
+
+/* CHILD ROW */
+
 table.dataTable tbody tr td.child{
 background:#1b202b!important;
 border-left:4px solid #f59e0b;
 padding:16px!important;
 }
+
+/* CHILD TABLE */
 
 .child-table{
 width:100%;
@@ -160,6 +190,7 @@ border-collapse:collapse;
 .child-table th{
 background:#252b3a;
 padding:8px;
+text-align:left;
 }
 
 .child-table td{
@@ -167,9 +198,10 @@ padding:8px;
 border-bottom:1px solid #2b3142;
 }
 
-/* REGISTER */
+/* REGISTER CTA */
+
 .register-cta{
-margin-top:18px;
+margin-top:20px;
 text-align:center;
 }
 
@@ -181,9 +213,15 @@ background:linear-gradient(135deg,#f59e0b,#d97706);
 color:#1f2430;
 font-weight:600;
 text-decoration:none;
+transition:0.2s;
+}
+
+.register-cta a:hover{
+transform:translateY(-2px);
 }
 
 /* DISCLAIMER */
+
 .disclaimer{
 margin-top:20px;
 font-size:13px;
@@ -195,9 +233,10 @@ border-left:4px solid #f59e0b;
 }
 
 /* FOOTER */
+
 .footer{
 text-align:center;
-margin-top:12px;
+margin-top:14px;
 color:#6b7280;
 font-size:13px;
 }
@@ -209,21 +248,21 @@ font-size:13px;
 
 <div class="header-container">
 
-<div class="title-area">
+<div class="header-left">
+
 <h1>MMPL Season 9 Registered Teams</h1>
 
-<div class="last-update">
-Last Update: <span id="lastUpdateText">-</span> (UTC+7 - Jakarta)
+<div class="header-meta">
+<span id="teamCount">0</span> Teams Registered •
+Last Updated <span id="lastUpdateText">-</span> (UTC+7)
 </div>
+
 </div>
 
 <button id="refreshBtn" class="refresh-btn" onclick="loadData()">Refresh Data</button>
 
 </div>
 
-<div class="team-count">
-Total Registered Teams: <span id="teamCount">0</span>
-</div>
 
 <div class="table-container">
 
@@ -342,6 +381,7 @@ const data=await res.json();
 const teams=Array.isArray(data.teams)?data.teams:[];
 
 document.getElementById("teamCount").innerText=teams.length;
+document.getElementById("lastUpdateText").innerText=data.lastupdate||"Unknown";
 
 teams.forEach(t=>{
 t.member_search=buildMemberSearch(t.members);
@@ -410,9 +450,6 @@ tr.addClass('shown');
 table.clear().rows.add(teams).draw(false);
 
 }
-
-document.getElementById("lastUpdateText").innerText=
-(data.lastupdate||"Unknown");
 
 }catch(err){
 
