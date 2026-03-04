@@ -11,25 +11,14 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <style>
+/* Basic page */
 body {
-  font-family: 'Inter', sans-serif;
-  background:#181c23;
-  color:#e5e7eb;
-  padding:36px;
-  margin:0;
-}
-
-/* Force fixed table layout */
-#teamTable {
-  table-layout: fixed !important;
-  width:100% !important;
-}
-
-#teamTable th,
-#teamTable td {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #181c23;
+  color: #e5e7eb;
+  padding: 36px;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Header */
@@ -37,93 +26,100 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:16px;
   margin-bottom:10px;
 }
-
+h1 { margin:0; font-weight:600; font-size:20px; }
 .refresh-btn {
-  background:#3b82f6;
-  color:white;
-  border:0;
-  padding:8px 14px;
-  border-radius:8px;
-  cursor:pointer;
+  background:#3b82f6; color:white; border:0; padding:8px 14px; border-radius:8px; cursor:pointer;
 }
+.refresh-btn:disabled { opacity:0.6; cursor:default; }
+.refresh-btn:hover:not(:disabled){ background:#2563eb; }
 
-.last-update {
-  margin-bottom:18px;
-  color:#9ca3af;
-  font-size:13px;
-}
+/* Last update */
+.last-update { margin-bottom:18px; color:#9ca3af; font-size:13px; }
 
+/* Card */
 .table-container {
   background:#1f2430;
   padding:22px;
   border-radius:12px;
-  box-shadow:0 12px 30px rgba(0,0,0,0.35);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
+/* DataTables toolbar spacing */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  margin-bottom:18px;
+}
+.dataTables_wrapper .dataTables_length { float:left; }
+.dataTables_wrapper .dataTables_filter { float:right; }
+.dataTables_wrapper::after { content:""; display:block; clear:both; }
+
+/* Inputs */
+.dataTables_length select,
+.dataTables_filter input {
+  background:#252b3a;
+  border:1px solid #374151;
+  color:#e5e7eb;
+  padding:6px 10px;
+  border-radius:8px;
+}
+
+/* Table */
 table.dataTable thead { background:#252b3a; }
-table.dataTable thead th { padding:12px 10px; }
-table.dataTable tbody td { padding:10px; }
+table.dataTable thead th { padding:12px 10px; border-bottom:1px solid #374151; }
+table.dataTable tbody td { padding:10px 10px; border-bottom:1px solid #2b3142; }
+table.dataTable tbody tr { background:#1f2430; transition:0.12s ease; }
+table.dataTable tbody tr:hover { background:#3f2d16; box-shadow: inset 3px 0 0 #f59e0b; }
 
-table.dataTable tbody tr:hover {
-  background:#3f2d16;
-  box-shadow: inset 3px 0 0 #f59e0b;
-}
-
-/* Expand icon */
-td.details-control {
-  cursor:pointer;
-  text-align:center;
-}
-
+/* Expand icon modern */
+td.details-control { cursor:pointer; text-align:center; width:44px; }
 .expand-icon {
-  width:0;height:0;
+  width:0; height:0;
   border-top:6px solid transparent;
   border-bottom:6px solid transparent;
   border-left:8px solid #f59e0b;
   display:inline-block;
-  transition:.2s ease;
+  transition: transform 0.22s ease;
 }
+tr.shown .expand-icon { transform: rotate(90deg); }
 
-tr.shown .expand-icon { transform:rotate(90deg); }
-
-/* Status */
+/* Status badge */
 .status-badge {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:24px;height:24px;
-  border-radius:50%;
-  font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:50%;
+  font-weight:700; font-size:13px;
 }
-.status-true { background:#16a34a;color:white; }
-.status-false { background:#dc2626;color:white; }
+.status-true { background:#16a34a; color:white; }
+.status-false { background:#dc2626; color:white; }
 
-.wa-link { color:#25D366;text-decoration:none; }
-.invalid-wa { color:#ef4444;font-weight:700; }
+/* WA link */
+.wa-link { color:#25D366; text-decoration:none; font-weight:500; }
+.invalid-wa { color:#ef4444; font-weight:700; }
 
-.child-table {
-  width:100%;
-  border-collapse:collapse;
+/* Child row */
+table.dataTable tbody tr td.child {
+  background:#161b24 !important;
+  border-left:4px solid #f59e0b;
+  padding:18px !important;
 }
-.child-table th { background:#252b3a;padding:8px; }
-.child-table td { padding:8px;border-bottom:1px solid #2b3142; }
+.child-table { width:100%; border-collapse:collapse; margin:0; }
+.child-table th { background:#252b3a; padding:8px; text-align:left; }
+.child-table td { padding:8px; border-bottom:1px solid #2b3142; }
 
-.register-cta { margin-top:18px;text-align:center; }
+/* Register CTA */
+.register-cta { margin-top:18px; text-align:center; }
 .register-cta a {
-  display:inline-block;
-  padding:12px 22px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#f59e0b,#d97706);
-  color:#1f2430;
-  font-weight:600;
-  text-decoration:none;
+  display:inline-block; padding:12px 22px; border-radius:10px;
+  background: linear-gradient(135deg,#f59e0b,#d97706); color:#1f2430; font-weight:600; text-decoration:none;
 }
 
+/* Disclaimer */
 .disclaimer {
   margin-top:20px;
   font-size:13px;
+  line-height:1.5;
   color:#9ca3af;
   background:#141821;
   padding:14px 16px;
@@ -131,11 +127,13 @@ tr.shown .expand-icon { transform:rotate(90deg); }
   border-left:4px solid #f59e0b;
 }
 
-.footer {
-  text-align:center;
-  margin-top:12px;
-  color:#6b7280;
-  font-size:13px;
+/* Footer */
+.footer { text-align:center; margin-top:12px; color:#6b7280; font-size:13px; }
+
+/* Responsive small tweaks */
+@media (max-width:700px){
+  body { padding:16px; }
+  td.details-control { width:36px; }
 }
 </style>
 </head>
@@ -143,7 +141,7 @@ tr.shown .expand-icon { transform:rotate(90deg); }
 
 <div class="header-container">
   <h1>MMPL Season 9 Registered Teams</h1>
-  <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
+  <button id="refreshBtn" class="refresh-btn" onclick="loadData()">Refresh Data</button>
 </div>
 
 <div class="last-update">
@@ -151,26 +149,24 @@ tr.shown .expand-icon { transform:rotate(90deg); }
 </div>
 
 <div class="table-container">
-<table id="teamTable" class="display">
-<thead>
-<tr>
-<th></th>
-<th>Team Name</th>
-<th>Captain</th>
-<th>Whatsapp</th>
-<th>Logo</th>
-<th>ID Card</th>
-<th>Total Member</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+  <table id="teamTable" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Team Name</th>
+        <th>Captain</th>
+        <th>Whatsapp</th>
+        <th>Logo</th>
+        <th>ID Card</th>
+        <th>Total Member</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<div class="register-cta">
-<a href="https://bit.ly/daftar-mmpls9" target="_blank">
-Register Your Team Here!
-</a>
-</div>
+  <div class="register-cta">
+    <a href="https://bit.ly/daftar-mmpls9" target="_blank" rel="noopener noreferrer">Register Your Team Here!</a>
+  </div>
 </div>
 
 <div class="disclaimer">
@@ -178,120 +174,165 @@ The data presented on this website is not updated in real time and may contain i
 </div>
 
 <div class="footer">
-Powered by <strong>Tigor M Manurung</strong>
+  Powered by <strong>Tigor M Manurung</strong>
 </div>
 
 <script>
-
+// -------------------- utilities --------------------
 function normalizePhone(number){
-  if(number==null) return null;
-  let digits=String(number).replace(/\D/g,'');
-  if(digits.length<8) return null;
-  if(digits.startsWith("62")) return "+"+digits;
-  if(digits.startsWith("0")) return "+62"+digits.substring(1);
-  if(digits.startsWith("8")) return "+62"+digits;
+  if(number == null) return null;
+  const s = String(number).trim();
+  const digits = s.replace(/\D/g,'');
+  if(digits.length < 8) return null;
+  if(digits.startsWith('62')) return '+' + digits;
+  if(digits.startsWith('0')) return '+62' + digits.substring(1);
+  if(digits.startsWith('8')) return '+62' + digits;
   return null;
 }
-
 function renderWA(number){
-  let n=normalizePhone(number);
+  const n = normalizePhone(number);
   if(!n) return '<span class="invalid-wa">x</span>';
-  let clean=n.replace("+","");
-  return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank">${n}</a>`;
+  const clean = n.replace('+','');
+  return `<a class="wa-link" href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer">${n}</a>`;
 }
-
 function renderStatus(val){
-  return val
-    ? '<span class="status-badge status-true">✓</span>'
-    : '<span class="status-badge status-false">✕</span>';
+  return val ? '<span class="status-badge status-true">✓</span>' : '<span class="status-badge status-false">✕</span>';
 }
-
 function formatChild(members){
-  let html='<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
-  members.forEach(m=>{
-    html+=`<tr><td>${m.full_name}</td><td>${m.game_id}</td><td>${m.game_nick}</td></tr>`;
+  let html = '<table class="child-table"><thead><tr><th>Full Name</th><th>Game ID</th><th>Game Nick</th></tr></thead><tbody>';
+  (members||[]).forEach(m=>{
+    html += `<tr><td>${m.full_name||''}</td><td>${m.game_id||''}</td><td>${m.game_nick||''}</td></tr>`;
   });
-  html+='</tbody></table>';
+  html += '</tbody></table>';
   return html;
 }
-
 function buildMemberSearch(members){
-  let combined="";
-  members.forEach(m=>{
-    combined+=`${m.full_name} ${m.game_id} ${m.game_nick} `;
+  let s = '';
+  (members||[]).forEach(m=>{
+    s += `${m.full_name||''} ${m.game_id||''} ${m.game_nick||''} `;
   });
-  return combined;
+  return s.trim();
 }
 
-let table=null;
+// -------------------- main --------------------
+let table = null;
 
 async function loadData(){
+  const btn = document.getElementById('refreshBtn');
+  const lastEl = document.getElementById('lastUpdateText');
+  btn.disabled = true;
+  btn.innerText = 'Refreshing...';
+  try {
+    const res = await fetch('mmpl.json?v=' + Date.now());
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
 
-  const res=await fetch('mmpl.json?v='+Date.now());
-  const data=await res.json();
-  const teams=Array.isArray(data.teams)?data.teams:[];
+    // tolerate both { teams: [...] } or [...] raw array
+    let teams = [];
+    if(Array.isArray(data.teams)) teams = data.teams;
+    else if(Array.isArray(data)) teams = data;
+    else teams = [];
 
-  teams.forEach(t=>{
-    t.member_search=buildMemberSearch(t.members);
-  });
+    // augment each team with member_search string
+    teams.forEach(t => t.member_search = buildMemberSearch(t.members));
 
-  if(!table){
+    // init or update table (no destroy)
+    if(!table){
+      table = $('#teamTable').DataTable({
+        data: teams,
+        pageLength: 10,                // default entries 10
+        lengthMenu: [10,25,50],
+        search: { smart: false },      // avoid DataTables smart-regex split
+        columns: [
+          // details-control (expand)
+          { className: 'details-control', orderable: false, data: null, defaultContent: '<span class="expand-icon"></span>' },
+          { data: 'team_name' },
+          { data: 'captain_name' },
+          { data: 'captain_whatsapp', render: d => renderWA(d) },
+          { data: 'logo', render: d => renderStatus(d) },
+          { data: 'idcard', render: d => renderStatus(d) },
+          { data: 'members', render: d => (Array.isArray(d) ? d.length : 0) },
+          // hidden searchable column for member-level search
+          { data: 'member_search', visible: false, searchable: true }
+        ],
+        order: [],     // no initial ordering
+        autoWidth: false
+      });
 
-    table=$('#teamTable').DataTable({
-      data:teams,
-      pageLength:10,
-      autoWidth:false,
-      search:{smart:false},
-      columnDefs:[
-        {width:"40px",targets:0},
-        {width:"22%",targets:1},
-        {width:"18%",targets:2},
-        {width:"20%",targets:3},
-        {width:"10%",targets:4,className:"dt-center"},
-        {width:"10%",targets:5,className:"dt-center"},
-        {width:"10%",targets:6,className:"dt-center"}
-      ],
-      columns:[
-        {className:'details-control',orderable:false,data:null,defaultContent:'<span class="expand-icon"></span>'},
-        {data:'team_name'},
-        {data:'captain_name'},
-        {data:'captain_whatsapp',render:d=>renderWA(d)},
-        {data:'logo',render:d=>renderStatus(d)},
-        {data:'idcard',render:d=>renderStatus(d)},
-        {data:'members',render:d=>d.length},
-        {data:'member_search',visible:false,searchable:true}
-      ]
-    });
+      // click handler (single-open accordion)
+      $('#teamTable tbody').on('click', 'td.details-control', function(){
+        const tr = $(this).closest('tr');
+        const row = table.row(tr);
+        if(row.child.isShown()){
+          row.child.hide();
+          tr.removeClass('shown');
+        } else {
+          // close any open child
+          table.rows().every(function(){
+            if(this.child.isShown()){
+              $(this.node()).removeClass('shown');
+              this.child.hide();
+            }
+          });
+          row.child(formatChild(row.data().members)).show();
+          tr.addClass('shown');
+        }
+      });
 
-    $('#teamTable tbody').on('click','td.details-control',function(){
-      let tr=$(this).closest('tr');
-      let row=table.row(tr);
+      // draw handler: auto-expand rows that match member_search when search active
+      table.on('draw', function(){
+        const keyword = $('.dataTables_filter input').val();
+        if(!keyword){
+          // collapse all
+          table.rows().every(function(){
+            if(this.child.isShown()){
+              this.child.hide();
+              $(this.node()).removeClass('shown');
+            }
+          });
+          return;
+        }
 
-      if(row.child.isShown()){
-        row.child.hide();
-        tr.removeClass('shown');
-      }else{
-        table.rows().every(function(){
-          if(this.child.isShown()){
-            $(this.node()).removeClass('shown');
-            this.child.hide();
+        // for only the filtered rows, expand those where member_search matches
+        table.rows({ search: 'applied' }).every(function(){
+          const d = this.data();
+          if(d && d.member_search && d.member_search.toLowerCase().includes(keyword.toLowerCase())){
+            if(!this.child.isShown()){
+              this.child(formatChild(d.members));
+              this.child.show();
+              $(this.node()).addClass('shown');
+            }
           }
         });
-        row.child(formatChild(row.data().members)).show();
-        tr.addClass('shown');
-      }
-    });
+      });
 
-  }else{
-    table.clear().rows.add(teams).draw(false);
+    } else {
+      // update data without destroying table
+      // first close any open child rows to avoid stale DOM
+      table.rows().every(function(){
+        if(this.child.isShown()){
+          this.child.hide();
+          $(this.node()).removeClass('shown');
+        }
+      });
+      table.clear().rows.add(teams).draw(false);
+    }
+
+    // set last update with timezone note
+    lastEl.innerText = (data.lastupdate || 'Unknown') + ' (UTC+7 - Jakarta)';
+
+  } catch (err) {
+    console.error('loadData error:', err);
+    // keep existing table intact; show message in last update
+    document.getElementById('lastUpdateText').innerText = 'Failed to refresh data';
+  } finally {
+    btn.disabled = false;
+    btn.innerText = 'Refresh Data';
   }
-
-  document.getElementById("lastUpdateText").innerText=
-    (data.lastupdate||"Unknown")+" (UTC+7 - Jakarta)";
 }
 
+// initial load
 loadData();
-
 </script>
 </body>
 </html>
