@@ -19,6 +19,20 @@ body {
   margin:0;
 }
 
+/* Force fixed table layout */
+#teamTable {
+  table-layout: fixed !important;
+  width:100% !important;
+}
+
+#teamTable th,
+#teamTable td {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Header */
 .header-container {
   display:flex;
   justify-content:space-between;
@@ -51,11 +65,13 @@ body {
 table.dataTable thead { background:#252b3a; }
 table.dataTable thead th { padding:12px 10px; }
 table.dataTable tbody td { padding:10px; }
+
 table.dataTable tbody tr:hover {
   background:#3f2d16;
   box-shadow: inset 3px 0 0 #f59e0b;
 }
 
+/* Expand icon */
 td.details-control {
   cursor:pointer;
   text-align:center;
@@ -72,6 +88,7 @@ td.details-control {
 
 tr.shown .expand-icon { transform:rotate(90deg); }
 
+/* Status */
 .status-badge {
   display:inline-flex;
   align-items:center;
@@ -134,7 +151,7 @@ tr.shown .expand-icon { transform:rotate(90deg); }
 </div>
 
 <div class="table-container">
-<table id="teamTable" class="display" style="width:100%">
+<table id="teamTable" class="display">
 <thead>
 <tr>
 <th></th>
