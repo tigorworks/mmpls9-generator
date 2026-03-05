@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-05 19:41:24",
+	"lastupdate": "2026-03-05 21:40:55",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -276,7 +276,7 @@
 			]
 		},
 		{
-			"team_name": "JUJUTSU IT",
+			"team_name": "Jujutsu IT",
 			"captain_name": "Agus",
 			"captain_whatsapp": "089612311020",
 			"captain_email": "",
@@ -331,6 +331,13 @@
 					"join_from": null,
 					"game_id": "3482820",
 					"game_nick": "Dragg."
+				},
+				{
+					"full_name": "⁠Julius Adetya Eka Bhaswara",
+					"nip": "2501841209",
+					"join_from": null,
+					"game_id": "69632926",
+					"game_nick": "Itadori Bhaswara"
 				}
 			]
 		},
