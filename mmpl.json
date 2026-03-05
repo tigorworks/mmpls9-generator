@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-05 11:05:52",
+	"lastupdate": "2026-03-05 13:40:55",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -39,7 +39,7 @@
 				},
 				{
 					"full_name": "Hafiz Gibran",
-					"nip": "2397560392",
+					"nip": "2397560391",
 					"join_from": null,
 					"game_id": "64498986",
 					"game_nick": "KING COPOL"
@@ -413,7 +413,7 @@
 			"captain_whatsapp": "089513264601",
 			"captain_email": "",
 			"logo": true,
-			"idcard": true,
+			"idcard": false,
 			"members": [
 				{
 					"full_name": "Suleh Triwijananto",
@@ -463,6 +463,13 @@
 					"join_from": null,
 					"game_id": "84324497",
 					"game_nick": "Gayus Tambunan"
+				},
+				{
+					"full_name": "Ken Alif",
+					"nip": "2497541722",
+					"join_from": null,
+					"game_id": "29616004",
+					"game_nick": "Kennay"
 				}
 			]
 		}
