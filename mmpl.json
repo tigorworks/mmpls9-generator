@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-05 13:40:55",
+	"lastupdate": "2026-03-05 14:41:29",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -470,6 +470,58 @@
 					"join_from": null,
 					"game_id": "29616004",
 					"game_nick": "Kennay"
+				}
+			]
+		},
+		{
+			"team_name": "Kuningan x Priuk",
+			"captain_name": "David",
+			"captain_whatsapp": "+62 853-2028-4383",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Teuku Faldian Syah",
+					"nip": "2302073908",
+					"join_from": null,
+					"game_id": "284216903",
+					"game_nick": "every breath u take."
+				},
+				{
+					"full_name": "Adi Sadewo",
+					"nip": "2599453236",
+					"join_from": null,
+					"game_id": "24853236",
+					"game_nick": "Mas Dewo"
+				},
+				{
+					"full_name": "Mochammad Taufiq Hidayat",
+					"nip": "202507007",
+					"join_from": null,
+					"game_id": "59624836",
+					"game_nick": "Aizennn."
+				},
+				{
+					"full_name": "Indri Mauladi",
+					"nip": "2299280228",
+					"join_from": null,
+					"game_id": "121055800",
+					"game_nick": "Amore O'Brien"
+				},
+				{
+					"full_name": "Mochamad Iqbal",
+					"nip": "202305013",
+					"join_from": null,
+					"game_id": "82638324",
+					"game_nick": "arcaníst"
+				},
+				{
+					"full_name": "Rizky Rachmat Saputra",
+					"nip": "MIT00482",
+					"join_from": null,
+					"game_id": "34105678",
+					"game_nick": "Ikang"
 				}
 			]
 		}
