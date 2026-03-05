@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-05 10:11:54",
+	"lastupdate": "2026-03-05 10:39:09",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -404,6 +404,65 @@
 					"join_from": null,
 					"game_id": "8697993",
 					"game_nick": "wawawa"
+				}
+			]
+		},
+		{
+			"team_name": "Panthera",
+			"captain_name": "Suleh Triwijananto",
+			"captain_whatsapp": "089513264601",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Suleh Triwijananto",
+					"nip": "1895673267",
+					"join_from": null,
+					"game_id": "70816132",
+					"game_nick": "mas suleh"
+				},
+				{
+					"full_name": "Airel Ragil Yanuar",
+					"nip": "2203530002",
+					"join_from": null,
+					"game_id": "149380299",
+					"game_nick": "Ryleee"
+				},
+				{
+					"full_name": "Hary ansori",
+					"nip": "22299099147",
+					"join_from": null,
+					"game_id": "175089663",
+					"game_nick": "B:::::D~~"
+				},
+				{
+					"full_name": "Sigit tri D",
+					"nip": "2404492159",
+					"join_from": null,
+					"game_id": "871026188",
+					"game_nick": "pisanghoheng"
+				},
+				{
+					"full_name": "Burhan maulana",
+					"nip": "2399544895",
+					"join_from": null,
+					"game_id": "28703852",
+					"game_nick": "4EzY2WIN"
+				},
+				{
+					"full_name": "Nurdiyansyah",
+					"nip": "1391506557",
+					"join_from": null,
+					"game_id": "422468085",
+					"game_nick": "nRd"
+				},
+				{
+					"full_name": "Reynaldo alief Devin",
+					"nip": "22400541734",
+					"join_from": null,
+					"game_id": "84324497",
+					"game_nick": "Gayus Tambunan"
 				}
 			]
 		}
