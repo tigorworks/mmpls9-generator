@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-05 09:14:42",
+	"lastupdate": "2026-03-05 10:11:54",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -276,7 +276,7 @@
 			]
 		},
 		{
-			"team_name": "SAWIT",
+			"team_name": "JUJUTSU IT",
 			"captain_name": "Agus",
 			"captain_whatsapp": "089612311020",
 			"captain_email": "",
@@ -331,6 +331,79 @@
 					"join_from": null,
 					"game_id": "3482820",
 					"game_nick": "Dragg."
+				}
+			]
+		},
+		{
+			"team_name": "LUCTARI",
+			"captain_name": "Adi bagus santoso",
+			"captain_whatsapp": "085648944055",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Adi bagus santoso",
+					"nip": "1691619043",
+					"join_from": null,
+					"game_id": "459816618",
+					"game_nick": "VizZy"
+				},
+				{
+					"full_name": "Mahesa Satrya Mas P",
+					"nip": "1692637788",
+					"join_from": null,
+					"game_id": "727445080",
+					"game_nick": "KaeL"
+				},
+				{
+					"full_name": "Wahid Yasin",
+					"nip": "2300016877",
+					"join_from": null,
+					"game_id": "1602711025",
+					"game_nick": "MURID TELADAN"
+				},
+				{
+					"full_name": "ludfi yassir adha",
+					"nip": "1592582464",
+					"join_from": null,
+					"game_id": "36534522",
+					"game_nick": "koril"
+				},
+				{
+					"full_name": "adzin sayaf arkanu",
+					"nip": "2502834773",
+					"join_from": null,
+					"game_id": "77468202",
+					"game_nick": "Votrepeau."
+				},
+				{
+					"full_name": "Ismet naufal",
+					"nip": "2096450307",
+					"join_from": null,
+					"game_id": "39919827",
+					"game_nick": "N1SM0"
+				},
+				{
+					"full_name": "M Fariz Septianto",
+					"nip": "2303344278",
+					"join_from": null,
+					"game_id": "99820678",
+					"game_nick": "SEPTIANNN"
+				},
+				{
+					"full_name": "Nassau Safrialsyah A",
+					"nip": "2599350253",
+					"join_from": null,
+					"game_id": "19596197",
+					"game_nick": "Nash."
+				},
+				{
+					"full_name": "Feisal Ala'i",
+					"nip": "2196751333",
+					"join_from": null,
+					"game_id": "8697993",
+					"game_nick": "wawawa"
 				}
 			]
 		}
