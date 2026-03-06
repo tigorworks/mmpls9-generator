@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-06 08:23:54",
+	"lastupdate": "2026-03-06 09:37:05",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -529,6 +529,65 @@
 					"join_from": null,
 					"game_id": "34105678",
 					"game_nick": "Ikang"
+				}
+			]
+		},
+		{
+			"team_name": "Thunder Redeb",
+			"captain_name": "Dedi Sunaryono",
+			"captain_whatsapp": "085251365474",
+			"captain_email": "",
+			"logo": false,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Dedi Sunaryono",
+					"nip": "1894709310",
+					"join_from": null,
+					"game_id": "101933075",
+					"game_nick": "Donlezi"
+				},
+				{
+					"full_name": "Indrajit Septi Maulana",
+					"nip": "2196751424",
+					"join_from": null,
+					"game_id": "41504598",
+					"game_nick": "AkuBenciU"
+				},
+				{
+					"full_name": "Agus Chandra",
+					"nip": "1792655201",
+					"join_from": null,
+					"game_id": "69706069",
+					"game_nick": "gяєѕ¢αвя"
+				},
+				{
+					"full_name": "Yuka",
+					"nip": "4",
+					"join_from": null,
+					"game_id": "4",
+					"game_nick": "4"
+				},
+				{
+					"full_name": "Arian",
+					"nip": "5",
+					"join_from": null,
+					"game_id": "5",
+					"game_nick": "5"
+				},
+				{
+					"full_name": "Sulaiman",
+					"nip": "6",
+					"join_from": null,
+					"game_id": "6",
+					"game_nick": ""
+				},
+				{
+					"full_name": "Bayu",
+					"nip": "7",
+					"join_from": null,
+					"game_id": "7",
+					"game_nick": "7"
 				}
 			]
 		}
