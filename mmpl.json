@@ -304,13 +304,7 @@
 					"game_id": "52162239",
 					"game_nick": "Lautreamont, S.Mat."
 				},
-				{
-					"full_name": "Carlo Tupa Indriauan",
-					"nip": "2300783214",
-					"join_from": null,
-					"game_id": "16912566",
-					"game_nick": "zer0ne"
-				},
+				
 				{
 					"full_name": "Muhamad Salman Alfarizi",
 					"nip": "2401809520",
@@ -319,11 +313,18 @@
 					"game_nick": "Mannn."
 				},
 				{
-					"full_name": "Hubert Louis",
-					"nip": "2299748680",
+					"full_name": "Carlo Tupa Indriauan",
+					"nip": "2300783214",
 					"join_from": null,
-					"game_id": "972083587",
-					"game_nick": "Saya Murid Tazz"
+					"game_id": "16912566",
+					"game_nick": "zer0ne"
+				},
+				{
+					"full_name": "Tigor M Manurung",
+					"nip": "2187748801",
+					"join_from": null,
+					"game_id": "123151204",
+					"game_nick": "Sukuna Manroe"
 				},
 				{
 					"full_name": "Andra Syarif Fadlurrohman",
