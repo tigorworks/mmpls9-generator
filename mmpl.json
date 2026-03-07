@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-07 10:53:43",
+	"lastupdate": "2026-03-07 11:28:44",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -588,6 +588,79 @@
 					"join_from": null,
 					"game_id": "7",
 					"game_nick": "7"
+				}
+			]
+		},
+		{
+			"team_name": "TBRN FURY",
+			"captain_name": "Yudhistira",
+			"captain_whatsapp": "081321130860",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Yudhistira Galang Marhantara",
+					"nip": "2399795822",
+					"join_from": null,
+					"game_id": "18305486",
+					"game_nick": "Popoy X TBRN"
+				},
+				{
+					"full_name": "Raihan ramadhan",
+					"nip": "2403045597",
+					"join_from": null,
+					"game_id": "94141571",
+					"game_nick": "Blek x TBRN"
+				},
+				{
+					"full_name": "Gery Santosa",
+					"nip": "2598492437",
+					"join_from": null,
+					"game_id": "60073966",
+					"game_nick": "Bearso x TBRN"
+				},
+				{
+					"full_name": "Dhimas Agta Nugroho",
+					"nip": "2395351419",
+					"join_from": null,
+					"game_id": "215290458",
+					"game_nick": "IceiceicexTBRN"
+				},
+				{
+					"full_name": "Gilang Ramadan",
+					"nip": "2397531951",
+					"join_from": null,
+					"game_id": "97003820",
+					"game_nick": "Viscount  X  TBRN"
+				},
+				{
+					"full_name": "Wawan setiawan",
+					"nip": "2196160172",
+					"join_from": null,
+					"game_id": "65414360",
+					"game_nick": "Bjorn X TBRN"
+				},
+				{
+					"full_name": "Candra Bagus F",
+					"nip": "2301798732",
+					"join_from": null,
+					"game_id": "35893372",
+					"game_nick": "trustmee x TBRN"
+				},
+				{
+					"full_name": "Syahrul Ramadhan",
+					"nip": "2302034969",
+					"join_from": null,
+					"game_id": "219882184",
+					"game_nick": "Shinee x TBRN"
+				},
+				{
+					"full_name": "Afif Sukma Maulana",
+					"nip": "2501851687",
+					"join_from": null,
+					"game_id": "118185328",
+					"game_nick": "Setsuna X TBRN"
 				}
 			]
 		}
