@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-07 15:21:21",
+	"lastupdate": "2026-03-07 16:58:00",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -668,6 +668,79 @@
 					"join_from": null,
 					"game_id": "118185328",
 					"game_nick": "Setsuna X TBRN"
+				}
+			]
+		},
+		{
+			"team_name": "RX",
+			"captain_name": "wandi alfiansyah",
+			"captain_whatsapp": "085266664827",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "MUHAMMAD IRFAN",
+					"nip": "2502022690",
+					"join_from": null,
+					"game_id": "510910382",
+					"game_nick": "FIERZZY"
+				},
+				{
+					"full_name": "GENTRY BRIEF SENAEN",
+					"nip": "2599021261",
+					"join_from": null,
+					"game_id": "29451764",
+					"game_nick": "Àmbidextroüs"
+				},
+				{
+					"full_name": "HARIANTO",
+					"nip": "1792663668",
+					"join_from": null,
+					"game_id": "36496676",
+					"game_nick": "Edg3®"
+				},
+				{
+					"full_name": "MUHAMMAD AHADANA MUHSIN HIDAYAT",
+					"nip": "2298770140",
+					"join_from": null,
+					"game_id": "52254576",
+					"game_nick": "Aha_Dana X TBRN"
+				},
+				{
+					"full_name": "wandi alfiansyah",
+					"nip": "2294760285",
+					"join_from": null,
+					"game_id": "76470780",
+					"game_nick": "G I P O'"
+				},
+				{
+					"full_name": "andi ishak mangerangi",
+					"nip": "2501020314",
+					"join_from": null,
+					"game_id": "70473934",
+					"game_nick": "jope"
+				},
+				{
+					"full_name": "ivan pratama yunus",
+					"nip": "2401826185",
+					"join_from": null,
+					"game_id": "120748036",
+					"game_nick": "Rynn."
+				},
+				{
+					"full_name": "amran syaputra",
+					"nip": "2199340066",
+					"join_from": null,
+					"game_id": "75005408",
+					"game_nick": "Ranford"
+				},
+				{
+					"full_name": "andika ahmad yani",
+					"nip": "2200070137",
+					"join_from": null,
+					"game_id": "1053360580",
+					"game_nick": "Kakarot"
 				}
 			]
 		}
