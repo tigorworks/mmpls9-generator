@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-07 13:29:56",
+	"lastupdate": "2026-03-07 13:38:42",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -338,6 +338,13 @@
 					"join_from": null,
 					"game_id": "69632926",
 					"game_nick": "Itadori Bhaswara"
+				},
+				{
+					"full_name": "Tigor M Manurung",
+					"nip": "2187748801",
+					"join_from": null,
+					"game_id": "123151204",
+					"game_nick": "Sukuna Manroe"
 				}
 			]
 		},
