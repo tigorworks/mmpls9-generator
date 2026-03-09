@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-09 13:52:49",
+	"lastupdate": "2026-03-09 14:53:29",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -338,6 +338,13 @@
 					"join_from": null,
 					"game_id": "69632926",
 					"game_nick": "Itadori Bhaswara"
+				},
+				{
+					"full_name": "Hamonangan Oktavianus Simbolon",
+					"nip": "2396103752",
+					"join_from": null,
+					"game_id": "979578711",
+					"game_nick": "Naoya Simbolon."
 				},
 				{
 					"full_name": "Tigor M Manurung",
