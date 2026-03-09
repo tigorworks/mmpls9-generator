@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-09 11:46:37",
+	"lastupdate": "2026-03-09 13:50:16",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -544,7 +544,7 @@
 			"captain_name": "Dedi Sunaryono",
 			"captain_whatsapp": "085251365474",
 			"captain_email": "",
-			"logo": false,
+			"logo": true,
 			"idcard": false,
 			"members": [
 				{
@@ -576,25 +576,11 @@
 					"game_nick": "Hidraa࿐"
 				},
 				{
-					"full_name": "Arian Mandalik",
+					"full_name": "Arian Mandalika",
 					"nip": "225191019277",
 					"join_from": null,
 					"game_id": "1740310804",
 					"game_nick": "Petet"
-				},
-				{
-					"full_name": "Sulaiman",
-					"nip": "6",
-					"join_from": null,
-					"game_id": "6",
-					"game_nick": ""
-				},
-				{
-					"full_name": "Bayu",
-					"nip": "7",
-					"join_from": null,
-					"game_id": "7",
-					"game_nick": "7"
 				}
 			]
 		},
@@ -786,6 +772,86 @@
 					"join_from": null,
 					"game_id": "57894617 (2095)",
 					"game_nick": "Majesty"
+				}
+			]
+		},
+		{
+			"team_name": "MEGAKING : TUA",
+			"captain_name": "Dimas Septian Viarasi MS",
+			"captain_whatsapp": "081287769679",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Dimas Septian Viarasi MS",
+					"nip": "2297759698",
+					"join_from": null,
+					"game_id": "51924042",
+					"game_nick": "behave"
+				},
+				{
+					"full_name": "Wahyu Eka Saputra",
+					"nip": "2097738660",
+					"join_from": null,
+					"game_id": "312599553",
+					"game_nick": "Holy"
+				},
+				{
+					"full_name": "Anggy rahman hadi candra",
+					"nip": "2295340058",
+					"join_from": null,
+					"game_id": "97874860",
+					"game_nick": "Xander Death"
+				},
+				{
+					"full_name": "Mohamad Rico Oktavianur",
+					"nip": "2299170263",
+					"join_from": null,
+					"game_id": "523964003",
+					"game_nick": "Encore"
+				},
+				{
+					"full_name": "Roni Akbar",
+					"nip": "2395161338",
+					"join_from": null,
+					"game_id": "171735409",
+					"game_nick": "1 9 9 5"
+				},
+				{
+					"full_name": "Sandy",
+					"nip": "2298777368",
+					"join_from": null,
+					"game_id": "37754602",
+					"game_nick": "sandyao"
+				},
+				{
+					"full_name": "Lutfi Anwar Dwi Alfian",
+					"nip": "2202060263",
+					"join_from": null,
+					"game_id": "82611029",
+					"game_nick": "Nameless"
+				},
+				{
+					"full_name": "Cici Dwi Ananda Putri",
+					"nip": "2399803246",
+					"join_from": null,
+					"game_id": "123893470",
+					"game_nick": "BINI BEHAVE"
+				},
+				{
+					"full_name": "Armin muhammad",
+					"nip": "2295340035",
+					"join_from": null,
+					"game_id": "97555490",
+					"game_nick": "Mas Toger"
+				},
+				{
+					"full_name": "Muhammad Nur Yusuf",
+					"nip": "1997719489",
+					"join_from": null,
+					"game_id": "169947096",
+					"game_nick": "30Pips"
 				}
 			]
 		}
