@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-09 11:10:04",
+	"lastupdate": "2026-03-09 11:46:37",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -741,6 +741,51 @@
 					"join_from": null,
 					"game_id": "1053360580",
 					"game_nick": "Kakarot"
+				}
+			]
+		},
+		{
+			"team_name": "Happy family",
+			"captain_name": "Jovan",
+			"captain_whatsapp": "08986004815",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Jovan novian gunawan",
+					"nip": "1996714167 (2057)",
+					"join_from": null,
+					"game_id": "35304126 (2057)",
+					"game_nick": "Xellos"
+				},
+				{
+					"full_name": "Andri Muhamad Rizki",
+					"nip": "2498070937",
+					"join_from": null,
+					"game_id": "178996352",
+					"game_nick": "Dumbways"
+				},
+				{
+					"full_name": "Muhammad Fathurahman",
+					"nip": "2501844013",
+					"join_from": null,
+					"game_id": "221529418 (9158)",
+					"game_nick": "Cornelo"
+				},
+				{
+					"full_name": "Riky F Mallafi",
+					"nip": "1992716738",
+					"join_from": null,
+					"game_id": "34029744",
+					"game_nick": "Mallafi"
+				},
+				{
+					"full_name": "Bagas Oxy Exa",
+					"nip": "2398074742",
+					"join_from": null,
+					"game_id": "57894617 (2095)",
+					"game_nick": "Majesty"
 				}
 			]
 		}
