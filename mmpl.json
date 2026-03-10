@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-10 08:16:22",
+	"lastupdate": "2026-03-10 09:56:51",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -859,6 +859,72 @@
 					"join_from": null,
 					"game_id": "169947096",
 					"game_nick": "30Pips"
+				}
+			]
+		},
+		{
+			"team_name": "HUMBLE TEAM",
+			"captain_name": "Obed Herman Karundeng",
+			"captain_whatsapp": "089685298575",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Obed Herman Karundeng",
+					"nip": "1795663202",
+					"join_from": null,
+					"game_id": "93992363",
+					"game_nick": "RE9 . Guardianz"
+				},
+				{
+					"full_name": "Rakha Primahdy",
+					"nip": "2298772708",
+					"join_from": null,
+					"game_id": "46077774",
+					"game_nick": "REG9 . Arcio."
+				},
+				{
+					"full_name": "Agung Widodo",
+					"nip": "1998460025",
+					"join_from": null,
+					"game_id": "261310328",
+					"game_nick": "Valar Morghulis"
+				},
+				{
+					"full_name": "Alif Abdurrahman",
+					"nip": "2401809371",
+					"join_from": null,
+					"game_id": "40180997",
+					"game_nick": "REG9 . arχistr"
+				},
+				{
+					"full_name": "Ricky Antonius",
+					"nip": "1894685841",
+					"join_from": null,
+					"game_id": "13957152",
+					"game_nick": "REG9 . ricilotus"
+				},
+				{
+					"full_name": "Herkulanus Estija",
+					"nip": "1895020120",
+					"join_from": null,
+					"game_id": "941063938",
+					"game_nick": "KAKEK LANUS"
+				},
+				{
+					"full_name": "Syarif Muhammad Azriel Zaky",
+					"nip": "2401160654",
+					"join_from": null,
+					"game_id": "97464106",
+					"game_nick": "WALYALYAL"
+				},
+				{
+					"full_name": "Eksata Murliagraha Perdana",
+					"nip": "1790171569",
+					"join_from": null,
+					"game_id": "21501273",
+					"game_nick": "≋Egxΐiiyyy≋"
 				}
 			]
 		}
