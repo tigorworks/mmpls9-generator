@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-10 17:32:00",
+	"lastupdate": "2026-03-10 19:41:09",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -661,6 +661,13 @@
 					"join_from": null,
 					"game_id": "118185328",
 					"game_nick": "Setsuna X TBRN"
+				},
+				{
+					"full_name": "Dany Ramadhan",
+					"nip": "2506059737",
+					"join_from": null,
+					"game_id": "655486685",
+					"game_nick": "Dynzzz X TBRN"
 				}
 			]
 		},
