@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-11 15:32:00",
+	"lastupdate": "2026-03-11 16:11:33",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -946,6 +946,65 @@
 					"join_from": null,
 					"game_id": "21501273",
 					"game_nick": "≋Egxΐiiyyy≋"
+				}
+			]
+		},
+		{
+			"team_name": "Royal One",
+			"captain_name": "Yudha",
+			"captain_whatsapp": "08812131312",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Muhammad Anggi Sukma Yudha",
+					"nip": "2593032099",
+					"join_from": null,
+					"game_id": "43742620",
+					"game_nick": "Marcopolo"
+				},
+				{
+					"full_name": "Aldi Ramadhan",
+					"nip": "2398491306",
+					"join_from": null,
+					"game_id": "76843858",
+					"game_nick": "Rafaeyzaaa"
+				},
+				{
+					"full_name": "Ryko Yopur",
+					"nip": "1390140120",
+					"join_from": null,
+					"game_id": "55471192",
+					"game_nick": "™GOZILAAA°°°"
+				},
+				{
+					"full_name": "Farchan Fauzan Noor",
+					"nip": "2299410315",
+					"join_from": null,
+					"game_id": "60187957",
+					"game_nick": "Anvor"
+				},
+				{
+					"full_name": "Ahmad Fadillah",
+					"nip": "2298320008",
+					"join_from": null,
+					"game_id": "60449980",
+					"game_nick": "HARGRE4VESSS."
+				},
+				{
+					"full_name": "Riki Ramdhani Rifai",
+					"nip": "2501035047",
+					"join_from": null,
+					"game_id": "70172181",
+					"game_nick": "NK|Chaa lagi bosen"
+				},
+				{
+					"full_name": "Deta Oryzae Saputra",
+					"nip": "1895679165",
+					"join_from": null,
+					"game_id": "128238619",
+					"game_nick": "K E E X A"
 				}
 			]
 		}
