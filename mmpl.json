@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-11 11:03:14",
+	"lastupdate": "2026-03-11 13:42:01",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -588,6 +588,20 @@
 					"join_from": null,
 					"game_id": "1740310804",
 					"game_nick": "Petet"
+				},
+				{
+					"full_name": "Muchlisin L",
+					"nip": "2699560793",
+					"join_from": null,
+					"game_id": "1295068360",
+					"game_nick": "E R O S"
+				},
+				{
+					"full_name": "Hendra Gunawan",
+					"nip": "2594450426",
+					"join_from": null,
+					"game_id": "180786270",
+					"game_nick": "UDiN BALOK"
 				}
 			]
 		},
