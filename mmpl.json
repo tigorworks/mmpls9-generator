@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-12 15:34:09",
+	"lastupdate": "2026-03-12 17:31:48",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -1085,6 +1085,65 @@
 					"join_from": null,
 					"game_id": "48787322 (2210)",
 					"game_nick": "Cumcum"
+				}
+			]
+		},
+		{
+			"team_name": "Warteg Berkah Jaya",
+			"captain_name": "Ryan Reynara",
+			"captain_whatsapp": "+62 812-8685-6599",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Ryan Reynara",
+					"nip": "2299764670",
+					"join_from": null,
+					"game_id": "69446896",
+					"game_nick": "Tarik"
+				},
+				{
+					"full_name": "Ibnu Haikal",
+					"nip": "2501833230",
+					"join_from": null,
+					"game_id": "40766441",
+					"game_nick": "Zeno"
+				},
+				{
+					"full_name": "Desandri Tampubolon",
+					"nip": "1692650773",
+					"join_from": null,
+					"game_id": "295159932",
+					"game_nick": "Claymore"
+				},
+				{
+					"full_name": "Farhan Fadhell",
+					"nip": "2299769133",
+					"join_from": null,
+					"game_id": "26855023",
+					"game_nick": "Jutzzy."
+				},
+				{
+					"full_name": "Powerson Otniel",
+					"nip": "2299764951",
+					"join_from": null,
+					"game_id": "105825720",
+					"game_nick": "Mammoth."
+				},
+				{
+					"full_name": "Moch Alfi Rochman",
+					"nip": "1895673689",
+					"join_from": null,
+					"game_id": "3741098",
+					"game_nick": "Éowyn"
+				},
+				{
+					"full_name": "Rizal Sadali",
+					"nip": "1691634448",
+					"join_from": null,
+					"game_id": "34791329",
+					"game_nick": "SSSNAKEPIT"
 				}
 			]
 		}
