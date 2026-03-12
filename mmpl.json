@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-12 17:31:48",
+	"lastupdate": "2026-03-12 19:09:31",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -1144,6 +1144,86 @@
 					"join_from": null,
 					"game_id": "34791329",
 					"game_nick": "SSSNAKEPIT"
+				}
+			]
+		},
+		{
+			"team_name": "ASPAL Reignite",
+			"captain_name": "ARDIKO TIAS PUTRA",
+			"captain_whatsapp": "085161120512",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "ARDIKO TIAS PUTRA",
+					"nip": "2298763921",
+					"join_from": null,
+					"game_id": "57360512 (2090)",
+					"game_nick": "O k i d."
+				},
+				{
+					"full_name": "M. Aldi Perdana",
+					"nip": "2297570002",
+					"join_from": null,
+					"game_id": "37803825(2061)",
+					"game_nick": "K I L L U A."
+				},
+				{
+					"full_name": "M. Aulia Ramadhan",
+					"nip": "2399790898",
+					"join_from": null,
+					"game_id": "44924460 (2072)",
+					"game_nick": "Navy."
+				},
+				{
+					"full_name": "M. Fadhlurrahman Amorshandi",
+					"nip": "2297758922",
+					"join_from": null,
+					"game_id": "32253773 (2050)",
+					"game_nick": "•Matchà"
+				},
+				{
+					"full_name": "M. Ferdi Febrian",
+					"nip": "1084367192",
+					"join_from": null,
+					"game_id": "255515766(9343)",
+					"game_nick": "blink dagger"
+				},
+				{
+					"full_name": "M. Redy Sakban",
+					"nip": "2399797786",
+					"join_from": null,
+					"game_id": "112706513(2573)",
+					"game_nick": "Uni`Quee`"
+				},
+				{
+					"full_name": "Darma Hermawan",
+					"nip": "2400494729",
+					"join_from": null,
+					"game_id": "72219510 (2044)",
+					"game_nick": "SIMA"
+				},
+				{
+					"full_name": "Muhamamd Fany Rahmansyah",
+					"nip": "2398797613",
+					"join_from": null,
+					"game_id": "63349823 (2216)",
+					"game_nick": "Fan."
+				},
+				{
+					"full_name": "Muhammad Bima Aprianto",
+					"nip": "2298758863",
+					"join_from": null,
+					"game_id": "364149438 (9707)",
+					"game_nick": "ASPL Reg2. Xenomorph"
+				},
+				{
+					"full_name": "AMIN ROHMAT",
+					"nip": "2401490626",
+					"join_from": null,
+					"game_id": "32263923 (2049)",
+					"game_nick": "M i n ."
 				}
 			]
 		}
