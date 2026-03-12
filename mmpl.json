@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-12 13:43:36",
+	"lastupdate": "2026-03-12 15:14:38",
 	"teams": [
 		{
 			"team_name": "MEGAKING: ENDGAME",
@@ -1005,6 +1005,86 @@
 					"join_from": null,
 					"game_id": "128238619",
 					"game_nick": "K E E X A"
+				}
+			]
+		},
+		{
+			"team_name": "Komodo Komando",
+			"captain_name": "Satria Wibowo",
+			"captain_whatsapp": "081226322256",
+			"captain_email": "",
+			"logo": true,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Satria Wibowo",
+					"nip": "2398787481",
+					"join_from": null,
+					"game_id": "10771060 (2201)",
+					"game_nick": "MayorJendral"
+				},
+				{
+					"full_name": "Angga Wibisana",
+					"nip": "2297757924",
+					"join_from": null,
+					"game_id": "53588925",
+					"game_nick": "Dragon Karubi"
+				},
+				{
+					"full_name": "Muhammad Nasheh",
+					"nip": "2301779682",
+					"join_from": null,
+					"game_id": "47466641 (2076)",
+					"game_nick": "KURIMU"
+				},
+				{
+					"full_name": "Reza Radiansyah",
+					"nip": "2299771808",
+					"join_from": null,
+					"game_id": "13582766 (2016)",
+					"game_nick": "CMB . Lalalalala"
+				},
+				{
+					"full_name": "Thio Evan Firdaus",
+					"nip": "2299770198",
+					"join_from": null,
+					"game_id": "142240021 (2721)",
+					"game_nick": "epidemic"
+				},
+				{
+					"full_name": "Tri Muhammad fajar",
+					"nip": "1997715529",
+					"join_from": null,
+					"game_id": "69311574 (2129)",
+					"game_nick": "TriXar"
+				},
+				{
+					"full_name": "Dennylson Dovent Damanik",
+					"nip": "2298757980",
+					"join_from": null,
+					"game_id": "122068402 (2626)",
+					"game_nick": "Spookeyjunkiezt"
+				},
+				{
+					"full_name": "Galan Subiansyah",
+					"nip": "2401807771",
+					"join_from": null,
+					"game_id": "28209992 (2040)",
+					"game_nick": "Myloo"
+				},
+				{
+					"full_name": "Rizki Aulia nanda",
+					"nip": "2300781143",
+					"join_from": null,
+					"game_id": "49284833",
+					"game_nick": "CMB . Fatikal"
+				},
+				{
+					"full_name": "Rizky Bintang Wibisono",
+					"nip": "2502843220",
+					"join_from": null,
+					"game_id": "48787322 (2210)",
+					"game_nick": "Cumcum"
 				}
 			]
 		}
