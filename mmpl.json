@@ -1,10 +1,10 @@
 {
-	"lastupdate": "2026-03-12 19:53:56",
+	"lastupdate": "2026-03-12 20:00:23",
 	"teams": [
 		{
 			"team_name": "MEGAKING",
-			"captain_name": "Ferry Adhy A",
-			"captain_whatsapp": "085730950229",
+			"captain_name": "Febrian Saputra",
+			"captain_whatsapp": "‪081319033640‬",
 			"captain_email": "",
 			"logo": true,
 			"idcard": true,
@@ -28,7 +28,7 @@
 					"nip": "1392160200",
 					"join_from": null,
 					"game_id": "156779986",
-					"game_nick": "KING KONG"
+					"game_nick": "KING DAVE"
 				},
 				{
 					"full_name": "Rian Aldi Syahputra",
@@ -50,6 +50,13 @@
 					"join_from": null,
 					"game_id": "54333614",
 					"game_nick": "KING YU JIN"
+				},
+				{
+					"full_name": "Febrian Saputra",
+					"nip": "2298280061",
+					"join_from": null,
+					"game_id": "251454171",
+					"game_nick": "KING BONG"
 				}
 			]
 		},
