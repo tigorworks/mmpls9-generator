@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-13 11:24:03",
+	"lastupdate": "2026-03-13 11:44:15",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1311,6 +1311,86 @@
 					"join_from": null,
 					"game_id": "41024731",
 					"game_nick": "Kimack"
+				}
+			]
+		},
+		{
+			"team_name": "HELL GLORIOUS",
+			"captain_name": "Samuel Agung Wibowo",
+			"captain_whatsapp": "085900214424",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Samuel Agung Wibowo",
+					"nip": "2298777897",
+					"join_from": null,
+					"game_id": "38543521 (2061)",
+					"game_nick": "xSammyyy"
+				},
+				{
+					"full_name": "Tri Muharis Chaniago",
+					"nip": "2398800136",
+					"join_from": null,
+					"game_id": "194173240",
+					"game_nick": "Rapswyne. 404"
+				},
+				{
+					"full_name": "M Hisyam Azhar",
+					"nip": "2300788692",
+					"join_from": null,
+					"game_id": "135507633 (2237)",
+					"game_nick": "komz. 404"
+				},
+				{
+					"full_name": "Salman Albi",
+					"nip": "2401029257",
+					"join_from": null,
+					"game_id": "Salmennn.",
+					"game_nick": "95907864 (3220)"
+				},
+				{
+					"full_name": "Alvianus Tri Putra P.",
+					"nip": "2499815371",
+					"join_from": null,
+					"game_id": "151354173 (2770)",
+					"game_nick": "PrinceAranta. 404"
+				},
+				{
+					"full_name": "Abdurohman Rezza Muhammad",
+					"nip": "2501834170",
+					"join_from": null,
+					"game_id": "130037004",
+					"game_nick": "Abuddd."
+				},
+				{
+					"full_name": "Muhammad Abdul Fatah",
+					"nip": "1892510095",
+					"join_from": null,
+					"game_id": "40647388 (2209)",
+					"game_nick": "BumBum"
+				},
+				{
+					"full_name": "Muhamad Rezha Marhadipraja",
+					"nip": "2501050197",
+					"join_from": null,
+					"game_id": "Her Irzhaa.",
+					"game_nick": "10055804(2011)"
+				},
+				{
+					"full_name": "Risky Pranata",
+					"nip": "2500848221",
+					"join_from": null,
+					"game_id": "551562404",
+					"game_nick": "K Y T A L A"
+				},
+				{
+					"full_name": "Muhamad Rayza Farandy",
+					"nip": "1693628612",
+					"join_from": null,
+					"game_id": "73427670",
+					"game_nick": "The Godfather"
 				}
 			]
 		}
