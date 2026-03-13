@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-13 08:20:16",
+	"lastupdate": "2026-03-13 09:07:25",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1238,6 +1238,79 @@
 					"join_from": null,
 					"game_id": "32263923 (2049)",
 					"game_nick": "M i n ."
+				}
+			]
+		},
+		{
+			"team_name": "Crown X Sulawesi E-sport",
+			"captain_name": "Ido",
+			"captain_whatsapp": "081273558067",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Fridholin Lutlutur",
+					"nip": "1996724779",
+					"join_from": null,
+					"game_id": "148220844",
+					"game_nick": "Freedo"
+				},
+				{
+					"full_name": "Arif Akmal Palowa",
+					"nip": "1997724737",
+					"join_from": null,
+					"game_id": "48764749",
+					"game_nick": "Lowkey"
+				},
+				{
+					"full_name": "Evert CH. S Makadao",
+					"nip": "1996725487",
+					"join_from": null,
+					"game_id": "61829972",
+					"game_nick": "evertz"
+				},
+				{
+					"full_name": "Doan Reynaldo Silooy",
+					"nip": "1997725445",
+					"join_from": null,
+					"game_id": "220992513",
+					"game_nick": "AlphaWOLF17"
+				},
+				{
+					"full_name": "Hermawan Paputungan",
+					"nip": "2195753058",
+					"join_from": null,
+					"game_id": "66979103",
+					"game_nick": "ZOOPREME"
+				},
+				{
+					"full_name": "Noval Syahril L",
+					"nip": "2400825964",
+					"join_from": null,
+					"game_id": "295485940",
+					"game_nick": "P S Y C O"
+				},
+				{
+					"full_name": "Teguh Rivaldie Marzukie",
+					"nip": "2299774554",
+					"join_from": null,
+					"game_id": "331413951",
+					"game_nick": "Himalaya"
+				},
+				{
+					"full_name": "Intje Moh Rivaldy Ilyas",
+					"nip": "2299001437",
+					"join_from": null,
+					"game_id": "RifalTzy",
+					"game_nick": "64789249"
+				},
+				{
+					"full_name": "Wahyu Zakaria",
+					"nip": "2498022211",
+					"join_from": null,
+					"game_id": "41024731",
+					"game_nick": "Kimack"
 				}
 			]
 		}
