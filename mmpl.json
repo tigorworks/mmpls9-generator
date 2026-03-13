@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-13 11:44:15",
+	"lastupdate": "2026-03-13 11:59:28",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -57,6 +57,13 @@
 					"join_from": null,
 					"game_id": "251454171",
 					"game_nick": "KING KRATOS"
+				},
+				{
+					"full_name": "Rakha Athallah",
+					"nip": "2300803046",
+					"join_from": null,
+					"game_id": "30408557",
+					"game_nick": "KING EMYU."
 				}
 			]
 		},
