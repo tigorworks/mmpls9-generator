@@ -1,20 +1,20 @@
 {
-	"lastupdate": "2026-03-13 11:59:28",
+	"lastupdate": "2026-03-13 12:21:29",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
-			"captain_name": "Febrian Saputra",
-			"captain_whatsapp": "‪081319033640‬",
+			"captain_name": "Ferry Adhy A",
+			"captain_whatsapp": "085730950229",
 			"captain_email": "",
 			"logo": true,
 			"idcard": true,
 			"members": [
 				{
-					"full_name": "Roly Anugrah",
-					"nip": "2300787777",
+					"full_name": "Ferry Adhy A",
+					"nip": "1390520070",
 					"join_from": null,
-					"game_id": "101356359",
-					"game_nick": "KING MARAJO"
+					"game_id": "10875707",
+					"game_nick": "KING SWALLOW"
 				},
 				{
 					"full_name": "Reshaldo Shafwanatha Shalahuddin Lubis",
@@ -64,6 +64,20 @@
 					"join_from": null,
 					"game_id": "30408557",
 					"game_nick": "KING EMYU."
+				},
+				{
+					"full_name": "Roly Anugrah",
+					"nip": "2300787777",
+					"join_from": null,
+					"game_id": "101356359",
+					"game_nick": "KING MARAJO"
+				},
+				{
+					"full_name": "Sandi",
+					"nip": "IC-476",
+					"join_from": null,
+					"game_id": "1086910358",
+					"game_nick": "KING KUMAR"
 				}
 			]
 		},
