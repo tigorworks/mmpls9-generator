@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-14 11:55:50",
+	"lastupdate": "2026-03-14 12:02:23",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -52,11 +52,11 @@
 					"game_nick": "KING YU JIN"
 				},
 				{
-					"full_name": "Febrian Saputra",
-					"nip": "2298280061",
+					"full_name": "Sandi",
+					"nip": "IC-476",
 					"join_from": null,
-					"game_id": "251454171",
-					"game_nick": "KING KRATOS"
+					"game_id": "1086910358",
+					"game_nick": "KING JONG UN"
 				},
 				{
 					"full_name": "Rakha Athallah",
@@ -73,11 +73,11 @@
 					"game_nick": "KING MARAJO"
 				},
 				{
-					"full_name": "Sandi",
-					"nip": "IC-476",
+					"full_name": "Febrian Saputra",
+					"nip": "2298280061",
 					"join_from": null,
-					"game_id": "1086910358",
-					"game_nick": "KING JONG UN"
+					"game_id": "251454171",
+					"game_nick": "KING KRATOS"
 				}
 			]
 		},
