@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-14 13:36:45",
+	"lastupdate": "2026-03-14 15:26:46",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1412,6 +1412,65 @@
 					"join_from": null,
 					"game_id": "73427670",
 					"game_nick": "The Godfather"
+				}
+			]
+		},
+		{
+			"team_name": "TBRN RAVAGER",
+			"captain_name": "Kukuh",
+			"captain_whatsapp": "087883437668",
+			"captain_email": "",
+			"logo": true,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Hadiyan Nurbaina T",
+					"nip": "1895678290",
+					"join_from": null,
+					"game_id": "70196504 (2219)",
+					"game_nick": "Hanzzome X TBRN"
+				},
+				{
+					"full_name": "Fadil Akbar",
+					"nip": "1795662477",
+					"join_from": null,
+					"game_id": "1049367432",
+					"game_nick": "Fdl.RVG x TBRN"
+				},
+				{
+					"full_name": "Andhi Pranata",
+					"nip": "1693646028",
+					"join_from": null,
+					"game_id": "217454808 (9125)",
+					"game_nick": "NAY OZE X TBRN"
+				},
+				{
+					"full_name": "Yulien Gidion Rukmana Hermanto",
+					"nip": "1894701986",
+					"join_from": null,
+					"game_id": "72634308 (2042)",
+					"game_nick": "Encyclopedia"
+				},
+				{
+					"full_name": "M Refa Fahreza",
+					"nip": "2304454415",
+					"join_from": null,
+					"game_id": "73737874(2029)",
+					"game_nick": "olipp RVGXTRBN"
+				},
+				{
+					"full_name": "Khoerun Hadianto",
+					"nip": "2290030005",
+					"join_from": null,
+					"game_id": "77860009 ( 2146 )",
+					"game_nick": "Hadji."
+				},
+				{
+					"full_name": "Anggi rifaldi",
+					"nip": "2496543207",
+					"join_from": null,
+					"game_id": "9291981 (2193)",
+					"game_nick": "Alexa X TBRN"
 				}
 			]
 		}
