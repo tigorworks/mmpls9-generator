@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-15 11:26:53",
+	"lastupdate": "2026-03-15 13:46:21",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -212,7 +212,7 @@
 			"captain_whatsapp": "081510235909",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Ilham Syah",
