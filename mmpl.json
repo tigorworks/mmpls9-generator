@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-25 13:54:14",
+	"lastupdate": "2026-03-25 14:23:38",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1575,6 +1575,72 @@
 					"join_from": null,
 					"game_id": "172049491",
 					"game_nick": "prikkk"
+				}
+			]
+		},
+		{
+			"team_name": "170 PARES",
+			"captain_name": "Ariyono",
+			"captain_whatsapp": "082247497795",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Ariyono",
+					"nip": "2100340046",
+					"join_from": null,
+					"game_id": "107847649 (2552)",
+					"game_nick": "Oniksss"
+				},
+				{
+					"full_name": "Alfredo wangge",
+					"nip": "2503522575",
+					"join_from": null,
+					"game_id": "680189616 (8722)",
+					"game_nick": "In universe"
+				},
+				{
+					"full_name": "Haerul andika eka putra",
+					"nip": "2398021904",
+					"join_from": null,
+					"game_id": "83614088(2160)",
+					"game_nick": "Kyllboo"
+				},
+				{
+					"full_name": "Nur hidayat ahmad",
+					"nip": "2501024435",
+					"join_from": null,
+					"game_id": "859784341 (12419)",
+					"game_nick": "AYANA"
+				},
+				{
+					"full_name": "A imamul gazali",
+					"nip": "2400826129",
+					"join_from": null,
+					"game_id": "MAMZ",
+					"game_nick": "79532258"
+				},
+				{
+					"full_name": "Muhammad firmansyah",
+					"nip": "1791020131",
+					"join_from": null,
+					"game_id": "139486195",
+					"game_nick": "TungTung"
+				},
+				{
+					"full_name": "Geypril yaldi",
+					"nip": "1799390273",
+					"join_from": null,
+					"game_id": "107316104",
+					"game_nick": "×᷼×GEYPRIL⁹⁹"
+				},
+				{
+					"full_name": "Andi syahrul dwi putra",
+					"nip": "2397023063",
+					"join_from": null,
+					"game_id": "76299078(2221)",
+					"game_nick": "Dotzzz"
 				}
 			]
 		}
