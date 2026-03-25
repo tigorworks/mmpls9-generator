@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-25 11:52:58",
+	"lastupdate": "2026-03-25 12:34:56",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -472,11 +472,11 @@
 		},
 		{
 			"team_name": "Panthera",
-			"captain_name": "Suleh Triwijananto",
-			"captain_whatsapp": "089513264601",
+			"captain_name": "Airel Ragil",
+			"captain_whatsapp": "081390015109",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Suleh Triwijananto",
@@ -497,7 +497,7 @@
 					"nip": "22299099147",
 					"join_from": null,
 					"game_id": "175089663",
-					"game_nick": "B:::::D~~"
+					"game_nick": "~ Ryee D Anchor ~"
 				},
 				{
 					"full_name": "Sigit tri D",
@@ -1530,6 +1530,51 @@
 					"join_from": null,
 					"game_id": "1024237878",
 					"game_nick": "DFLOW"
+				}
+			]
+		},
+		{
+			"team_name": "BTRB",
+			"captain_name": "Gilang",
+			"captain_whatsapp": "085277869669",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Gilang perdana akilis",
+					"nip": "1591581236",
+					"join_from": null,
+					"game_id": "382496970",
+					"game_nick": "Ltjeh"
+				},
+				{
+					"full_name": "Deddy yudha prawira",
+					"nip": "1894674720",
+					"join_from": null,
+					"game_id": "38674022",
+					"game_nick": "Eustass."
+				},
+				{
+					"full_name": "Hendri Gero purba",
+					"nip": "1085401032",
+					"join_from": null,
+					"game_id": "467939867",
+					"game_nick": "Mama Gufron"
+				},
+				{
+					"full_name": "Mhd adam rivaldi",
+					"nip": "2399051123",
+					"join_from": null,
+					"game_id": "803367",
+					"game_nick": "VAL"
+				},
+				{
+					"full_name": "Pria rizky pratama",
+					"nip": "2300801446",
+					"join_from": null,
+					"game_id": "172049491",
+					"game_nick": "prikkk"
 				}
 			]
 		}
