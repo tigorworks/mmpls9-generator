@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-25 11:12:44",
+	"lastupdate": "2026-03-25 11:52:58",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1478,6 +1478,58 @@
 					"join_from": null,
 					"game_id": "9291981 (2193)",
 					"game_nick": "Alexa X TBRN"
+				}
+			]
+		},
+		{
+			"team_name": "BANGJOS es Crot",
+			"captain_name": "FIRMANSYAHNISM",
+			"captain_whatsapp": "081330315890",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Achmad luqman Firmansyah",
+					"nip": "1797320043",
+					"join_from": null,
+					"game_id": "181317977",
+					"game_nick": "Phoenix"
+				},
+				{
+					"full_name": "Totok hartoyo",
+					"nip": "1389531526",
+					"join_from": null,
+					"game_id": "97364824",
+					"game_nick": "T hart"
+				},
+				{
+					"full_name": "Yuda eka prastyo",
+					"nip": "2404340195",
+					"join_from": null,
+					"game_id": "660746664",
+					"game_nick": "Knightkill"
+				},
+				{
+					"full_name": "Kalangwan taruna mulya",
+					"nip": "2501854426",
+					"join_from": null,
+					"game_id": "2501854426",
+					"game_nick": "Coup de flux"
+				},
+				{
+					"full_name": "Tri Wahyu Saputra",
+					"nip": "1696320103",
+					"join_from": null,
+					"game_id": "85296415",
+					"game_nick": "Geto suguru"
+				},
+				{
+					"full_name": "Mohammad eFendy jasni",
+					"nip": "2025120003",
+					"join_from": null,
+					"game_id": "1024237878",
+					"game_nick": "DFLOW"
 				}
 			]
 		}
