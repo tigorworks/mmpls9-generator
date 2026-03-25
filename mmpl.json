@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-25 17:40:47",
+	"lastupdate": "2026-03-25 18:28:10",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1641,6 +1641,58 @@
 					"join_from": null,
 					"game_id": "76299078(2221)",
 					"game_nick": "Dotzzz"
+				}
+			]
+		},
+		{
+			"team_name": "MACHITIS",
+			"captain_name": "Made Andika Hadiputra Evaganna",
+			"captain_whatsapp": "083192740990",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Made Andika Hadiputra Evaganna",
+					"nip": "1795020080",
+					"join_from": null,
+					"game_id": "895725207 (12545)",
+					"game_nick": "BERLIN"
+				},
+				{
+					"full_name": "Kadek Nick Arista Putra",
+					"nip": "2399351401",
+					"join_from": null,
+					"game_id": "129515521",
+					"game_nick": "KETEKUL"
+				},
+				{
+					"full_name": "I ketut dedi suryawan",
+					"nip": "2299450026",
+					"join_from": null,
+					"game_id": "177009237",
+					"game_nick": "SugionoJav"
+				},
+				{
+					"full_name": "I dewa made arista apriadi",
+					"nip": "2301354977",
+					"join_from": null,
+					"game_id": "230736145",
+					"game_nick": "JAKOLYUK"
+				},
+				{
+					"full_name": "I kadek bakas andika",
+					"nip": "2498353907",
+					"join_from": null,
+					"game_id": "70591503",
+					"game_nick": "Bcool blush"
+				},
+				{
+					"full_name": "I putu herry prasetya",
+					"nip": "2296450407",
+					"join_from": null,
+					"game_id": "59403880",
+					"game_nick": "konyot18"
 				}
 			]
 		}
