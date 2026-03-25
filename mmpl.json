@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-25 18:28:10",
+	"lastupdate": "2026-03-25 19:50:28",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -677,11 +677,11 @@
 					"game_nick": "Bearso x TBRN"
 				},
 				{
-					"full_name": "Dhimas Agta Nugroho",
-					"nip": "2395351419",
+					"full_name": "Muhammad Refa Fahreza",
+					"nip": "2304454415",
 					"join_from": null,
-					"game_id": "215290458",
-					"game_nick": "IceiceicexTBRN"
+					"game_id": "73737874",
+					"game_nick": "Olipp RVGXTRBN"
 				},
 				{
 					"full_name": "Gilang Ramadan",
@@ -696,13 +696,6 @@
 					"join_from": null,
 					"game_id": "65414360",
 					"game_nick": "Bjorn X TBRN"
-				},
-				{
-					"full_name": "Candra Bagus F",
-					"nip": "2301798732",
-					"join_from": null,
-					"game_id": "35893372",
-					"game_nick": "trustmee x TBRN"
 				},
 				{
 					"full_name": "Syahrul Ramadhan",
@@ -1641,6 +1634,13 @@
 					"join_from": null,
 					"game_id": "76299078(2221)",
 					"game_nick": "Dotzzz"
+				},
+				{
+					"full_name": "Arya maulana adri",
+					"nip": "202412083",
+					"join_from": null,
+					"game_id": "682115047 (8713)",
+					"game_nick": "Brood moon"
 				}
 			]
 		},
