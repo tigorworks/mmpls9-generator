@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-26 08:29:54",
+	"lastupdate": "2026-03-26 09:57:23",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1693,6 +1693,72 @@
 					"join_from": null,
 					"game_id": "59403880",
 					"game_nick": "konyot18"
+				}
+			]
+		},
+		{
+			"team_name": "Blackout Renegades",
+			"captain_name": "Arief Wahyu",
+			"captain_whatsapp": "08128186942",
+			"captain_email": "",
+			"logo": false,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Rahmat Basuki",
+					"nip": "1389507757",
+					"join_from": null,
+					"game_id": "146023020",
+					"game_nick": "MATOA"
+				},
+				{
+					"full_name": "Galih Anjasmarani",
+					"nip": "1592571905",
+					"join_from": null,
+					"game_id": "69100630",
+					"game_nick": "F O C U S"
+				},
+				{
+					"full_name": "Asprila Dias",
+					"nip": "2095731568",
+					"join_from": null,
+					"game_id": "1186580759",
+					"game_nick": "Erza"
+				},
+				{
+					"full_name": "Felix Austin",
+					"nip": "2401809835",
+					"join_from": null,
+					"game_id": "36175945",
+					"game_nick": "Kenjiro"
+				},
+				{
+					"full_name": "Andhika Putra",
+					"nip": "2299757237",
+					"join_from": null,
+					"game_id": "125865871",
+					"game_nick": "Kowalski x KONCO"
+				},
+				{
+					"full_name": "Bramasta Anggito",
+					"nip": "2400808804",
+					"join_from": null,
+					"game_id": "52330176",
+					"game_nick": "Dakuy"
+				},
+				{
+					"full_name": "Arief Wahyu",
+					"nip": "1995715679",
+					"join_from": null,
+					"game_id": "987688064",
+					"game_nick": "LEVIATHAN"
+				},
+				{
+					"full_name": "Aulia Fikri",
+					"nip": "1895700318",
+					"join_from": null,
+					"game_id": "188275594",
+					"game_nick": "Drop-Table"
 				}
 			]
 		}
