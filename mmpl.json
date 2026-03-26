@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-26 21:57:35",
+	"lastupdate": "2026-03-26 23:02:03",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1766,6 +1766,51 @@
 					"join_from": null,
 					"game_id": "188275594",
 					"game_nick": "Drop-Table"
+				}
+			]
+		},
+		{
+			"team_name": "Gasspadia Squad",
+			"captain_name": "Alberth Fernando Thomas",
+			"captain_whatsapp": "+62 852-5443-8180",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Alberth Fernando Thomas",
+					"nip": "2401044987",
+					"join_from": null,
+					"game_id": "86489674",
+					"game_nick": "ABETH SAING 02"
+				},
+				{
+					"full_name": "Rafli Aditya Yani",
+					"nip": "2600858724",
+					"join_from": null,
+					"game_id": "31297261",
+					"game_nick": "Flimich"
+				},
+				{
+					"full_name": "Farid Ramadhansyah",
+					"nip": "1289434698",
+					"join_from": null,
+					"game_id": "1367407910",
+					"game_nick": "FvckRed"
+				},
+				{
+					"full_name": "Muhammad Haqqul Yakin",
+					"nip": "2399780345",
+					"join_from": null,
+					"game_id": "126159780",
+					"game_nick": "Bara.KT"
+				},
+				{
+					"full_name": "Muhammad Ridwan Nurdin",
+					"nip": "2403523387",
+					"join_from": null,
+					"game_id": "675381222",
+					"game_nick": "king wanted"
 				}
 			]
 		}
