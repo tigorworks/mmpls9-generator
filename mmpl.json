@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 21:44:04",
+	"lastupdate": "2026-03-27 23:05:15",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1438,11 +1438,11 @@
 		},
 		{
 			"team_name": "TBRN RAVAGER",
-			"captain_name": "Kukuh",
+			"captain_name": "Kukuh Harli Saputra",
 			"captain_whatsapp": "087883437668",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Hadiyan Nurbaina T",
@@ -1484,7 +1484,7 @@
 					"nip": "2290030005",
 					"join_from": null,
 					"game_id": "77860009 ( 2146 )",
-					"game_nick": "Hadji."
+					"game_nick": "Hadji. X TBRN"
 				},
 				{
 					"full_name": "Anggi rifaldi",
@@ -1793,7 +1793,7 @@
 					"nip": "1895700318",
 					"join_from": null,
 					"game_id": "188275594",
-					"game_nick": "Drop-Table"
+					"game_nick": "Han-Ta"
 				}
 			]
 		},
@@ -2197,6 +2197,65 @@
 					"join_from": null,
 					"game_id": "506828008",
 					"game_nick": "Mikewis."
+				}
+			]
+		},
+		{
+			"team_name": "166 JKT",
+			"captain_name": "Michael Neiss",
+			"captain_whatsapp": "082210571250",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Michael Neiss",
+					"nip": "2398795708",
+					"join_from": null,
+					"game_id": "145478580",
+					"game_nick": "REG4 . NEZZ"
+				},
+				{
+					"full_name": "bhagus syah dewa",
+					"nip": "2300783024",
+					"join_from": null,
+					"game_id": "36972260",
+					"game_nick": "Ms•Lord"
+				},
+				{
+					"full_name": "Timothy tedjasukmana",
+					"nip": "2400813440",
+					"join_from": null,
+					"game_id": "49954992",
+					"game_nick": "TigreZz"
+				},
+				{
+					"full_name": "yusfa tri bagustia",
+					"nip": "2398796086",
+					"join_from": null,
+					"game_id": "14434495",
+					"game_nick": "Feee!"
+				},
+				{
+					"full_name": "muhammad ridwan",
+					"nip": "2200170256",
+					"join_from": null,
+					"game_id": "58650464",
+					"game_nick": "Wanzz"
+				},
+				{
+					"full_name": "muhammad febriansyah",
+					"nip": "1491555124",
+					"join_from": null,
+					"game_id": "70588690",
+					"game_nick": "HAJI FEBROYYY"
+				},
+				{
+					"full_name": "Diaz Tiyasya Putra",
+					"nip": "52396759",
+					"join_from": null,
+					"game_id": "52396759",
+					"game_nick": "Kennzyy"
 				}
 			]
 		}
