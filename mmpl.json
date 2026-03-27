@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 08:29:53",
+	"lastupdate": "2026-03-27 11:28:12",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -314,6 +314,20 @@
 					"join_from": null,
 					"game_id": "78492409",
 					"game_nick": "EL HAJI 888"
+				},
+				{
+					"full_name": "Firmanudin",
+					"nip": "1997520039",
+					"join_from": null,
+					"game_id": "132577163",
+					"game_nick": "P A K H O Y"
+				},
+				{
+					"full_name": "Edwin Nurhidayat",
+					"nip": "1895679926",
+					"join_from": null,
+					"game_id": "74607193",
+					"game_nick": "Sasadara"
 				}
 			]
 		},
@@ -1459,11 +1473,11 @@
 					"game_nick": "Encyclopedia"
 				},
 				{
-					"full_name": "M Refa Fahreza",
-					"nip": "2304454415",
+					"full_name": "Kukuh Harli Saputra",
+					"nip": "2196743454",
 					"join_from": null,
-					"game_id": "73737874(2029)",
-					"game_nick": "olipp RVGXTRBN"
+					"game_id": "257514650(9351)",
+					"game_nick": "AnakDota"
 				},
 				{
 					"full_name": "Khoerun Hadianto",
@@ -1478,6 +1492,20 @@
 					"join_from": null,
 					"game_id": "9291981 (2193)",
 					"game_nick": "Alexa X TBRN"
+				},
+				{
+					"full_name": "Candra Bagus Ferdiansyah",
+					"nip": "2301798732",
+					"join_from": null,
+					"game_id": "35893372 (2054)",
+					"game_nick": "trustme x TBRN"
+				},
+				{
+					"full_name": "Dhimas Agta Nugroho",
+					"nip": "2395351419",
+					"join_from": null,
+					"game_id": "215290458 (9120)",
+					"game_nick": "Iceiceice x TBRN"
 				}
 			]
 		},
@@ -1708,8 +1736,8 @@
 			"captain_name": "Arief Wahyu",
 			"captain_whatsapp": "08128186942",
 			"captain_email": "",
-			"logo": false,
-			"idcard": false,
+			"logo": true,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Rahmat Basuki",
