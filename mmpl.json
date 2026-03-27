@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 17:40:14",
+	"lastupdate": "2026-03-27 17:53:13",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1999,6 +1999,124 @@
 					"join_from": null,
 					"game_id": "50012856",
 					"game_nick": "CORA X TBRN"
+				}
+			]
+		},
+		{
+			"team_name": "Royal One Klp",
+			"captain_name": "Mohammad Reza Saputra",
+			"captain_whatsapp": "081994001807",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Mohammad Reza Saputra",
+					"nip": "2497030151",
+					"join_from": null,
+					"game_id": "122482047",
+					"game_nick": "Wak Kuro."
+				},
+				{
+					"full_name": "Dharmawan Indra Wicaksana",
+					"nip": "2502838089",
+					"join_from": null,
+					"game_id": "7323491",
+					"game_nick": "Yth. drain"
+				},
+				{
+					"full_name": "Ogy adidaya qadar",
+					"nip": "2499829349",
+					"join_from": null,
+					"game_id": "43739898",
+					"game_nick": "Gyyy"
+				},
+				{
+					"full_name": "Shifa Nuraini Madinna Putri",
+					"nip": "2503054037",
+					"join_from": null,
+					"game_id": "907172824",
+					"game_nick": "Kawai Xyva"
+				},
+				{
+					"full_name": "R Raifal Fajrin Rahmanda",
+					"nip": "2297020187",
+					"join_from": null,
+					"game_id": "60962192",
+					"game_nick": "-tRustxrrfr™."
+				}
+			]
+		},
+		{
+			"team_name": "MBG Squad Region XII Papua",
+			"captain_name": "Juanri Prionedi Gultom",
+			"captain_whatsapp": "081248166586",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Adam Vicky R",
+					"nip": "1899350025",
+					"join_from": null,
+					"game_id": "357467278",
+					"game_nick": "Himmel"
+				},
+				{
+					"full_name": "Gilang Yoenal Marinta",
+					"nip": "2502836026",
+					"join_from": null,
+					"game_id": "91932665",
+					"game_nick": "G I L L"
+				},
+				{
+					"full_name": "Kadek Wira Yudha",
+					"nip": "1995718582",
+					"join_from": null,
+					"game_id": "60664282",
+					"game_nick": "PACE Miphoska"
+				},
+				{
+					"full_name": "Rahmat Rifaldi",
+					"nip": "2501453568",
+					"join_from": null,
+					"game_id": "69168212",
+					"game_nick": "Nouf de gypsy"
+				},
+				{
+					"full_name": "Muhammad Varickzy Kolinug",
+					"nip": "2499814960",
+					"join_from": null,
+					"game_id": "142038877",
+					"game_nick": "Karamol"
+				},
+				{
+					"full_name": "Rusli Candra Gunawan",
+					"nip": "1996718946",
+					"join_from": null,
+					"game_id": "108359575",
+					"game_nick": "Sky Bjirrrr_"
+				},
+				{
+					"full_name": "Reynaldo Maruli Tua Siahaan",
+					"nip": "1894707157",
+					"join_from": null,
+					"game_id": "118246690",
+					"game_nick": "J O K O W I"
+				},
+				{
+					"full_name": "M Rachmad Saleh",
+					"nip": "022021",
+					"join_from": null,
+					"game_id": "94030307",
+					"game_nick": "Sturmfrei"
+				},
+				{
+					"full_name": "Juanri Prionedi Gultom",
+					"nip": "1692622475",
+					"join_from": null,
+					"game_id": "1229110424",
+					"game_nick": "Lucifer66"
 				}
 			]
 		}
