@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 19:44:02",
+	"lastupdate": "2026-03-27 20:40:08",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -2117,6 +2117,86 @@
 					"join_from": null,
 					"game_id": "1229110424",
 					"game_nick": "Lucifer66"
+				}
+			]
+		},
+		{
+			"team_name": "Aura Farming.PKU108",
+			"captain_name": "Azi Andra Pangestu",
+			"captain_whatsapp": "081261106055",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Azi Andra Pangestu",
+					"nip": "2502055417",
+					"join_from": null,
+					"game_id": "90799991",
+					"game_nick": "Kestrel."
+				},
+				{
+					"full_name": "Ade Siswanto",
+					"nip": "1796160030",
+					"join_from": null,
+					"game_id": "79850606",
+					"game_nick": "SHAHRAZ"
+				},
+				{
+					"full_name": "Reski nanda",
+					"nip": "1691639041",
+					"join_from": null,
+					"game_id": "1613230303",
+					"game_nick": "Reg1_kii"
+				},
+				{
+					"full_name": "Bayu Kukuh Dwi Putra",
+					"nip": "1491547881",
+					"join_from": null,
+					"game_id": "1491547881",
+					"game_nick": "Reg1_Althaff"
+				},
+				{
+					"full_name": "Oi Sanjaya Sembiring",
+					"nip": "1591581046",
+					"join_from": null,
+					"game_id": "31642871",
+					"game_nick": "Boiii"
+				},
+				{
+					"full_name": "Prissi Yogi Proyogo Sirait",
+					"nip": "1289437345",
+					"join_from": null,
+					"game_id": "191176717",
+					"game_nick": "PYPS2"
+				},
+				{
+					"full_name": "Muhammad Hakim Hidauay",
+					"nip": "1489564906",
+					"join_from": null,
+					"game_id": "1656130581",
+					"game_nick": "omeliq"
+				},
+				{
+					"full_name": "Hermanto Manalu",
+					"nip": "1489564906",
+					"join_from": null,
+					"game_id": "116004645",
+					"game_nick": "Devano Klazeusky"
+				},
+				{
+					"full_name": "M Fariz Hidayat Farhan",
+					"nip": "2501840714",
+					"join_from": null,
+					"game_id": "61769175",
+					"game_nick": "Reg1_Ryzzz"
+				},
+				{
+					"full_name": "Lewis Harianja",
+					"nip": "2599052344",
+					"join_from": null,
+					"game_id": "506828008",
+					"game_nick": "Mikewis."
 				}
 			]
 		}
