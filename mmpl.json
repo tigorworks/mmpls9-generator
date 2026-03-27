@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 15:41:57",
+	"lastupdate": "2026-03-27 16:36:21",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1839,6 +1839,166 @@
 					"join_from": null,
 					"game_id": "675381222",
 					"game_nick": "king wanted"
+				}
+			]
+		},
+		{
+			"team_name": "Sikat Miring e-Sport",
+			"captain_name": "M Syahril Ramadhani",
+			"captain_whatsapp": "085753120726",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "M Syahril Ramadhani",
+					"nip": "2400825477",
+					"join_from": null,
+					"game_id": "159350249",
+					"game_nick": "AntekAsengBijiSatu"
+				},
+				{
+					"full_name": "Monika Sarira",
+					"nip": "1893685545",
+					"join_from": null,
+					"game_id": "73703811",
+					"game_nick": "Pemburu Kayu"
+				},
+				{
+					"full_name": "Tito Hermawan",
+					"nip": "1592602395",
+					"join_from": null,
+					"game_id": "28968037",
+					"game_nick": "♠️IKY♣️"
+				},
+				{
+					"full_name": "Rizky Albutoni",
+					"nip": "229934007",
+					"join_from": null,
+					"game_id": "98880137",
+					"game_nick": "Prince Kyy."
+				},
+				{
+					"full_name": "Bobby Saputra",
+					"nip": "1592602262",
+					"join_from": null,
+					"game_id": "71979081",
+					"game_nick": "BBY"
+				},
+				{
+					"full_name": "Muhammad Syahril",
+					"nip": "2501453001",
+					"join_from": null,
+					"game_id": "80754712",
+					"game_nick": "Rylexxx'"
+				},
+				{
+					"full_name": "Rendi",
+					"nip": "2501855837",
+					"join_from": null,
+					"game_id": "801273213",
+					"game_nick": "R3nd1"
+				},
+				{
+					"full_name": "Fachrul Rizki Nugraha",
+					"nip": "2500451852",
+					"join_from": null,
+					"game_id": "471607150",
+					"game_nick": "UNG_19"
+				},
+				{
+					"full_name": "Sendi Damar Purnama",
+					"nip": "28729",
+					"join_from": null,
+					"game_id": "135834754",
+					"game_nick": "Cecillia"
+				},
+				{
+					"full_name": "Hendri Sugianto",
+					"nip": "2397780214",
+					"join_from": null,
+					"game_id": "33865477",
+					"game_nick": "Hendri"
+				}
+			]
+		},
+		{
+			"team_name": "TBRN THUNDER",
+			"captain_name": "Muhammad Arif Wibowo",
+			"captain_whatsapp": "081318689562",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Muhammad Arif Wibowo",
+					"nip": "2092030034",
+					"join_from": null,
+					"game_id": "82838809",
+					"game_nick": "MKV X TBRN"
+				},
+				{
+					"full_name": "Fajar Hasan Abdullah",
+					"nip": "1996391070",
+					"join_from": null,
+					"game_id": "112014859",
+					"game_nick": "GOURTEC X TBRN"
+				},
+				{
+					"full_name": "Yulianto Nugroho",
+					"nip": "0950922401",
+					"join_from": null,
+					"game_id": "50587698",
+					"game_nick": "TODOROKI X TBRN"
+				},
+				{
+					"full_name": "Hendrique Fernando Sulayman",
+					"nip": "2401026437",
+					"join_from": null,
+					"game_id": "121322377",
+					"game_nick": "Savire.RVG X TBRN"
+				},
+				{
+					"full_name": "Frans Nopember Sibarani",
+					"nip": "1586160297",
+					"join_from": null,
+					"game_id": "1590117489",
+					"game_nick": "Arshey X TBRN"
+				},
+				{
+					"full_name": "Muhammad Boy Sugiarto",
+					"nip": "1692625429",
+					"join_from": null,
+					"game_id": "17622504",
+					"game_nick": "BARATHRUM X TBRN"
+				},
+				{
+					"full_name": "Rizqy Cipta Pratama",
+					"nip": "1894674407",
+					"join_from": null,
+					"game_id": "81258927",
+					"game_nick": "RCP X TBRN"
+				},
+				{
+					"full_name": "Meindra Rezka Nur Aldimas",
+					"nip": "2195450215",
+					"join_from": null,
+					"game_id": "66503319",
+					"game_nick": "DUDE X TBRN"
+				},
+				{
+					"full_name": "⁠Donni Sahilesmana",
+					"nip": "2494493887",
+					"join_from": null,
+					"game_id": "789800244",
+					"game_nick": "Saleh X TBRN"
+				},
+				{
+					"full_name": "Gangsar Laksono",
+					"nip": "9608170114",
+					"join_from": null,
+					"game_id": "50012856",
+					"game_nick": "CORA X TBRN"
 				}
 			]
 		}
