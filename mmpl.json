@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-27 14:20:58",
+	"lastupdate": "2026-03-27 15:41:57",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -608,7 +608,7 @@
 			"captain_whatsapp": "085251365474",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Dedi Sunaryono",
