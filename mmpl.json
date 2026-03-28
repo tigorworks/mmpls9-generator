@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-28 15:29:57",
+	"lastupdate": "2026-03-28 17:24:29",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -255,6 +255,13 @@
 					"join_from": null,
 					"game_id": "523404745",
 					"game_nick": "Saintess Lidia."
+				},
+				{
+					"full_name": "Muhammad Yazid Kurnia",
+					"nip": "242822589",
+					"join_from": null,
+					"game_id": "157882321",
+					"game_nick": "OniKG | Urr"
 				}
 			]
 		},
@@ -1908,7 +1915,7 @@
 				},
 				{
 					"full_name": "Sendi Damar Purnama",
-					"nip": "28729",
+					"nip": "2502452869",
 					"join_from": null,
 					"game_id": "135834754",
 					"game_nick": "Cecillia"
@@ -2256,6 +2263,65 @@
 					"join_from": null,
 					"game_id": "52396759",
 					"game_nick": "Kennzyy"
+				}
+			]
+		},
+		{
+			"team_name": "Gatsu E-sports",
+			"captain_name": "Rhama Priohartono Mulyana Putra",
+			"captain_whatsapp": "082219724977",
+			"captain_email": "",
+			"logo": true,
+			"idcard": false,
+			"members": [
+				{
+					"full_name": "Rhama Priohartono Mulyana Putra",
+					"nip": "2095733861",
+					"join_from": null,
+					"game_id": "53388103 (2010)",
+					"game_nick": "Rhamskyy"
+				},
+				{
+					"full_name": "Muhamad Ridwan",
+					"nip": "2400071220",
+					"join_from": null,
+					"game_id": "144564289 (2729)",
+					"game_nick": "Gypsy"
+				},
+				{
+					"full_name": "Martono",
+					"nip": "1793260833",
+					"join_from": null,
+					"game_id": "110007030",
+					"game_nick": "Martin"
+				},
+				{
+					"full_name": "Rayi Muhammad Ilham",
+					"nip": "2405530847",
+					"join_from": null,
+					"game_id": "135231383 (2675)",
+					"game_nick": "Little Ray"
+				},
+				{
+					"full_name": "Ari Ramdan M",
+					"nip": "2497060904",
+					"join_from": null,
+					"game_id": "420224965 (9916)",
+					"game_nick": "Riezzz"
+				},
+				{
+					"full_name": "Diki Malikul H",
+					"nip": "22600031417",
+					"join_from": null,
+					"game_id": "107653864 (2227)",
+					"game_nick": "Alexturner•"
+				},
+				{
+					"full_name": "Alfian Atma Nugraha",
+					"nip": "031825",
+					"join_from": null,
+					"game_id": "1680523656 (18127)",
+					"game_nick": "Cigiro"
 				}
 			]
 		}
