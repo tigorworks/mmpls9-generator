@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-30 08:48:43",
+	"lastupdate": "2026-03-30 11:39:42",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -86,7 +86,7 @@
 			"captain_name": "Muhamad Fariduddin Syafiq",
 			"captain_whatsapp": "08881645922",
 			"captain_email": "",
-			"logo": false,
+			"logo": true,
 			"idcard": true,
 			"members": [
 				{
@@ -434,18 +434,18 @@
 					"game_nick": "VizZy"
 				},
 				{
-					"full_name": "Mahesa Satrya Mas P",
+					"full_name": "Mahesa Satrya Mas Pamungkas",
 					"nip": "1692637788",
 					"join_from": null,
 					"game_id": "727445080",
-					"game_nick": "KaeL"
+					"game_nick": "Zeztz"
 				},
 				{
 					"full_name": "Wahid Yasin",
 					"nip": "2300016877",
 					"join_from": null,
 					"game_id": "1602711025",
-					"game_nick": "MURID TELADAN"
+					"game_nick": "Delaw"
 				},
 				{
 					"full_name": "ludfi yassir adha",
@@ -462,7 +462,7 @@
 					"game_nick": "Votrepeau."
 				},
 				{
-					"full_name": "Ismet naufal",
+					"full_name": "Ismet naufal kusuma",
 					"nip": "2096450307",
 					"join_from": null,
 					"game_id": "39919827",
@@ -488,6 +488,13 @@
 					"join_from": null,
 					"game_id": "8697993",
 					"game_nick": "wawawa"
+				},
+				{
+					"full_name": "Rahmatiar chandra rachim",
+					"nip": "2198750960",
+					"join_from": null,
+					"game_id": "97882484",
+					"game_nick": "HCC.Kichirou"
 				}
 			]
 		},
