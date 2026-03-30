@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-30 11:39:42",
+	"lastupdate": "2026-03-30 14:17:47",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -756,7 +756,7 @@
 			]
 		},
 		{
-			"team_name": "RX",
+			"team_name": "RX Squad",
 			"captain_name": "wandi alfiansyah",
 			"captain_whatsapp": "085266664827",
 			"captain_email": "",
@@ -825,6 +825,13 @@
 					"join_from": null,
 					"game_id": "1053360580",
 					"game_nick": "Kakarot"
+				},
+				{
+					"full_name": "Mohamad Rendy",
+					"nip": "1704070156",
+					"join_from": null,
+					"game_id": "24508401",
+					"game_nick": "Vermilion"
 				}
 			]
 		},
@@ -1524,7 +1531,7 @@
 			]
 		},
 		{
-			"team_name": "BANGJOS es Crot",
+			"team_name": "BANGJOS e Sport",
 			"captain_name": "FIRMANSYAHNISM",
 			"captain_whatsapp": "081330315890",
 			"captain_email": "",
