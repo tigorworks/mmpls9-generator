@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-31 08:45:08",
+	"lastupdate": "2026-03-31 11:30:56",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -877,6 +877,13 @@
 					"join_from": null,
 					"game_id": "57894617 (2095)",
 					"game_nick": "Majesty"
+				},
+				{
+					"full_name": "Andalan Putra Bangsa",
+					"nip": "",
+					"join_from": null,
+					"game_id": "57971568",
+					"game_nick": "reng•Marshall"
 				}
 			]
 		},
