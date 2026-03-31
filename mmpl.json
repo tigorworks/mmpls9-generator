@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-03-31 17:46:12",
+	"lastupdate": "2026-03-31 19:59:04",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -2343,6 +2343,72 @@
 					"join_from": null,
 					"game_id": "1680523656 (18127)",
 					"game_nick": "Cigiro"
+				}
+			]
+		},
+		{
+			"team_name": "Wumbo Wumbo",
+			"captain_name": "Gilang Muharrom",
+			"captain_whatsapp": "087889526260",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Gilang Muharrom",
+					"nip": "2296761430",
+					"join_from": null,
+					"game_id": "44925083",
+					"game_nick": "Snobbyz"
+				},
+				{
+					"full_name": "Surya Budi Haryono",
+					"nip": "1489544890",
+					"join_from": null,
+					"game_id": "400598461",
+					"game_nick": "Embek Super"
+				},
+				{
+					"full_name": "Fikario Dwi Tizanandhi",
+					"nip": "1996714986",
+					"join_from": null,
+					"game_id": "121969045",
+					"game_nick": "Oozone"
+				},
+				{
+					"full_name": "Raisa Luthfiana",
+					"nip": "2503450805",
+					"join_from": null,
+					"game_id": "112217256",
+					"game_nick": "Raicha"
+				},
+				{
+					"full_name": "Muhamad Rizky Nugraha",
+					"nip": "2503852790",
+					"join_from": null,
+					"game_id": "74551937",
+					"game_nick": "BUDIONO SIREGAR"
+				},
+				{
+					"full_name": "Fahmi Hidayatulloh",
+					"nip": "1896070518",
+					"join_from": null,
+					"game_id": "109269383",
+					"game_nick": "Hong's"
+				},
+				{
+					"full_name": "Muhammad Reihand Fadillah",
+					"nip": "2198747107",
+					"join_from": null,
+					"game_id": "102290417",
+					"game_nick": "S&H . Ray~Hunt"
+				},
+				{
+					"full_name": "Muhammad Ilham",
+					"nip": "2297763237",
+					"join_from": null,
+					"game_id": "1096156118",
+					"game_nick": "S&H.awashead"
 				}
 			]
 		}
