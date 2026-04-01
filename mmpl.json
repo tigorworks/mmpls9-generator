@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-01 23:45:18",
+	"lastupdate": "2026-04-02 01:50:40",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -343,15 +343,15 @@
 			"captain_name": "Agus",
 			"captain_whatsapp": "089612311020",
 			"captain_email": "",
-			"logo": false,
-			"idcard": false,
+			"logo": true,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Agustinus Banjarnahor",
 					"nip": "2401810874",
 					"join_from": null,
 					"game_id": "138137591",
-					"game_nick": "Megumi Marbu"
+					"game_nick": "Megumi Marbun"
 				},
 				{
 					"full_name": "Rens Junior Sibarani",
@@ -407,14 +407,7 @@
 					"nip": "2396103752",
 					"join_from": null,
 					"game_id": "979578711",
-					"game_nick": "Naoya Simbolon."
-				},
-				{
-					"full_name": "Tigor M Manurung",
-					"nip": "2187748801",
-					"join_from": null,
-					"game_id": "123151204",
-					"game_nick": "Sukuna Manroe"
+					"game_nick": "Noaya Simbolon."
 				}
 			]
 		},
