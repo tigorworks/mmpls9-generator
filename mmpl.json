@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-01 17:48:21",
+	"lastupdate": "2026-04-01 20:00:30",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -716,14 +716,14 @@
 					"nip": "2304454415",
 					"join_from": null,
 					"game_id": "73737874",
-					"game_nick": "Olipp RVGXTRBN"
+					"game_nick": "Olipp.RVG x TRBN"
 				},
 				{
 					"full_name": "Gilang Ramadan",
 					"nip": "2397531951",
 					"join_from": null,
 					"game_id": "97003820",
-					"game_nick": "Viscount  X  TBRN"
+					"game_nick": "Viscount X TBRN"
 				},
 				{
 					"full_name": "Wawan setiawan",
@@ -1098,7 +1098,7 @@
 			"captain_whatsapp": "081226322256",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Satria Wibowo",
