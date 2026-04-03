@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-03 15:43:10",
+	"lastupdate": "2026-04-03 17:36:26",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1624,6 +1624,13 @@
 					"join_from": null,
 					"game_id": "172049491",
 					"game_nick": "prikkk"
+				},
+				{
+					"full_name": "Robby anggara",
+					"nip": "1695490054",
+					"join_from": null,
+					"game_id": "65264514",
+					"game_nick": "Tiger's f@ngs"
 				}
 			]
 		},
