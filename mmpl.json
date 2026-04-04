@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-04 05:25:36",
+	"lastupdate": "2026-04-04 08:24:34",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -2409,6 +2409,65 @@
 					"join_from": null,
 					"game_id": "1096156118",
 					"game_nick": "S&H.awashead"
+				}
+			]
+		},
+		{
+			"team_name": "Dark Horse",
+			"captain_name": "Joshua",
+			"captain_whatsapp": "089602684395",
+			"captain_email": "",
+			"logo": true,
+			"idcard": true,
+			"members": [
+				{
+					"full_name": "Joshua Rivaldo Gideon Paat",
+					"nip": "2199070205",
+					"join_from": null,
+					"game_id": "102733893",
+					"game_nick": "ᴇʟ • ᴀxxᴢʏ"
+				},
+				{
+					"full_name": "Gerald Dedi",
+					"nip": "1893070123",
+					"join_from": null,
+					"game_id": "110213642",
+					"game_nick": "ᴀxxᴢʏ"
+				},
+				{
+					"full_name": "Imanuel manumpil",
+					"nip": "2102340026",
+					"join_from": null,
+					"game_id": "142704807",
+					"game_nick": "Behh."
+				},
+				{
+					"full_name": "Andre Kairupan",
+					"nip": "911309",
+					"join_from": null,
+					"game_id": "54888212",
+					"game_nick": "MLaw."
+				},
+				{
+					"full_name": "Jeffry Tatangindatu",
+					"nip": "1590320081",
+					"join_from": null,
+					"game_id": "69075699",
+					"game_nick": "NoMercy"
+				},
+				{
+					"full_name": "Markel Selepei",
+					"nip": "2503522847",
+					"join_from": null,
+					"game_id": "657277577",
+					"game_nick": "Qwerty$"
+				},
+				{
+					"full_name": "Rizki Lakoriha",
+					"nip": "2195754411",
+					"join_from": null,
+					"game_id": "212020984",
+					"game_nick": "13021106109"
 				}
 			]
 		}
