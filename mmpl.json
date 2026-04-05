@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-05 13:56:42",
+	"lastupdate": "2026-04-05 15:34:51",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1675,7 +1675,7 @@
 					"nip": "2400826129",
 					"join_from": null,
 					"game_id": "79532258",
-					"game_nick": "MANZ"
+					"game_nick": "MAMZ"
 				},
 				{
 					"full_name": "Muhammad firmansyah",
@@ -2293,7 +2293,7 @@
 			"captain_whatsapp": "082219724977",
 			"captain_email": "",
 			"logo": true,
-			"idcard": false,
+			"idcard": true,
 			"members": [
 				{
 					"full_name": "Rhama Priohartono Mulyana Putra",
@@ -2338,8 +2338,8 @@
 					"game_nick": "Alexturner•"
 				},
 				{
-					"full_name": "Alfian Atma Nugraha",
-					"nip": "031825",
+					"full_name": "Mochamad Andreawan",
+					"nip": "2401071034",
 					"join_from": null,
 					"game_id": "1680523656 (18127)",
 					"game_nick": "Cigiro"
