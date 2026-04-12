@@ -1,5 +1,5 @@
 {
-	"lastupdate": "2026-04-10 07:56:49",
+	"lastupdate": "2026-04-12 19:46:57",
 	"teams": [
 		{
 			"team_name": "MEGAKING : ENDGAME",
@@ -1365,8 +1365,8 @@
 					"full_name": "Intje Moh Rivaldy Ilyas",
 					"nip": "2299001437",
 					"join_from": null,
-					"game_id": "RifalTzy",
-					"game_nick": "64789249"
+					"game_id": "64789249",
+					"game_nick": "RifalTzy"
 				},
 				{
 					"full_name": "Wahyu Zakaria",
@@ -2018,7 +2018,7 @@
 					"full_name": "Gangsar Laksono",
 					"nip": "9608170114",
 					"join_from": null,
-					"game_id": "50012856",
+					"game_id": "64460552",
 					"game_nick": "Sarz X TBRN"
 				}
 			]
