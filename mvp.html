@@ -834,16 +834,18 @@ function processData(rows, lastUpdate){
     const group    = r["Group"]            || "-";
     const match    = r["Match"]            || "";
     const winner   = (r["Winner"]          || "-").trim(); // trim sekali
-    const nickW    = (r["MVP Winner Nick"] || "").trim();
-    const nickL    = (r["MVP Loser Nick"]  || "").trim();
-    const parts    = match.split(VS_RE);
-    const loserTeam = parts.find(t => t.trim() !== winner) || "-"; // winner sudah di-trim
+    const nickW = (r["MVP Winner Nick"] || "").trim();
+    const nickL = (r["MVP Loser Nick"]  || "").trim();
 
     if(nickW){
       if(!players[nickW]) players[nickW] = { nick: nickW, group, team: winner, pts: 0 };
       players[nickW].pts += 2;
     }
+
+    // skip if loser MVP is empty (match recorded as "None" or left blank)
     if(nickL){
+      const parts     = match.split(VS_RE);
+      const loserTeam = parts.find(t => t.trim() !== winner) || "-";
       if(!players[nickL]) players[nickL] = { nick: nickL, group, team: loserTeam, pts: 0 };
       players[nickL].pts += 1;
     }
@@ -877,7 +879,7 @@ function renderTab(tab){
   const colspan = isAll ? 5 : 4;
 
   const list = isAll
-    ? allRanked
+    ? allRanked.slice(0, 15)
     : allRanked.filter(p => p.group === tab);
 
   if(!list.length){ showEmpty(colspan, tab); return; }
