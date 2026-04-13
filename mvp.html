@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -7,9 +7,7 @@
 <title>MVP Input</title>
 
 <style>
-*{
-  box-sizing:border-box; /* 🔥 ini penting biar width konsisten */
-}
+*{box-sizing:border-box;}
 
 body{
   font-family:sans-serif;
@@ -26,9 +24,7 @@ body{
   border-radius:12px;
 }
 
-h3{
-  margin-bottom:15px;
-}
+h3{margin-bottom:15px;}
 
 input, select, textarea, button{
   width:100%;
@@ -41,29 +37,26 @@ input, select, textarea, button{
   font-size:14px;
 }
 
-/* 🔥 Samakan behavior input date */
+/* date fix */
 input[type="date"]{
   appearance:none;
   -webkit-appearance:none;
 }
 
-/* textarea */
-textarea{
-  resize:vertical;
-  min-height:80px;
-}
-
-/* select fix (arrow custom + spacing) */
+/* select arrow */
 select{
   padding-right:40px;
   appearance:none;
   -webkit-appearance:none;
-  -moz-appearance:none;
-
-  background-image:url("data:image/svg+xml;utf8,<svg fill='%239ca3af' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5'/></svg>");
+  background-image:url("data:image/svg+xml;utf8,<svg fill='%239ca3af' height='20' viewBox='0 0 20 20' width='20'><path d='M5 7l5 5 5-5'/></svg>");
   background-repeat:no-repeat;
   background-position:right 12px center;
   background-size:16px;
+}
+
+textarea{
+  min-height:80px;
+  resize:vertical;
 }
 
 button{
@@ -107,7 +100,6 @@ button:disabled{
   <option value="">MVP Loser</option>
 </select>
 
-<!-- 🔥 CATATAN -->
 <textarea id="note" placeholder="Catatan (opsional)"></textarea>
 
 <button id="submitBtn" disabled>Submit</button>
@@ -119,6 +111,8 @@ button:disabled{
 let data = {};
 let matches = [];
 
+const SCRIPT_URL = "YOUR_SCRIPT_URL"; // 🔥 GANTI
+
 const GROUP_MAP = {
   A:["LUCTARI","Panthera","Happy family","HUMBLE TEAM","Warteg Berkah Jaya","Crown X Sulawesi E-sport","BTRB","166 JKT","Dark Horse"],
   B:["Taoism","TBRN FURY","RX Squad","Royal One","ASPAL Reignite","170 PARES","Sikat Miring e-Sport","Aura Farming.PKU108","Gatsu E-sports"],
@@ -126,9 +120,9 @@ const GROUP_MAP = {
   D:["MEGAKING : ENDGAME","BGST","EJS REBORN","Thunder Redeb","Komodo Komando","TBRN RAVAGER","BANGJOS e Sport","Blackout Renegades","MBG Squad Region XII Papua","Wumbo Wumbo"]
 };
 
-document.getElementById("tanggal").value = new Date().toISOString().split('T')[0];
+tanggal.value = new Date().toISOString().split('T')[0];
 
-// load JSON
+// LOAD DATA
 fetch("mmpl.json")
 .then(r=>r.json())
 .then(res=>{
@@ -136,18 +130,16 @@ fetch("mmpl.json")
   initGroup();
 });
 
-// init group
+// INIT GROUP
 function initGroup(){
-  let g = document.getElementById("group");
-
-  Object.keys(GROUP_MAP).forEach(x=>{
-    g.add(new Option("Group "+x,x));
+  Object.keys(GROUP_MAP).forEach(g=>{
+    group.add(new Option("Group "+g, g));
   });
 
-  g.onchange = onGroupChange;
+  group.onchange = onGroupChange;
 }
 
-// generate match
+// GENERATE MATCH
 function genMatch(teams){
   let m=[];
   for(let i=0;i<teams.length;i++){
@@ -158,64 +150,58 @@ function genMatch(teams){
   return m;
 }
 
-// group change
+// GROUP CHANGE
 function onGroupChange(){
 
   reset(["match","winner","mvpWinner","mvpLoser"]);
 
-  let group = document.getElementById("group").value;
-  if(!group) return;
+  if(!group.value) return;
 
-  matches = genMatch(GROUP_MAP[group]);
+  matches = genMatch(GROUP_MAP[group.value]);
 
-  let el = document.getElementById("match");
-  el.disabled=false;
+  match.disabled=false;
 
   matches.forEach((m,i)=>{
-    el.add(new Option(m.t1+" vs "+m.t2, i));
+    match.add(new Option(m.t1+" vs "+m.t2, i));
   });
 
-  el.onchange = onMatchChange;
+  match.onchange = onMatchChange;
 }
 
-// match change
+// MATCH CHANGE
 function onMatchChange(){
 
   reset(["winner","mvpWinner","mvpLoser"]);
 
-  let idx = document.getElementById("match").value;
-  if(idx==="") return;
+  if(match.value==="") return;
 
-  let m = matches[idx];
+  let m = matches[match.value];
 
-  let el = document.getElementById("winner");
-  el.disabled=false;
+  winner.disabled=false;
 
-  el.add(new Option(m.t1,m.t1));
-  el.add(new Option(m.t2,m.t2));
+  winner.add(new Option(m.t1,m.t1));
+  winner.add(new Option(m.t2,m.t2));
 
-  el.onchange = onWinnerChange;
+  winner.onchange = onWinnerChange;
 }
 
-// winner change
+// WINNER CHANGE
 function onWinnerChange(){
 
   reset(["mvpWinner","mvpLoser"]);
 
-  let idx = document.getElementById("match").value;
-  let win = document.getElementById("winner").value;
-  if(!win) return;
+  if(!winner.value) return;
 
-  let m = matches[idx];
-  let lose = (win===m.t1)?m.t2:m.t1;
+  let m = matches[match.value];
+  let loser = (winner.value===m.t1)?m.t2:m.t1;
 
-  fillPlayers("mvpWinner", win);
-  fillPlayers("mvpLoser", lose);
+  fillPlayers("mvpWinner", winner.value);
+  fillPlayers("mvpLoser", loser);
 
   validate();
 }
 
-// fill player
+// FILL PLAYER (🔥 ID + NICK)
 function fillPlayers(id, team){
 
   let el = document.getElementById(id);
@@ -224,13 +210,16 @@ function fillPlayers(id, team){
   let t = data.teams.find(x=>x.team_name===team);
 
   t.members.forEach(p=>{
-    el.add(new Option(p.game_nick,p.game_nick));
+    let opt = document.createElement("option");
+    opt.value = p.id;                // 🔥 ID
+    opt.text = p.game_nick;          // 🔥 NICK
+    el.appendChild(opt);
   });
 
   el.onchange = validate;
 }
 
-// reset
+// RESET
 function reset(ids){
   ids.forEach(id=>{
     let el = document.getElementById(id);
@@ -239,7 +228,7 @@ function reset(ids){
   });
 }
 
-// validate
+// VALIDATE
 function validate(){
 
   let valid =
@@ -249,25 +238,36 @@ function validate(){
     mvpWinner.value &&
     mvpLoser.value;
 
-  document.getElementById("submitBtn").disabled = !valid;
+  submitBtn.disabled = !valid;
 }
 
-// submit
-document.getElementById("submitBtn").onclick=function(){
+// SUBMIT
+submitBtn.onclick = async function(){
 
   let m = matches[match.value];
 
-  console.log({
-    tanggal:tanggal.value,
-    group:group.value,
-    match:m.t1+" vs "+m.t2,
-    winner:winner.value,
-    mvp_winner:mvpWinner.value,
-    mvp_loser:mvpLoser.value,
-    note:document.getElementById("note").value
+  let payload = {
+    tanggal: tanggal.value,
+    group: group.value,
+    match: m.t1+" vs "+m.t2,
+    winner: winner.value,
+
+    mvp_winner_id: mvpWinner.value,
+    mvp_winner_name: mvpWinner.options[mvpWinner.selectedIndex].text,
+
+    mvp_loser_id: mvpLoser.value,
+    mvp_loser_name: mvpLoser.options[mvpLoser.selectedIndex].text,
+
+    note: note.value
+  };
+
+  await fetch(SCRIPT_URL, {
+    method:"POST",
+    body: JSON.stringify(payload)
   });
 
-  alert("OK");
+  alert("Data berhasil disimpan!");
+
 };
 
 </script>
