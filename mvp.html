@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MMPL S9 - MVP LEADERBOARD</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -81,6 +82,26 @@ body::before {
   font-size: 13px;
   color: #4b5563;
   letter-spacing: .3px;
+}
+
+.hero-datetime {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  font-size: 12px;
+  font-weight: 500;
+  color: #4b5563;
+  letter-spacing: .4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-datetime .dt-sep {
+  color: rgba(255,255,255,.12);
 }
 
 /* ── tabs ── */
@@ -411,6 +432,36 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
   color: var(--gold);
 }
 
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: #4b5563;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+
+.print-btn:hover {
+  background: rgba(255,255,255,.08);
+  color: var(--bright);
+  border-color: rgba(255,255,255,.18);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .refresh-btn {
   display: inline-flex;
   align-items: center;
@@ -595,6 +646,61 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
   /* page footer */
   .page-footer { margin-top: 18px; }
+
+}
+
+/* ── capture mode (html2canvas overrides) ── */
+body.is-capturing {
+  background-image: none !important;
+}
+
+body.is-capturing::before {
+  display: none !important;
+}
+
+body.is-capturing .container {
+  background: #07090f;
+  padding: 32px 24px 40px;
+}
+
+/* solid gold instead of gradient clip (unsupported by html2canvas) */
+body.is-capturing .hero h1 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: #f59e0b !important;
+  color: #f59e0b !important;
+}
+
+/* remove all blur / glass — replace with solid dark bg */
+body.is-capturing .tabs {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #0d1525 !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+
+body.is-capturing .panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #0d1525 !important;
+}
+
+body.is-capturing .hero-datetime {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,.05) !important;
+}
+
+body.is-capturing .page-footer-inner {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #0d1525 !important;
+}
+
+/* hide the download button itself from the capture */
+body.is-capturing #captureBtn {
+  display: none !important;
 }
 
 </style>
@@ -606,6 +712,11 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
   <div class="hero">
     <span class="hero-eyebrow">MMPL Season 9</span>
     <h1>MVP Leaderboard</h1>
+    <div class="hero-datetime" id="liveClock">
+      <span id="clockDate"></span>
+      <span class="dt-sep">|</span>
+      <span id="clockTime"></span>
+    </div>
   </div>
 
   <div class="tabs" id="tabs">
@@ -653,10 +764,16 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
     <div class="footer-bar">
       <span class="last-update" id="lastUpdate"></span>
-      <a class="source-link" href="https://docs.google.com/spreadsheets/d/1wOcrpZGuv5PDs_H970w-MMKHW1MLk04Mbb2TWbaXXPA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Source Data
-      </a>
+      <div class="footer-right">
+        <button class="print-btn" id="captureBtn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </button>
+        <a class="source-link" href="https://docs.google.com/spreadsheets/d/1wOcrpZGuv5PDs_H970w-MMKHW1MLk04Mbb2TWbaXXPA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Source Data
+        </a>
+      </div>
     </div>
   </div>
 
@@ -879,6 +996,74 @@ function showEmpty(colspan = 5, tab){
 }
 
 loadData();
+
+// ── live clock ──────────────────────────────────────────────────
+const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function tickClock(){
+  const now = new Date();
+  const day   = DAY_NAMES[now.getDay()];
+  const date  = now.getDate();
+  const month = MONTH_NAMES[now.getMonth()];
+  const year  = now.getFullYear();
+  const hh    = String(now.getHours()).padStart(2,"0");
+  const mm    = String(now.getMinutes()).padStart(2,"0");
+  const ss    = String(now.getSeconds()).padStart(2,"0");
+  document.getElementById("clockDate").textContent = `${day}, ${date} ${month} ${year}`;
+  document.getElementById("clockTime").textContent = `${hh}:${mm}:${ss}`;
+}
+tickClock();
+
+// ── capture & download image ─────────────────────────────────────
+const DOWNLOAD_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const CLOCK_ICON   = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
+
+document.getElementById("captureBtn").addEventListener("click", async function(){
+  const btn = this;
+  btn.disabled = true;
+  btn.innerHTML = `${CLOCK_ICON} Capturing…`;
+
+  // Apply capture-mode: removes backdrop-filter, gradient text, fixed overlay
+  document.body.classList.add("is-capturing");
+
+  // Wait for fonts and a reflow tick
+  await document.fonts.ready;
+  await new Promise(r => setTimeout(r, 120));
+
+  try {
+    const target = document.querySelector(".container");
+    const W = target.scrollWidth;
+    const H = target.scrollHeight;
+
+    const canvas = await html2canvas(target, {
+      backgroundColor: "#07090f",
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      width:  W,
+      height: H,
+      windowWidth:  W,
+      windowHeight: H
+    });
+
+    const now = new Date();
+    const stamp = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}${String(now.getDate()).padStart(2,"0")}_${String(now.getHours()).padStart(2,"0")}${String(now.getMinutes()).padStart(2,"0")}`;
+    const link = document.createElement("a");
+    link.download = `mvp-leaderboard-${stamp}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch(e) {
+    alert("Failed to capture. Please try again.");
+  } finally {
+    document.body.classList.remove("is-capturing");
+    btn.disabled = false;
+    btn.innerHTML = `${DOWNLOAD_ICON} Download`;
+  }
+});
 
 </script>
 </body>
