@@ -15,17 +15,16 @@
   --silver: #cbd5e1;
   --bronze: #cd7f32;
   --blue:   #60a5fa;
-  --dim:    #4b5563;   /* non-ranked text */
-  --bright: #f1f5f9;   /* rank 1-3 text   */
+  --dim:    #4b5563;
+  --bright: #f1f5f9;
 }
 
-/* ── background + overlay ── */
 body {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   background: #07090f url('bg.png') center center / 63% auto no-repeat fixed;
   color: var(--bright);
   min-height: 100vh;
-  padding: 52px 16px 72px;
+  padding: 48px 16px 72px;
 }
 
 body::before {
@@ -37,7 +36,6 @@ body::before {
   z-index: 0;
 }
 
-/* ── layout ── */
 .container {
   position: relative;
   z-index: 1;
@@ -55,14 +53,14 @@ body::before {
 
 .hero-eyebrow {
   display: inline-block;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold);
   border: 1px solid rgba(245,158,11,.3);
   background: rgba(245,158,11,.06);
-  padding: 5px 16px;
+  padding: 7px 20px;
   border-radius: 100px;
   margin-bottom: 14px;
 }
@@ -85,6 +83,46 @@ body::before {
   letter-spacing: .3px;
 }
 
+/* ── tabs ── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: rgba(10,14,26,.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  padding: 5px;
+}
+
+.tab {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+
+.tab:hover:not(.active) {
+  background: rgba(255,255,255,.05);
+  color: #94a3b8;
+}
+
+.tab.active {
+  background: rgba(245,158,11,.12);
+  color: var(--gold);
+  border-color: rgba(245,158,11,.22);
+}
+
 /* ── glass panel ── */
 .panel {
   background: rgba(10,14,26,.55);
@@ -99,17 +137,13 @@ body::before {
     inset 0 1px 0 rgba(255,255,255,.05);
 }
 
-/* scroll on small screens */
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 /* ── table ── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+table { width: 100%; border-collapse: collapse; }
 
 thead tr {
   background: rgba(255,255,255,.04);
@@ -130,7 +164,6 @@ thead th {
 thead th:first-child { text-align: center; width: 56px; }
 thead th:last-child  { text-align: center; }
 
-/* ── regular rows (non top-3) ── */
 tbody tr {
   border-bottom: 1px solid rgba(255,255,255,.05);
   transition: background .15s;
@@ -138,7 +171,7 @@ tbody tr {
 
 tbody tr:last-child { border-bottom: none; }
 
-tbody tr:not(.rank-1):not(.rank-2):not(.rank-3):hover {
+tbody tr:not(.rank-1):not(.rank-2):not(.rank-3):not(.divider-row):hover {
   background: rgba(255,255,255,.03);
 }
 
@@ -146,7 +179,7 @@ tbody td {
   padding: 13px 18px;
   font-size: 14px;
   vertical-align: middle;
-  color: var(--dim);          /* muted for non-ranked */
+  color: var(--dim);
 }
 
 tbody td:first-child {
@@ -157,7 +190,6 @@ tbody td:first-child {
   width: 56px;
 }
 
-/* group badge */
 .badge-group {
   display: inline-flex;
   align-items: center;
@@ -172,14 +204,12 @@ tbody td:first-child {
   border: 1px solid rgba(96,165,250,.18);
 }
 
-/* team name */
 .team-name {
   font-size: 12px;
   font-weight: 500;
   color: var(--dim);
 }
 
-/* player cell */
 .player-cell {
   display: flex;
   align-items: center;
@@ -208,7 +238,6 @@ tbody td:first-child {
   color: var(--dim);
 }
 
-/* points badge (default) */
 .pts {
   display: inline-flex;
   align-items: center;
@@ -221,16 +250,9 @@ tbody td:first-child {
   background: rgba(255,255,255,.05);
   color: #4b5563;
   border: 1px solid rgba(255,255,255,.08);
-  letter-spacing: .3px;
 }
 
-/* ── top 3 rows ── */
-tbody tr.rank-1,
-tbody tr.rank-2,
-tbody tr.rank-3 {
-  position: relative;
-}
-
+/* ── top 3 ── */
 tbody tr.rank-1 {
   background: linear-gradient(90deg, rgba(245,158,11,.18) 0%, rgba(245,158,11,.05) 55%, transparent 100%);
   box-shadow: inset 4px 0 0 var(--gold);
@@ -245,10 +267,9 @@ tbody tr.rank-3 {
 }
 
 tbody tr.rank-1:hover { background: linear-gradient(90deg, rgba(245,158,11,.26) 0%, rgba(245,158,11,.08) 55%, transparent 100%); }
-tbody tr.rank-2:hover { background: linear-gradient(90deg, rgba(203,213,225,.2)  0%, rgba(203,213,225,.06) 55%, transparent 100%); }
-tbody tr.rank-3:hover { background: linear-gradient(90deg, rgba(205,127,50,.22)  0%, rgba(205,127,50,.06) 55%, transparent 100%); }
+tbody tr.rank-2:hover { background: linear-gradient(90deg, rgba(203,213,225,.20) 0%, rgba(203,213,225,.06) 55%, transparent 100%); }
+tbody tr.rank-3:hover { background: linear-gradient(90deg, rgba(205,127,50,.22) 0%, rgba(205,127,50,.06) 55%, transparent 100%); }
 
-/* top 3 text — bright + larger */
 tbody tr.rank-1 td,
 tbody tr.rank-2 td,
 tbody tr.rank-3 td { font-size: 15px; color: var(--bright); }
@@ -263,7 +284,7 @@ tbody tr.rank-3 .player-name { font-size: 16px; font-weight: 700; color: var(--b
 
 tbody tr.rank-1 .team-name,
 tbody tr.rank-2 .team-name,
-tbody tr.rank-3 .team-name { font-size: 13px; color: rgba(241,245,249,.7); }
+tbody tr.rank-3 .team-name { font-size: 13px; color: rgba(241,245,249,.65); }
 
 tbody tr.rank-1 .player-avatar,
 tbody tr.rank-2 .player-avatar,
@@ -271,12 +292,18 @@ tbody tr.rank-3 .player-avatar { color: var(--bright); background: rgba(255,255,
 
 .rank-medal { font-size: 20px; line-height: 1; }
 
-/* pts per rank */
 tbody tr.rank-1 .pts { background: rgba(245,158,11,.2);  border-color: rgba(245,158,11,.45); color: #fde68a; font-size: 14px; }
 tbody tr.rank-2 .pts { background: rgba(203,213,225,.14); border-color: rgba(203,213,225,.35); color: #e2e8f0; font-size: 14px; }
-tbody tr.rank-3 .pts { background: rgba(205,127,50,.18);  border-color: rgba(205,127,50,.4);  color: #fcd9a0; font-size: 14px; }
+tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,127,50,.4);  color: #fcd9a0; font-size: 14px; }
 
-/* ── empty / loading states ── */
+/* ── divider top 10 ── */
+.divider-row td {
+  padding: 0 !important;
+  height: 0;
+  border-bottom: 1px dashed rgba(245,158,11,.2) !important;
+}
+
+/* ── state rows ── */
 .state-row td {
   padding: 64px 20px;
   text-align: center;
@@ -358,103 +385,72 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18);  border-color: rgba(205
     <h1>MVP Leaderboard</h1>
   </div>
 
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="all">All</button>
+    <button class="tab" data-tab="A">Group A</button>
+    <button class="tab" data-tab="B">Group B</button>
+    <button class="tab" data-tab="C">Group C</button>
+    <button class="tab" data-tab="D">Group D</button>
+  </div>
+
   <div class="panel">
     <div class="table-scroll">
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Group</th>
-          <th>Tim</th>
-          <th>Nama Player</th>
-          <th style="text-align:center">Poin</th>
-        </tr>
-      </thead>
-      <tbody id="tbody">
-        <tr class="state-row">
-          <td colspan="5">
-            <div class="spinner"></div>
-            <span class="state-label">Memuat data...</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Group</th>
+            <th>Tim</th>
+            <th>Nama Player</th>
+            <th style="text-align:center">Poin</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="state-row">
+            <td colspan="5">
+              <div class="spinner"></div>
+              <span class="state-label">Memuat data...</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="footer-bar">
       <span class="last-update" id="lastUpdate"></span>
-      <button class="refresh-btn" onclick="loadData()">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 8a7 7 0 1 0 1.17-3.9"/>
-          <path d="M1 2.5V5.5h3"/>
-        </svg>
-        Refresh
-      </button>
     </div>
   </div>
 
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6jyf6DSGJ3VP-F1eo8se235t39liUXyB6q--zNZE2T8UpNl4DA/exec";
 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6jyf6DSGJ3VP-F1eo8se235t39liUXyB6q--zNZE2T8UpNl4DA/exec";
 const MEDALS = ["🥇","🥈","🥉"];
 
-function initials(name){
-  return name ? name.trim().charAt(0).toUpperCase() : "?";
-}
+let allRanked = [];
+let activeTab = "all";
 
 function loadData(){
-  const tbody = document.getElementById("tbody");
-  tbody.innerHTML = `
-    <tr class="state-row">
-      <td colspan="5">
-        <div class="spinner"></div>
-        <span class="state-label">Memuat data...</span>
-      </td>
-    </tr>`;
-
+  showLoading();
   fetch(SCRIPT_URL)
-    .then(r => {
-      if(!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
+    .then(r => { if(!r.ok) throw new Error(); return r.json(); })
     .then(parsed => {
-      const res = Array.isArray(parsed) ? { data: parsed } : parsed;
-      renderTable(res);
+      const rows = Array.isArray(parsed) ? parsed : (parsed.data || []);
+      processData(rows, parsed.lastUpdate || "");
     })
-    .catch(() => {
-      tbody.innerHTML = stateRow("⚠", "Gagal memuat data. Coba refresh.");
-    });
+    .catch(() => showError());
 }
 
-function stateRow(icon, label){
-  return `<tr class="state-row"><td colspan="5">
-    <span class="state-icon">${icon}</span>
-    <span class="state-label">${label}</span>
-  </td></tr>`;
-}
-
-function renderTable(res){
-  const tbody = document.getElementById("tbody");
-  const rows  = res.data || [];
-
-  if(!rows.length){
-    tbody.innerHTML = stateRow("🏆", "Belum ada data MVP.");
-    return;
-  }
-
-  // ── Agregasi poin per player ──────────────────────────────────────────
-  // MVP Winner Nick = 2 poin, MVP Loser Nick = 1 poin
-  const players = {};  // key: nick
+function processData(rows, lastUpdate){
+  const players = {};
 
   rows.forEach(r => {
-    const group     = r["Group"]           || "-";
-    const match     = r["Match"]           || "";
-    const winner    = r["Winner"]          || "-";
+    const group     = r["Group"]            || "-";
+    const match     = r["Match"]            || "";
+    const winner    = r["Winner"]           || "-";
     const nickW     = (r["MVP Winner Nick"] || "").trim();
     const nickL     = (r["MVP Loser Nick"]  || "").trim();
-
     const parts     = match.split(/\s+vs\s+/i);
     const loserTeam = parts.find(t => t.trim() !== winner.trim()) || "-";
 
@@ -468,20 +464,41 @@ function renderTable(res){
     }
   });
 
-  // ── Sort: poin desc, lalu nama asc ───────────────────────────────────
-  const ranked = Object.values(players).sort((a, b) =>
+  allRanked = Object.values(players).sort((a, b) =>
     b.pts !== a.pts ? b.pts - a.pts : a.nick.localeCompare(b.nick)
   );
 
-  // ── Render ───────────────────────────────────────────────────────────
+  document.getElementById("lastUpdate").textContent =
+    lastUpdate ? "Update terakhir: " + lastUpdate : "";
+
+  renderTab(activeTab);
+}
+
+function renderTab(tab){
+  activeTab = tab;
+  const isAll = tab === "all";
+
+  // filter per group, re-rank within group
+  const list = isAll
+    ? allRanked
+    : allRanked.filter(p => p.group === tab);
+
+  if(!list.length){ showEmpty(); return; }
+
+  const tbody = document.getElementById("tbody");
   let html = "";
-  ranked.forEach((p, i) => {
-    const rank  = i + 1;
-    const medal = MEDALS[i] || "";
-    const cls   = rank <= 3 ? ` class="rank-${rank}"` : "";
-    const noCell = medal
-      ? `<span class="rank-medal">${medal}</span>`
-      : rank;
+
+  list.forEach((p, i) => {
+    const rank   = i + 1;
+    const isTop3 = rank <= 3;
+    const medal  = MEDALS[i] || "";
+    const cls    = isTop3 ? ` class="rank-${rank}"` : "";
+    const noCell = medal ? `<span class="rank-medal">${medal}</span>` : rank;
+
+    // dashed divider after top 10 on All tab
+    if(isAll && rank === 11){
+      html += `<tr class="divider-row"><td colspan="5"></td></tr>`;
+    }
 
     html += `<tr${cls}>
       <td>${noCell}</td>
@@ -498,13 +515,44 @@ function renderTable(res){
   });
 
   tbody.innerHTML = html;
+}
 
-  document.getElementById("lastUpdate").textContent =
-    res.lastUpdate ? "Update terakhir: " + res.lastUpdate : "";
+document.getElementById("tabs").addEventListener("click", e => {
+  const btn = e.target.closest(".tab");
+  if(!btn) return;
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  allRanked.length ? renderTab(btn.dataset.tab) : (activeTab = btn.dataset.tab);
+});
+
+function initials(name){ return name ? name.trim().charAt(0).toUpperCase() : "?"; }
+
+function showLoading(){
+  document.getElementById("tbody").innerHTML = `
+    <tr class="state-row"><td colspan="5">
+      <div class="spinner"></div>
+      <span class="state-label">Memuat data...</span>
+    </td></tr>`;
+}
+
+function showError(){
+  document.getElementById("tbody").innerHTML = `
+    <tr class="state-row"><td colspan="5">
+      <span class="state-icon">⚠</span>
+      <span class="state-label">Gagal memuat data. Coba refresh.</span>
+    </td></tr>`;
+}
+
+function showEmpty(){
+  document.getElementById("tbody").innerHTML = `
+    <tr class="state-row"><td colspan="5">
+      <span class="state-icon">🏆</span>
+      <span class="state-label">Belum ada data MVP.</span>
+    </td></tr>`;
 }
 
 loadData();
-</script>
 
+</script>
 </body>
 </html>
