@@ -205,7 +205,7 @@ function onWinnerChange(){
   validate();
 }
 
-// 🔥 DEBUG PLAYER (NAMA + ID)
+// 🔥 FINAL CLEAN VERSION
 function fillPlayers(id, team){
 
   let el = document.getElementById(id);
@@ -213,22 +213,12 @@ function fillPlayers(id, team){
 
   let t = data.teams.find(x => x.team_name === team);
 
-  if(!t){
-    debug("❌ team tidak ditemukan: " + team);
-    return;
-  }
-
   t.members.forEach(p => {
-
-    let playerId = p.game_id;
-    let playerName = p.game_nick;
-
-    debug("PLAYER: " + playerName + " | ID: " + playerId);
 
     let opt = document.createElement("option");
 
-    opt.value = playerId;
-    opt.text = playerName + " - " + playerId; // 🔥 tampilkan
+    opt.value = p.game_id;   // ✔ ID tetap dikirim
+    opt.text  = p.game_nick; // ✔ hanya tampil nama
 
     el.appendChild(opt);
   });
