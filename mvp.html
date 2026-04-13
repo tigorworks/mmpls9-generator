@@ -8,17 +8,67 @@
 
 <style>
 *{box-sizing:border-box;}
-body{font-family:sans-serif;background:#0f172a;color:#fff;padding:20px;}
-.card{max-width:500px;margin:auto;background:#111827;padding:20px;border-radius:12px;}
-input,select,textarea,button{
-  width:100%;padding:12px;margin-bottom:12px;border-radius:8px;
-  border:1px solid #374151;background:#020617;color:#fff;
+
+body{
+  font-family:sans-serif;
+  background:#0f172a;
+  color:#fff;
+  padding:20px;
 }
-button{background:#f59e0b;border:none;}
-button:disabled{background:#555;}
+
+.card{
+  max-width:520px;
+  margin:auto;
+  background:#111827;
+  padding:20px;
+  border-radius:12px;
+}
+
+h3{margin-bottom:15px;}
+
+input,select,textarea,button{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:1px solid #374151;
+  background:#020617;
+  color:#fff;
+  font-size:14px;
+}
+
+/* Safari fix */
+select{
+  appearance:none;
+  -webkit-appearance:none;
+  padding-right:42px;
+  background-image:url("data:image/svg+xml;utf8,<svg fill='%239ca3af' height='20' viewBox='0 0 20 20' width='20'><path d='M5 7l5 5 5-5'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+}
+
+textarea{
+  min-height:80px;
+}
+
+button{
+  background:#f59e0b;
+  border:none;
+  cursor:pointer;
+}
+
+button:disabled{
+  background:#555;
+  cursor:not-allowed;
+}
+
 #debug{
-  font-size:12px;color:#22c55e;background:#020617;
-  padding:10px;border-radius:8px;white-space:pre-line;
+  font-size:12px;
+  color:#22c55e;
+  background:#020617;
+  padding:10px;
+  border-radius:8px;
+  white-space:pre-line;
 }
 </style>
 </head>
@@ -31,11 +81,25 @@ button:disabled{background:#555;}
 
 <input type="date" id="tanggal">
 
-<select id="group"><option value="">Pilih Group</option></select>
-<select id="match" disabled><option value="">Pilih Match</option></select>
-<select id="winner" disabled><option value="">Pilih Winner</option></select>
-<select id="mvpWinner" disabled><option value="">MVP Winner</option></select>
-<select id="mvpLoser" disabled><option value="">MVP Loser</option></select>
+<select id="group">
+  <option value="">Pilih Group</option>
+</select>
+
+<select id="match" disabled>
+  <option value="">Pilih Match</option>
+</select>
+
+<select id="winner" disabled>
+  <option value="">Pilih Winner</option>
+</select>
+
+<select id="mvpWinner" disabled>
+  <option value="">MVP Winner</option>
+</select>
+
+<select id="mvpLoser" disabled>
+  <option value="">MVP Loser</option>
+</select>
 
 <textarea id="note" placeholder="Catatan"></textarea>
 
@@ -49,9 +113,12 @@ button:disabled{background:#555;}
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOKRx_aYDK2wpaXVBMjy2vMlVf5cVB5Mhr3NYY8Ckp5ef6HCqJnhbJTHeq4AI0hWGBvw/exec";
 
-let data={}, matches=[];
+let data = {};
+let matches = [];
 
-const debug = msg => document.getElementById("debug").innerText += "\n"+msg;
+const debug = msg => {
+  document.getElementById("debug").innerText += "\n" + msg;
+};
 
 const GROUP_MAP = {
   A:["LUCTARI","Panthera","Happy family","HUMBLE TEAM","Warteg Berkah Jaya","Crown X Sulawesi E-sport","BTRB","166 JKT","Dark Horse"],
@@ -62,104 +129,120 @@ const GROUP_MAP = {
 
 tanggal.value = new Date().toISOString().split('T')[0];
 
-// LOAD JSON
+// LOAD DATA
 fetch("mmpl.json")
 .then(r=>r.json())
 .then(res=>{
-  data=res;
-  debug("✅ JSON loaded");
+  data = res;
+  debug("✅ mmpl.json loaded");
   initGroup();
 })
-.catch(()=>debug("❌ gagal load JSON"));
+.catch(err=>{
+  debug("❌ gagal load JSON");
+});
 
 // INIT GROUP
 function initGroup(){
   Object.keys(GROUP_MAP).forEach(g=>{
-    group.add(new Option("Group "+g,g));
+    group.add(new Option("Group "+g, g));
   });
-  group.onchange=onGroupChange;
+  group.onchange = onGroupChange;
 }
 
-// MATCH GEN
-function genMatch(t){
+// GENERATE MATCH
+function genMatch(teams){
   let m=[];
-  for(let i=0;i<t.length;i++){
-    for(let j=i+1;j<t.length;j++){
-      m.push({t1:t[i],t2:t[j]});
+  for(let i=0;i<teams.length;i++){
+    for(let j=i+1;j<teams.length;j++){
+      m.push({t1:teams[i],t2:teams[j]});
     }
   }
   return m;
 }
 
+// GROUP CHANGE
 function onGroupChange(){
-  reset(["match","winner","mvpWinner","mvpLoser"]);
-  if(!group.value)return;
 
-  matches=genMatch(GROUP_MAP[group.value]);
+  reset(["match","winner","mvpWinner","mvpLoser"]);
+
+  if(!group.value) return;
+
+  matches = genMatch(GROUP_MAP[group.value]);
+
   match.disabled=false;
 
   matches.forEach((m,i)=>{
-    match.add(new Option(m.t1+" vs "+m.t2,i));
+    match.add(new Option(m.t1+" vs "+m.t2, i));
   });
 
-  match.onchange=onMatchChange;
+  match.onchange = onMatchChange;
 }
 
+// MATCH CHANGE
 function onMatchChange(){
-  reset(["winner","mvpWinner","mvpLoser"]);
-  if(match.value==="")return;
 
-  let m=matches[match.value];
+  reset(["winner","mvpWinner","mvpLoser"]);
+
+  if(match.value==="") return;
+
+  let m = matches[match.value];
+
   winner.disabled=false;
 
   winner.add(new Option(m.t1,m.t1));
   winner.add(new Option(m.t2,m.t2));
 
-  winner.onchange=onWinnerChange;
+  winner.onchange = onWinnerChange;
 }
 
+// WINNER CHANGE
 function onWinnerChange(){
+
   reset(["mvpWinner","mvpLoser"]);
-  if(!winner.value)return;
 
-  let m=matches[match.value];
-  let loser=(winner.value===m.t1)?m.t2:m.t1;
+  if(!winner.value) return;
 
-  fillPlayers("mvpWinner",winner.value);
-  fillPlayers("mvpLoser",loser);
+  let m = matches[match.value];
+  let loser = (winner.value===m.t1)?m.t2:m.t1;
+
+  fillPlayers("mvpWinner", winner.value);
+  fillPlayers("mvpLoser", loser);
 
   validate();
 }
 
-// 🔥 FIX ID DI SINI
-function fillPlayers(id,team){
+// 🔥 FIX FINAL: pakai game_id
+function fillPlayers(id, team){
 
-  let el=document.getElementById(id);
+  let el = document.getElementById(id);
   el.disabled=false;
 
-  let t=data.teams.find(x=>x.team_name===team);
+  let t = data.teams.find(x=>x.team_name===team);
 
   t.members.forEach(p=>{
-    let playerId = p.id || p.player_id || p.uid || p.game_nick; // fallback
 
-    let opt=document.createElement("option");
-    opt.value=playerId;
-    opt.text=p.game_nick;
+    let cleanId = p.game_id.split(" ")[0]; // 🔥 bersihkan ID
+
+    let opt = document.createElement("option");
+    opt.value = cleanId;
+    opt.text = p.game_nick;
 
     el.appendChild(opt);
   });
 
-  el.onchange=validate;
+  el.onchange = validate;
 }
 
+// RESET
 function reset(ids){
   ids.forEach(id=>{
-    let el=document.getElementById(id);
-    el.innerHTML='<option value="">Pilih</option>';
-    el.disabled=true;
+    let el = document.getElementById(id);
+    el.innerHTML = '<option value="">Pilih</option>';
+    el.disabled = true;
   });
 }
 
+// VALIDATE
 function validate(){
   submitBtn.disabled = !(
     group.value &&
@@ -171,25 +254,25 @@ function validate(){
 }
 
 // SUBMIT
-submitBtn.onclick=async function(){
+submitBtn.onclick = async function(){
 
-  debug("🔥 submit ditekan");
+  debug("🔥 submit");
 
-  let m=matches[match.value];
+  let m = matches[match.value];
 
-  let payload={
-    tanggal:tanggal.value,
-    group:group.value,
-    match:m.t1+" vs "+m.t2,
-    winner:winner.value,
+  let payload = {
+    tanggal: tanggal.value,
+    group: group.value,
+    match: m.t1+" vs "+m.t2,
+    winner: winner.value,
 
-    mvp_winner_id:mvpWinner.value,
-    mvp_winner_name:mvpWinner.options[mvpWinner.selectedIndex].text,
+    mvp_winner_id: mvpWinner.value,
+    mvp_winner_name: mvpWinner.options[mvpWinner.selectedIndex].text,
 
-    mvp_loser_id:mvpLoser.value,
-    mvp_loser_name:mvpLoser.options[mvpLoser.selectedIndex].text,
+    mvp_loser_id: mvpLoser.value,
+    mvp_loser_name: mvpLoser.options[mvpLoser.selectedIndex].text,
 
-    note:note.value
+    note: note.value
   };
 
   debug("📦 "+JSON.stringify(payload));
@@ -201,9 +284,10 @@ submitBtn.onclick=async function(){
     });
 
     debug("✅ tersimpan");
-    alert("Berhasil!");
+    alert("Berhasil disimpan!");
   }catch(e){
     debug("❌ "+e);
+    alert("Gagal kirim data");
   }
 };
 
