@@ -394,6 +394,23 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
   letter-spacing: .3px;
 }
 
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  text-decoration: none;
+  letter-spacing: .3px;
+  transition: color .15s;
+  white-space: nowrap;
+}
+
+.source-link:hover {
+  color: var(--gold);
+}
+
 .refresh-btn {
   display: inline-flex;
   align-items: center;
@@ -636,6 +653,10 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
     <div class="footer-bar">
       <span class="last-update" id="lastUpdate"></span>
+      <a class="source-link" href="https://docs.google.com/spreadsheets/d/1wOcrpZGuv5PDs_H970w-MMKHW1MLk04Mbb2TWbaXXPA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Source Data
+      </a>
     </div>
   </div>
 
