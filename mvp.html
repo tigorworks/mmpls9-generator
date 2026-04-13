@@ -834,20 +834,24 @@ function processData(rows, lastUpdate){
     const group    = r["Group"]            || "-";
     const match    = r["Match"]            || "";
     const winner   = (r["Winner"]          || "-").trim(); // trim sekali
-    const nickW = (r["MVP Winner Nick"] || "").trim();
-    const nickL = (r["MVP Loser Nick"]  || "").trim();
+    const idW   = String(r["MVP Winner ID"]   ?? "").trim();
+    const nickW = String(r["MVP Winner Nick"] ?? "").trim();
+    const idL   = String(r["MVP Loser ID"]    ?? "").trim();
+    const nickL = String(r["MVP Loser Nick"]  ?? "").trim();
 
-    if(nickW){
-      if(!players[nickW]) players[nickW] = { nick: nickW, group, team: winner, pts: 0 };
-      players[nickW].pts += 2;
+    if(idW){
+      if(!players[idW]) players[idW] = { nick: nickW, group, team: winner, pts: 0 };
+      else if(nickW) players[idW].nick = nickW; // update nick if changed
+      players[idW].pts += 2;
     }
 
     // skip if loser MVP is empty (match recorded as "None" or left blank)
-    if(nickL){
+    if(idL){
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
-      if(!players[nickL]) players[nickL] = { nick: nickL, group, team: loserTeam, pts: 0 };
-      players[nickL].pts += 1;
+      if(!players[idL]) players[idL] = { nick: nickL, group, team: loserTeam, pts: 0 };
+      else if(nickL) players[idL].nick = nickL; // update nick if changed
+      players[idL].pts += 1;
     }
   });
 
@@ -1017,6 +1021,109 @@ function tickClock(){
 }
 tickClock();
 
+// ── export mode: build a purpose-built DOM node (100% inline styles) ──
+function buildExportNode(){
+  const isAll = activeTab === "all";
+  const list  = isAll
+    ? allRanked.slice(0, 15)
+    : allRanked.filter(p => p.group === activeTab);
+
+  const dateStr  = document.getElementById("clockDate").textContent;
+  const timeStr  = document.getElementById("clockTime").textContent;
+  const tabLabel = isAll ? "Overall — Top 15" : `Group ${activeTab} — Full Standings`;
+
+  // style shortcuts
+  const TD  = "padding:12px 18px;vertical-align:middle;border-bottom:1px solid rgba(255,255,255,.05);";
+  const TH  = "padding:13px 18px;text-align:left;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#4b5563;white-space:nowrap;";
+
+  // thead
+  const theadHtml = isAll
+    ? `<th style="${TH}text-align:center;width:52px;">No</th><th style="${TH}">Group</th><th style="${TH}">Player</th><th style="${TH}">Team</th><th style="${TH}text-align:center;">Points</th>`
+    : `<th style="${TH}text-align:center;width:52px;">No</th><th style="${TH}">Player</th><th style="${TH}">Team</th><th style="${TH}text-align:center;">Points</th>`;
+
+  // rows
+  let rowsHtml = "";
+  list.forEach((p, i) => {
+    const rank   = i + 1;
+    const isTop3 = rank <= 3;
+    const medal  = ["🥇","🥈","🥉"][i] || "";
+
+    const tdBg         = rank===1 ? "background:rgba(245,158,11,.12);"  : rank===2 ? "background:rgba(203,213,225,.08);" : rank===3 ? "background:rgba(205,127,50,.10);" : "";
+    const firstBorder  = rank===1 ? "border-left:4px solid #f59e0b;"    : rank===2 ? "border-left:4px solid #cbd5e1;"    : rank===3 ? "border-left:4px solid #cd7f32;"    : "border-left:4px solid transparent;";
+    const nameColor    = isTop3 ? "#f1f5f9"                  : "#94a3b8";
+    const teamColor    = isTop3 ? "rgba(241,245,249,.65)"    : "#4b5563";
+    const nameFS       = isTop3 ? "15px" : "13px";
+    const nameFW       = isTop3 ? "700"  : "600";
+    const noFS         = isTop3 ? "18px" : "13px";
+    const ptsBg        = rank===1 ? "rgba(245,158,11,.2)"    : rank===2 ? "rgba(203,213,225,.14)" : rank===3 ? "rgba(205,127,50,.18)" : "rgba(255,255,255,.05)";
+    const ptsBorder    = rank===1 ? "rgba(245,158,11,.45)"   : rank===2 ? "rgba(203,213,225,.35)" : rank===3 ? "rgba(205,127,50,.4)"  : "rgba(255,255,255,.08)";
+    const ptsColor     = rank===1 ? "#fde68a"                : rank===2 ? "#e2e8f0"               : rank===3 ? "#fcd9a0"              : "#4b5563";
+    const ptsFS        = isTop3 ? "14px" : "13px";
+
+    let hash = 0;
+    for(const c of p.nick) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
+    const av = AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+
+    const groupCell = isAll
+      ? `<td style="${TD}${tdBg}"><span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:11px;font-weight:800;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.18);">${p.group}</span></td>`
+      : "";
+
+    rowsHtml += `
+      <tr>
+        <td style="${TD}${tdBg}${firstBorder}text-align:center;font-size:${noFS};font-weight:600;color:${nameColor};">${medal || rank}</td>
+        ${groupCell}
+        <td style="${TD}${tdBg}">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:${av.bg};border:1px solid ${av.border};color:${av.color};">${p.nick.trim().charAt(0).toUpperCase()}</div>
+            <span style="font-weight:${nameFW};font-size:${nameFS};color:${nameColor};">${p.nick}</span>
+          </div>
+        </td>
+        <td style="${TD}${tdBg}font-size:12px;font-weight:500;color:${teamColor};">${p.team}</td>
+        <td style="${TD}${tdBg}text-align:center;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:3px 10px;border-radius:7px;font-size:${ptsFS};font-weight:800;background:${ptsBg};color:${ptsColor};border:1px solid ${ptsBorder};">${p.pts}</span>
+        </td>
+      </tr>`;
+  });
+
+  // assemble full node
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "position:fixed;left:-9999px;top:0;";
+  wrap.innerHTML = `
+    <div id="export-root" style="width:760px;background:#07090f;padding:40px 36px 36px;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#f1f5f9;line-height:1.5;">
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+        <span style="font-size:11px;font-weight:500;color:#374151;letter-spacing:.3px;">https://bit.ly/mmpls9_mvp</span>
+      </div>
+
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f59e0b;border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.08);padding:6px 18px;border-radius:100px;margin-bottom:12px;">MMPL Season 9</div>
+        <div style="font-size:36px;font-weight:900;color:#f59e0b;letter-spacing:-1px;line-height:1.1;margin-bottom:6px;">MVP Leaderboard</div>
+        <div style="font-size:11px;font-weight:500;color:#4b5563;letter-spacing:.4px;">${dateStr}&nbsp;&nbsp;|&nbsp;&nbsp;${timeStr}</div>
+      </div>
+
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#374151;margin-bottom:8px;padding-left:2px;">${tabLabel}</div>
+
+      <div style="background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="background:rgba(255,255,255,.04);">
+              ${theadHtml}
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+        <div style="padding:12px 18px;background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;color:#374151;letter-spacing:.3px;">Generated ${dateStr}, ${timeStr}</span>
+          <span style="font-size:11px;color:#374151;letter-spacing:.3px;">Powered by <span style="color:#f59e0b;font-weight:700;">Tigor M Manurung</span></span>
+        </div>
+      </div>
+
+    </div>`;
+
+  document.body.appendChild(wrap);
+  return wrap;
+}
+
 // ── capture & download image ─────────────────────────────────────
 const DOWNLOAD_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 const CLOCK_ICON   = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
@@ -1026,30 +1133,19 @@ document.getElementById("captureBtn").addEventListener("click", async function()
   btn.disabled = true;
   btn.innerHTML = `${CLOCK_ICON} Capturing…`;
 
-  // Apply capture-mode: removes backdrop-filter, gradient text, fixed overlay
-  document.body.classList.add("is-capturing");
-
-  // Wait for fonts and a reflow tick
   await document.fonts.ready;
-  await new Promise(r => setTimeout(r, 120));
+  await new Promise(r => setTimeout(r, 100));
+
+  const exportWrap = buildExportNode();
+  const exportRoot = exportWrap.querySelector("#export-root");
 
   try {
-    const target = document.querySelector(".container");
-    const W = target.scrollWidth;
-    const H = target.scrollHeight;
-
-    const canvas = await html2canvas(target, {
+    const canvas = await html2canvas(exportRoot, {
       backgroundColor: "#07090f",
       scale: 2,
       useCORS: true,
       allowTaint: true,
-      logging: false,
-      scrollX: -window.scrollX,
-      scrollY: -window.scrollY,
-      width:  W,
-      height: H,
-      windowWidth:  W,
-      windowHeight: H
+      logging: false
     });
 
     const now = new Date();
@@ -1061,7 +1157,7 @@ document.getElementById("captureBtn").addEventListener("click", async function()
   } catch(e) {
     alert("Failed to capture. Please try again.");
   } finally {
-    document.body.classList.remove("is-capturing");
+    exportWrap.remove();
     btn.disabled = false;
     btn.innerHTML = `${DOWNLOAD_ICON} Download`;
   }
