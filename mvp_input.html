@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVP Input</title>
+<style>
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0a0f1e;
+  color: #e2e8f0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 32px 28px;
+}
+
+.card-header {
+  margin-bottom: 28px;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.card-header p {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 0;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #0d1424;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color .15s, box-shadow .15s;
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.1);
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(.4);
+  cursor: pointer;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 38px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%236b7280' height='16' viewBox='0 0 20 20' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M5 8l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+select:not(:disabled):hover {
+  border-color: #374151;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.divider {
+  height: 1px;
+  background: #1e293b;
+  margin: 24px 0;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #f59e0b;
+  color: #0a0f1e;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: background .15s, opacity .15s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #fbbf24;
+}
+
+.submit-btn:disabled {
+  background: #1e293b;
+  color: #374151;
+  cursor: not-allowed;
+}
+
+#debug {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+  min-height: 20px;
+}
+
+#debug.ok  { color: #34d399; }
+#debug.err { color: #f87171; }
+#debug.loading { color: #6b7280; }
+
+/* ── password gate ── */
+#gate {
+  width: 100%;
+  max-width: 360px;
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+}
+
+#gate h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+#gate p {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 24px;
+}
+
+#gateInput {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #0d1424;
+  color: #e2e8f0;
+  font-size: 15px;
+  font-family: inherit;
+  text-align: center;
+  letter-spacing: 3px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  margin-bottom: 12px;
+}
+
+#gateInput:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.1);
+}
+
+#gateBtn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  background: #f59e0b;
+  color: #0a0f1e;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#gateBtn:hover { background: #fbbf24; }
+
+#gateErr {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #f87171;
+  min-height: 18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- password gate -->
+<div id="gate">
+  <h2>MVP Input</h2>
+  <p>Masukkan password untuk melanjutkan</p>
+  <input type="password" id="gateInput" placeholder="••••••••••" autocomplete="off">
+  <button id="gateBtn">Masuk</button>
+  <div id="gateErr"></div>
+</div>
+
+<!-- form (tersembunyi sampai password benar) -->
+<div class="card" id="formCard" style="display:none;">
+
+  <div class="card-header">
+    <h2>Input MVP</h2>
+    <p>Isi data MVP untuk setiap pertandingan</p>
+  </div>
+
+  <div class="field">
+    <label>Tanggal</label>
+    <input type="date" id="tanggal">
+  </div>
+
+  <div class="field">
+    <label>Group</label>
+    <select id="group">
+      <option value="">Pilih Group</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Match</label>
+    <select id="match" disabled>
+      <option value="">Pilih Match</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Winner</label>
+    <select id="winner" disabled>
+      <option value="">Pilih Winner</option>
+    </select>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label>MVP Winner</label>
+    <select id="mvpWinner" disabled>
+      <option value="">Pilih Player</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>MVP Loser</label>
+    <select id="mvpLoser" disabled>
+      <option value="">Pilih Player</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Catatan <span style="color:#374151;font-weight:400;text-transform:none">(opsional)</span></label>
+    <textarea id="note" placeholder="Tambahkan catatan..."></textarea>
+  </div>
+
+  <button id="submitBtn" class="submit-btn" disabled>Submit</button>
+
+  <div id="debug"></div>
+
+</div>
+
+<script>
+
+// ── password gate ──────────────────────────────────────────────
+const _now = new Date();
+const _yyyy = _now.getFullYear();
+const _mm   = String(_now.getMonth() + 1).padStart(2, "0");
+const _dd   = String(_now.getDate()).padStart(2, "0");
+const PASSWORD = "mafiabagan" + _yyyy + _mm + _dd;
+
+function tryUnlock(){
+  const val = document.getElementById("gateInput").value;
+  if(val === PASSWORD){
+    document.getElementById("gate").style.display     = "none";
+    document.getElementById("formCard").style.display = "block";
+  } else {
+    const err = document.getElementById("gateErr");
+    err.textContent = "Password salah. Coba lagi.";
+    document.getElementById("gateInput").value = "";
+    document.getElementById("gateInput").focus();
+    setTimeout(() => err.textContent = "", 2500);
+  }
+}
+
+document.getElementById("gateBtn").onclick = tryUnlock;
+document.getElementById("gateInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") tryUnlock();
+});
+// ──────────────────────────────────────────────────────────────
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6jyf6DSGJ3VP-F1eo8se235t39liUXyB6q--zNZE2T8UpNl4DA/exec";
+
+let data = {};
+let matches = [];
+
+const GROUP_MAP = {
+  A:["LUCTARI","Panthera","Happy family","HUMBLE TEAM","Warteg Berkah Jaya","Crown X Sulawesi E-sport","BTRB","166 JKT","Dark Horse"],
+  B:["Taoism","TBRN FURY","RX Squad","Royal One","ASPAL Reignite","170 PARES","Sikat Miring e-Sport","Aura Farming.PKU108","Gatsu E-sports"],
+  C:["UNSTOPPABLE","Jujutsu IT","Kuningan x Priuk","MEGAKING : TUA","HELL GLORIOUS","MACHITIS","Gasspadia Squad","TBRN THUNDER","Royal One Klp"],
+  D:["MEGAKING : ENDGAME","BGST","EJS REBORN","Thunder Redeb","Komodo Komando","TBRN RAVAGER","BANGJOS e Sport","Blackout Renegades","MBG Squad Region XII Papua","Wumbo Wumbo"]
+};
+
+const debugBox = document.getElementById("debug");
+
+tanggal.value = new Date().toISOString().split('T')[0];
+
+fetch("mmpl.json")
+  .then(r => r.json())
+  .then(res => { data = res; initGroup(); });
+
+function initGroup(){
+  Object.keys(GROUP_MAP).forEach(g => {
+    group.add(new Option("Group " + g, g));
+  });
+  group.onchange = onGroupChange;
+}
+
+function genMatch(teams){
+  let m = [];
+  for(let i = 0; i < teams.length; i++)
+    for(let j = i + 1; j < teams.length; j++)
+      m.push({ t1: teams[i], t2: teams[j] });
+  return m;
+}
+
+function onGroupChange(){
+  reset(["match","winner","mvpWinner","mvpLoser"]);
+  if(!group.value) return;
+
+  matches = genMatch(GROUP_MAP[group.value]);
+  match.disabled = false;
+  matches.forEach((m, i) => match.add(new Option(m.t1 + " vs " + m.t2, i)));
+  match.onchange = onMatchChange;
+}
+
+function onMatchChange(){
+  reset(["winner","mvpWinner","mvpLoser"]);
+  if(match.value === "") return;
+
+  let m = matches[match.value];
+  winner.disabled = false;
+  winner.add(new Option(m.t1, m.t1));
+  winner.add(new Option(m.t2, m.t2));
+  winner.onchange = onWinnerChange;
+}
+
+function onWinnerChange(){
+  reset(["mvpWinner","mvpLoser"]);
+  if(!winner.value) return;
+
+  let m = matches[match.value];
+  let loser = (winner.value === m.t1) ? m.t2 : m.t1;
+
+  fillPlayers("mvpWinner", winner.value);
+  fillPlayers("mvpLoser", loser);
+  validate();
+}
+
+function fillPlayers(id, team){
+  let el = document.getElementById(id);
+  el.disabled = false;
+
+  let t = data.teams.find(x => x.team_name === team);
+  t.members.forEach(p => {
+    let opt = document.createElement("option");
+    opt.value = p.game_id;
+    opt.text = p.game_nick;
+    el.appendChild(opt);
+  });
+
+  el.onchange = validate;
+}
+
+function reset(ids){
+  ids.forEach(id => {
+    let el = document.getElementById(id);
+    el.innerHTML = '<option value="">Pilih</option>';
+    el.disabled = true;
+  });
+}
+
+function validate(){
+  submitBtn.disabled = !(
+    group.value && match.value !== "" &&
+    winner.value && mvpWinner.value && mvpLoser.value
+  );
+}
+
+function resetForm(){
+  group.value = "";
+  match.innerHTML  = '<option value="">Pilih Match</option>';
+  winner.innerHTML = '<option value="">Pilih Winner</option>';
+  mvpWinner.innerHTML = '<option value="">Pilih Player</option>';
+  mvpLoser.innerHTML  = '<option value="">Pilih Player</option>';
+
+  [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
+
+  note.value = "";
+  submitBtn.disabled = true;
+}
+
+submitBtn.onclick = async function(){
+  debugBox.className = "loading";
+  debugBox.innerText = "Menyimpan...";
+
+  let m = matches[match.value];
+
+  let payload = {
+    tanggal: tanggal.value,
+    group: group.value,
+    match: m.t1 + " vs " + m.t2,
+    winner: winner.value,
+    mvp_winner_id: mvpWinner.value,
+    mvp_winner_name: mvpWinner.options[mvpWinner.selectedIndex].text,
+    mvp_loser_id: mvpLoser.value,
+    mvp_loser_name: mvpLoser.options[mvpLoser.selectedIndex].text,
+    note: note.value
+  };
+
+  submitBtn.disabled = true;
+
+  try {
+    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+    debugBox.className = "ok";
+    debugBox.innerText = "Berhasil disimpan";
+    resetForm();
+  } catch(e) {
+    debugBox.className = "err";
+    debugBox.innerText = "Gagal menyimpan, coba lagi";
+    submitBtn.disabled = false;
+  }
+};
+
+</script>
+</body>
+</html>
