@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MMPL S9 - MVP Leaderboard</title>
+<title>MMPL S9 - MVP LEADERBOARD</title>
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -70,7 +70,7 @@ body::before {
   font-weight: 900;
   letter-spacing: -1px;
   line-height: 1.05;
-  background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+  background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -220,14 +220,11 @@ tbody td:first-child {
   width: 30px;
   height: 30px;
   border-radius: 7px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   font-weight: 700;
-  color: var(--dim);
   flex-shrink: 0;
   text-transform: uppercase;
 }
@@ -286,9 +283,6 @@ tbody tr.rank-1 .team-name,
 tbody tr.rank-2 .team-name,
 tbody tr.rank-3 .team-name { font-size: 13px; color: rgba(241,245,249,.65); }
 
-tbody tr.rank-1 .player-avatar,
-tbody tr.rank-2 .player-avatar,
-tbody tr.rank-3 .player-avatar { color: var(--bright); background: rgba(255,255,255,.1); }
 
 .rank-medal { font-size: 20px; line-height: 1; }
 
@@ -319,14 +313,66 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
 .state-label { font-size: 14px; }
 
+.loading-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 28px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+}
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.loading-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: #374151;
+  transition: color .2s;
+  white-space: nowrap;
+}
+
+.loading-step.active { color: #94a3b8; }
+.loading-step.done   { color: #34d399; }
+
+.step-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1f2937;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+
+.loading-step.active .step-dot {
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(245,158,11,.5);
+  animation: pulse-dot .8s ease infinite;
+}
+
+.loading-step.done .step-dot { background: #34d399; }
+
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .6; transform: scale(.75); }
+}
+
 .spinner {
-  width: 26px;
-  height: 26px;
-  border: 2px solid rgba(255,255,255,.08);
+  width: 30px;
+  height: 30px;
+  border: 2.5px solid rgba(255,255,255,.08);
   border-top-color: var(--gold);
   border-radius: 50%;
   animation: spin .7s linear infinite;
-  margin: 0 auto 10px;
+  flex-shrink: 0;
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -374,6 +420,166 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
 .refresh-btn svg { flex-shrink: 0; }
 
+/* ── page footer ── */
+.page-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 24px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.page-footer-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: rgba(10,14,26,.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.07);
+  font-size: 11px;
+  color: #4b5563;
+  letter-spacing: .4px;
+}
+
+.page-footer-inner span {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ── mobile (≤ 480px — iPhone 17 Pro Max dan ke bawah) ── */
+@media (max-width: 480px) {
+
+  body {
+    padding: 28px 0 56px;
+    background-size: 120% auto;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  /* hero */
+  .hero {
+    margin-bottom: 24px;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 32px);
+    letter-spacing: -.5px;
+  }
+
+  /* tabs — scrollable row, tidak di-wrap */
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding: 4px;
+    gap: 3px;
+    border-radius: 10px;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  /* panel */
+  .panel {
+    border-radius: 14px;
+  }
+
+  /* table header */
+  thead th {
+    padding: 11px 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  thead th:first-child { width: 40px; }
+
+  /* table body */
+  tbody td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+
+  tbody td:first-child {
+    width: 40px;
+    font-size: 12px;
+  }
+
+  /* player */
+  .player-cell { gap: 8px; }
+
+  .player-avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .player-name {
+    font-size: 13px;
+  }
+
+  /* team */
+  .team-name {
+    font-size: 11px;
+  }
+
+  /* group badge */
+  .badge-group {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  /* points */
+  .pts {
+    font-size: 12px;
+    padding: 3px 8px;
+    min-width: 28px;
+  }
+
+  /* rank top 3 */
+  tbody tr.rank-1 td,
+  tbody tr.rank-2 td,
+  tbody tr.rank-3 td { font-size: 14px; }
+
+  tbody tr.rank-1 .player-name,
+  tbody tr.rank-2 .player-name,
+  tbody tr.rank-3 .player-name { font-size: 14px; }
+
+  tbody tr.rank-1 td:first-child,
+  tbody tr.rank-2 td:first-child,
+  tbody tr.rank-3 td:first-child { font-size: 14px; }
+
+  .rank-medal { font-size: 17px; }
+
+  /* footer bar */
+  .footer-bar { padding: 10px 12px; }
+
+  /* page footer */
+  .page-footer { margin-top: 18px; }
+}
+
 </style>
 </head>
 
@@ -395,21 +601,33 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
   <div class="panel">
     <div class="table-scroll">
-      <table>
-        <thead>
+      <table id="mainTable">
+        <thead id="thead">
           <tr>
             <th>No</th>
             <th>Group</th>
-            <th>Tim</th>
-            <th>Nama Player</th>
-            <th style="text-align:center">Poin</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th style="text-align:center">Points</th>
           </tr>
         </thead>
         <tbody id="tbody">
           <tr class="state-row">
-            <td colspan="5">
-              <div class="spinner"></div>
-              <span class="state-label">Memuat data...</span>
+            <td colspan="5" id="loadingCell">
+              <div class="loading-wrap">
+                <div class="spinner"></div>
+                <div class="loading-steps">
+                  <span class="loading-step active" id="step-fetch">
+                    <span class="step-dot"></span>Loading data..
+                  </span>
+                  <span class="loading-step" id="step-calc">
+                    <span class="step-dot"></span>Tallying MVP points..
+                  </span>
+                  <span class="loading-step" id="step-render">
+                    <span class="step-dot"></span>Rendering leaderboard..
+                  </span>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -418,6 +636,12 @@ tbody tr.rank-3 .pts { background: rgba(205,127,50,.18); border-color: rgba(205,
 
     <div class="footer-bar">
       <span class="last-update" id="lastUpdate"></span>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="page-footer-inner">
+      Powered by <span>Tigor M Manurung</span>
     </div>
   </div>
 
@@ -433,26 +657,49 @@ let activeTab = "all";
 
 function loadData(){
   showLoading();
+
+  let httpOk = false;
+
   fetch(SCRIPT_URL)
-    .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-    .then(parsed => {
-      const rows = Array.isArray(parsed) ? parsed : (parsed.data || []);
-      processData(rows, parsed.lastUpdate || "");
+    .then(r => {
+      if(!r.ok){
+        throw { type: "server", status: r.status };
+      }
+      httpOk = true;
+      return r.json();
     })
-    .catch(() => showError());
+    .then(parsed => {
+      setStep("step-fetch", "done");
+      setStep("step-calc", "active");
+      const rows = Array.isArray(parsed) ? parsed : (parsed.data || []);
+      setTimeout(() => {
+        processData(rows, parsed.lastUpdate || "");
+      }, 80);
+    })
+    .catch(err => {
+      if(err && err.type === "server"){
+        showError("The server returned an error. Please try again later.");
+      } else if(!httpOk){
+        showError("Unable to connect. Check your internet connection and refresh.");
+      } else {
+        showError("Received an unexpected response. Please refresh.");
+      }
+    });
 }
+
+const VS_RE = /\s+vs\s+/i; // dikompilasi sekali, dipakai ulang tiap baris
 
 function processData(rows, lastUpdate){
   const players = {};
 
   rows.forEach(r => {
-    const group     = r["Group"]            || "-";
-    const match     = r["Match"]            || "";
-    const winner    = r["Winner"]           || "-";
-    const nickW     = (r["MVP Winner Nick"] || "").trim();
-    const nickL     = (r["MVP Loser Nick"]  || "").trim();
-    const parts     = match.split(/\s+vs\s+/i);
-    const loserTeam = parts.find(t => t.trim() !== winner.trim()) || "-";
+    const group    = r["Group"]            || "-";
+    const match    = r["Match"]            || "";
+    const winner   = (r["Winner"]          || "-").trim(); // trim sekali
+    const nickW    = (r["MVP Winner Nick"] || "").trim();
+    const nickL    = (r["MVP Loser Nick"]  || "").trim();
+    const parts    = match.split(VS_RE);
+    const loserTeam = parts.find(t => t.trim() !== winner) || "-"; // winner sudah di-trim
 
     if(nickW){
       if(!players[nickW]) players[nickW] = { nick: nickW, group, team: winner, pts: 0 };
@@ -468,23 +715,34 @@ function processData(rows, lastUpdate){
     b.pts !== a.pts ? b.pts - a.pts : a.nick.localeCompare(b.nick)
   );
 
-  document.getElementById("lastUpdate").textContent =
-    lastUpdate ? "Update terakhir: " + lastUpdate : "";
+  setStep("step-calc", "done");
+  setStep("step-render", "active");
 
-  renderTab(activeTab);
+  document.getElementById("lastUpdate").textContent =
+    lastUpdate ? "Last updated: " + lastUpdate : "";
+
+  setTimeout(() => {
+    renderTab(activeTab);
+  }, 60);
 }
 
 function renderTab(tab){
   activeTab = tab;
   const isAll = tab === "all";
 
-  // filter per group, re-rank within group
+  // update thead first — always, before any early return
+  const cols = isAll
+    ? `<th>No</th><th>Group</th><th>Player</th><th>Team</th><th style="text-align:center">Points</th>`
+    : `<th>No</th><th>Player</th><th>Team</th><th style="text-align:center">Points</th>`;
+  document.getElementById("thead").innerHTML = `<tr>${cols}</tr>`;
+
+  const colspan = isAll ? 5 : 4;
+
   const list = isAll
     ? allRanked
     : allRanked.filter(p => p.group === tab);
 
-  if(!list.length){ showEmpty(); return; }
-
+  if(!list.length){ showEmpty(colspan, tab); return; }
   const tbody = document.getElementById("tbody");
   let html = "";
 
@@ -495,26 +753,29 @@ function renderTab(tab){
     const cls    = isTop3 ? ` class="rank-${rank}"` : "";
     const noCell = medal ? `<span class="rank-medal">${medal}</span>` : rank;
 
-    // dashed divider after top 10 on All tab
     if(isAll && rank === 11){
-      html += `<tr class="divider-row"><td colspan="5"></td></tr>`;
+      html += `<tr class="divider-row"><td colspan="${colspan}"></td></tr>`;
     }
 
+    const groupCell = isAll ? `<td><span class="badge-group">${p.group}</span></td>` : "";
+
+    // columns: No | [Group] | Player | Team | Points
     html += `<tr${cls}>
       <td>${noCell}</td>
-      <td><span class="badge-group">${p.group}</span></td>
-      <td><span class="team-name">${p.team}</span></td>
+      ${groupCell}
       <td>
         <div class="player-cell">
-          <div class="player-avatar">${initials(p.nick)}</div>
+          <div class="player-avatar" ${avatarStyle(p.nick)}>${initials(p.nick)}</div>
           <span class="player-name">${p.nick}</span>
         </div>
       </td>
+      <td><span class="team-name">${p.team}</span></td>
       <td style="text-align:center"><span class="pts">${p.pts}</span></td>
     </tr>`;
   });
 
   tbody.innerHTML = html;
+  setStep("step-render", "done");
 }
 
 document.getElementById("tabs").addEventListener("click", e => {
@@ -527,27 +788,72 @@ document.getElementById("tabs").addEventListener("click", e => {
 
 function initials(name){ return name ? name.trim().charAt(0).toUpperCase() : "?"; }
 
+// dark-mode avatar palette — bg + text color pairs
+const AVATAR_PALETTE = [
+  { bg: "rgba(99,102,241,.25)",  border: "rgba(99,102,241,.4)",  color: "#a5b4fc" }, // indigo
+  { bg: "rgba(20,184,166,.2)",   border: "rgba(20,184,166,.38)", color: "#5eead4" }, // teal
+  { bg: "rgba(245,158,11,.18)",  border: "rgba(245,158,11,.35)", color: "#fcd34d" }, // amber
+  { bg: "rgba(239,68,68,.2)",    border: "rgba(239,68,68,.35)",  color: "#fca5a5" }, // red
+  { bg: "rgba(168,85,247,.22)",  border: "rgba(168,85,247,.38)", color: "#d8b4fe" }, // purple
+  { bg: "rgba(59,130,246,.2)",   border: "rgba(59,130,246,.38)", color: "#93c5fd" }, // blue
+  { bg: "rgba(16,185,129,.2)",   border: "rgba(16,185,129,.35)", color: "#6ee7b7" }, // emerald
+  { bg: "rgba(236,72,153,.2)",   border: "rgba(236,72,153,.35)", color: "#f9a8d4" }, // pink
+  { bg: "rgba(234,179,8,.2)",    border: "rgba(234,179,8,.35)",  color: "#fde047" }, // yellow
+  { bg: "rgba(6,182,212,.2)",    border: "rgba(6,182,212,.35)",  color: "#67e8f9" }, // cyan
+];
+
+function avatarStyle(name){
+  // hash name to a consistent index
+  let hash = 0;
+  for(let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  const p = AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+  return `style="background:${p.bg};border:1px solid ${p.border};color:${p.color}"`;
+}
+
 function showLoading(){
   document.getElementById("tbody").innerHTML = `
     <tr class="state-row"><td colspan="5">
-      <div class="spinner"></div>
-      <span class="state-label">Memuat data...</span>
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-steps">
+          <span class="loading-step active" id="step-fetch">
+            <span class="step-dot"></span>Loading data..
+          </span>
+          <span class="loading-step" id="step-calc">
+            <span class="step-dot"></span>Tallying MVP points..
+          </span>
+          <span class="loading-step" id="step-render">
+            <span class="step-dot"></span>Rendering leaderboard..
+          </span>
+        </div>
+      </div>
     </td></tr>`;
 }
 
-function showError(){
+function setStep(id, state){
+  const el = document.getElementById(id);
+  if(el) el.className = "loading-step " + state;
+}
+
+function showError(msg){
+  const label = msg || "Failed to load data. Please refresh.";
   document.getElementById("tbody").innerHTML = `
     <tr class="state-row"><td colspan="5">
       <span class="state-icon">⚠</span>
-      <span class="state-label">Gagal memuat data. Coba refresh.</span>
+      <span class="state-label">${label}</span>
     </td></tr>`;
 }
 
-function showEmpty(){
+function showEmpty(colspan = 5, tab){
+  const isGroup = tab && tab !== "all";
+  const icon  = isGroup ? "📭" : "🏆";
+  const label = isGroup
+    ? `No MVP data for Group ${tab} yet.`
+    : "No MVP data recorded yet.";
   document.getElementById("tbody").innerHTML = `
-    <tr class="state-row"><td colspan="5">
-      <span class="state-icon">🏆</span>
-      <span class="state-label">Belum ada data MVP.</span>
+    <tr class="state-row"><td colspan="${colspan}">
+      <span class="state-icon">${icon}</span>
+      <span class="state-label">${label}</span>
     </td></tr>`;
 }
 
