@@ -24,8 +24,6 @@ body{
   border-radius:12px;
 }
 
-h3{margin-bottom:15px;}
-
 input,select,textarea,button{
   width:100%;
   padding:12px;
@@ -34,14 +32,12 @@ input,select,textarea,button{
   border:1px solid #374151;
   background:#020617;
   color:#fff;
-  font-size:14px;
 }
 
-/* Safari fix */
 select{
   appearance:none;
   -webkit-appearance:none;
-  padding-right:42px;
+  padding-right:40px;
   background-image:url("data:image/svg+xml;utf8,<svg fill='%239ca3af' height='20' viewBox='0 0 20 20' width='20'><path d='M5 7l5 5 5-5'/></svg>");
   background-repeat:no-repeat;
   background-position:right 12px center;
@@ -54,12 +50,10 @@ textarea{
 button{
   background:#f59e0b;
   border:none;
-  cursor:pointer;
 }
 
 button:disabled{
   background:#555;
-  cursor:not-allowed;
 }
 
 #debug{
@@ -129,12 +123,12 @@ const GROUP_MAP = {
 
 tanggal.value = new Date().toISOString().split('T')[0];
 
-// LOAD DATA
+// LOAD JSON
 fetch("mmpl.json")
 .then(r=>r.json())
 .then(res=>{
   data = res;
-  debug("✅ mmpl.json loaded");
+  debug("✅ JSON loaded");
   initGroup();
 })
 .catch(err=>{
@@ -211,21 +205,30 @@ function onWinnerChange(){
   validate();
 }
 
-// 🔥 FIX FINAL: pakai game_id
+// 🔥 DEBUG PLAYER (NAMA + ID)
 function fillPlayers(id, team){
 
   let el = document.getElementById(id);
-  el.disabled=false;
+  el.disabled = false;
 
-  let t = data.teams.find(x=>x.team_name===team);
+  let t = data.teams.find(x => x.team_name === team);
 
-  t.members.forEach(p=>{
+  if(!t){
+    debug("❌ team tidak ditemukan: " + team);
+    return;
+  }
 
-    let cleanId = p.game_id.split(" ")[0]; // 🔥 bersihkan ID
+  t.members.forEach(p => {
+
+    let playerId = p.game_id;
+    let playerName = p.game_nick;
+
+    debug("PLAYER: " + playerName + " | ID: " + playerId);
 
     let opt = document.createElement("option");
-    opt.value = cleanId;
-    opt.text = p.game_nick;
+
+    opt.value = playerId;
+    opt.text = playerName + " - " + playerId; // 🔥 tampilkan
 
     el.appendChild(opt);
   });
@@ -275,7 +278,7 @@ submitBtn.onclick = async function(){
     note: note.value
   };
 
-  debug("📦 "+JSON.stringify(payload));
+  debug("📦 " + JSON.stringify(payload));
 
   try{
     await fetch(SCRIPT_URL,{
@@ -286,8 +289,7 @@ submitBtn.onclick = async function(){
     debug("✅ tersimpan");
     alert("Berhasil disimpan!");
   }catch(e){
-    debug("❌ "+e);
-    alert("Gagal kirim data");
+    debug("❌ " + e);
   }
 };
 
