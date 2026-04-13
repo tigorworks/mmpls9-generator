@@ -248,9 +248,9 @@ textarea {
 <!-- password gate -->
 <div id="gate">
   <h2>MVP Input</h2>
-  <p>Masukkan password untuk melanjutkan</p>
+  <p>Enter password to continue</p>
   <input type="password" id="gateInput" placeholder="••••••••••" autocomplete="off">
-  <button id="gateBtn">Masuk</button>
+  <button id="gateBtn">Enter</button>
   <div id="gateErr"></div>
 </div>
 
@@ -259,32 +259,32 @@ textarea {
 
   <div class="card-header">
     <h2>Input MVP</h2>
-    <p>Isi data MVP untuk setiap pertandingan</p>
+    <p>Fill in MVP data for each match</p>
   </div>
 
   <div class="field">
-    <label>Tanggal</label>
+    <label>Date</label>
     <input type="date" id="tanggal">
   </div>
 
   <div class="field">
     <label>Group</label>
     <select id="group">
-      <option value="">Pilih Group</option>
+      <option value="">Select Group</option>
     </select>
   </div>
 
   <div class="field">
     <label>Match</label>
     <select id="match" disabled>
-      <option value="">Pilih Match</option>
+      <option value="">Select Match</option>
     </select>
   </div>
 
   <div class="field">
     <label>Winner</label>
     <select id="winner" disabled>
-      <option value="">Pilih Winner</option>
+      <option value="">Select Winner</option>
     </select>
   </div>
 
@@ -293,20 +293,20 @@ textarea {
   <div class="field">
     <label>MVP Winner</label>
     <select id="mvpWinner" disabled>
-      <option value="">Pilih Player</option>
+      <option value="">Select Player</option>
     </select>
   </div>
 
   <div class="field">
     <label>MVP Loser</label>
     <select id="mvpLoser" disabled>
-      <option value="">Pilih Player</option>
+      <option value="">Select Player</option>
     </select>
   </div>
 
   <div class="field">
-    <label>Catatan <span style="color:#374151;font-weight:400;text-transform:none">(opsional)</span></label>
-    <textarea id="note" placeholder="Tambahkan catatan..."></textarea>
+    <label>Notes <span style="color:#374151;font-weight:400;text-transform:none">(optional)</span></label>
+    <textarea id="note" placeholder="Add a note..."></textarea>
   </div>
 
   <button id="submitBtn" class="submit-btn" disabled>Submit</button>
@@ -331,7 +331,7 @@ function tryUnlock(){
     document.getElementById("formCard").style.display = "block";
   } else {
     const err = document.getElementById("gateErr");
-    err.textContent = "Password salah. Coba lagi.";
+    err.textContent = "Incorrect password. Try again.";
     document.getElementById("gateInput").value = "";
     document.getElementById("gateInput").focus();
     setTimeout(() => err.textContent = "", 2500);
@@ -424,30 +424,39 @@ function fillPlayers(id, team){
     el.appendChild(opt);
   });
 
+  // MVP Loser allows "None"
+  if(id === "mvpLoser"){
+    let none = document.createElement("option");
+    none.value = "none";
+    none.text  = "— None —";
+    el.appendChild(none);
+  }
+
   el.onchange = validate;
 }
 
 function reset(ids){
   ids.forEach(id => {
     let el = document.getElementById(id);
-    el.innerHTML = '<option value="">Pilih</option>';
+    el.innerHTML = '<option value="">Select</option>';
     el.disabled = true;
   });
 }
 
 function validate(){
+  const loserOk = mvpLoser.value !== "" ; // "none" or any player id counts
   submitBtn.disabled = !(
     group.value && match.value !== "" &&
-    winner.value && mvpWinner.value && mvpLoser.value
+    winner.value && mvpWinner.value && loserOk
   );
 }
 
 function resetForm(){
   group.value = "";
-  match.innerHTML  = '<option value="">Pilih Match</option>';
-  winner.innerHTML = '<option value="">Pilih Winner</option>';
-  mvpWinner.innerHTML = '<option value="">Pilih Player</option>';
-  mvpLoser.innerHTML  = '<option value="">Pilih Player</option>';
+  match.innerHTML  = '<option value="">Select Match</option>';
+  winner.innerHTML = '<option value="">Select Winner</option>';
+  mvpWinner.innerHTML = '<option value="">Select Player</option>';
+  mvpLoser.innerHTML  = '<option value="">Select Player</option>';
 
   [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
 
@@ -457,7 +466,7 @@ function resetForm(){
 
 submitBtn.onclick = async function(){
   debugBox.className = "loading";
-  debugBox.innerText = "Menyimpan...";
+  debugBox.innerText = "Saving...";
 
   let m = matches[match.value];
 
@@ -468,8 +477,8 @@ submitBtn.onclick = async function(){
     winner: winner.value,
     mvp_winner_id: mvpWinner.value,
     mvp_winner_name: mvpWinner.options[mvpWinner.selectedIndex].text,
-    mvp_loser_id: mvpLoser.value,
-    mvp_loser_name: mvpLoser.options[mvpLoser.selectedIndex].text,
+    mvp_loser_id:   mvpLoser.value === "none" ? "" : mvpLoser.value,
+    mvp_loser_name: mvpLoser.value === "none" ? "" : mvpLoser.options[mvpLoser.selectedIndex].text,
     note: note.value
   };
 
@@ -478,11 +487,11 @@ submitBtn.onclick = async function(){
   try {
     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
     debugBox.className = "ok";
-    debugBox.innerText = "Berhasil disimpan";
+    debugBox.innerText = "Saved successfully";
     resetForm();
   } catch(e) {
     debugBox.className = "err";
-    debugBox.innerText = "Gagal menyimpan, coba lagi";
+    debugBox.innerText = "Failed to save, please try again";
     submitBtn.disabled = false;
   }
 };
