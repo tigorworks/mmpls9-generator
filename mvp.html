@@ -26,14 +26,23 @@ body{
 
 input,select,textarea,button{
   width:100%;
+  display:block;
   padding:12px;
   margin-bottom:12px;
   border-radius:8px;
   border:1px solid #374151;
   background:#020617;
   color:#fff;
+  font-size:14px;
 }
 
+/* fix input date width */
+input[type="date"]{
+  width:100%;
+  display:block;
+}
+
+/* select styling */
 select{
   appearance:none;
   -webkit-appearance:none;
@@ -50,19 +59,18 @@ textarea{
 button{
   background:#f59e0b;
   border:none;
+  cursor:pointer;
 }
 
 button:disabled{
   background:#555;
+  cursor:not-allowed;
 }
 
+/* debug */
 #debug{
   font-size:12px;
-  color:#22c55e;
-  background:#020617;
-  padding:10px;
-  border-radius:8px;
-  white-space:pre-line;
+  margin-top:10px;
 }
 </style>
 </head>
@@ -99,7 +107,7 @@ button:disabled{
 
 <button id="submitBtn" disabled>Submit</button>
 
-<div id="debug">READY...</div>
+<div id="debug"></div>
 
 </div>
 
@@ -110,10 +118,6 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOKRx_aYDK2wpaXVBMj
 let data = {};
 let matches = [];
 
-const debug = msg => {
-  document.getElementById("debug").innerText += "\n" + msg;
-};
-
 const GROUP_MAP = {
   A:["LUCTARI","Panthera","Happy family","HUMBLE TEAM","Warteg Berkah Jaya","Crown X Sulawesi E-sport","BTRB","166 JKT","Dark Horse"],
   B:["Taoism","TBRN FURY","RX Squad","Royal One","ASPAL Reignite","170 PARES","Sikat Miring e-Sport","Aura Farming.PKU108","Gatsu E-sports"],
@@ -121,21 +125,19 @@ const GROUP_MAP = {
   D:["MEGAKING : ENDGAME","BGST","EJS REBORN","Thunder Redeb","Komodo Komando","TBRN RAVAGER","BANGJOS e Sport","Blackout Renegades","MBG Squad Region XII Papua","Wumbo Wumbo"]
 };
 
+const debugBox = document.getElementById("debug");
+
 tanggal.value = new Date().toISOString().split('T')[0];
 
-// LOAD JSON
+// load data
 fetch("mmpl.json")
 .then(r=>r.json())
 .then(res=>{
   data = res;
-  debug("✅ JSON loaded");
   initGroup();
-})
-.catch(err=>{
-  debug("❌ gagal load JSON");
 });
 
-// INIT GROUP
+// init group
 function initGroup(){
   Object.keys(GROUP_MAP).forEach(g=>{
     group.add(new Option("Group "+g, g));
@@ -143,7 +145,7 @@ function initGroup(){
   group.onchange = onGroupChange;
 }
 
-// GENERATE MATCH
+// generate match
 function genMatch(teams){
   let m=[];
   for(let i=0;i<teams.length;i++){
@@ -154,15 +156,12 @@ function genMatch(teams){
   return m;
 }
 
-// GROUP CHANGE
+// group change
 function onGroupChange(){
-
   reset(["match","winner","mvpWinner","mvpLoser"]);
-
   if(!group.value) return;
 
   matches = genMatch(GROUP_MAP[group.value]);
-
   match.disabled=false;
 
   matches.forEach((m,i)=>{
@@ -172,15 +171,12 @@ function onGroupChange(){
   match.onchange = onMatchChange;
 }
 
-// MATCH CHANGE
+// match change
 function onMatchChange(){
-
   reset(["winner","mvpWinner","mvpLoser"]);
-
   if(match.value==="") return;
 
   let m = matches[match.value];
-
   winner.disabled=false;
 
   winner.add(new Option(m.t1,m.t1));
@@ -189,11 +185,9 @@ function onMatchChange(){
   winner.onchange = onWinnerChange;
 }
 
-// WINNER CHANGE
+// winner change
 function onWinnerChange(){
-
   reset(["mvpWinner","mvpLoser"]);
-
   if(!winner.value) return;
 
   let m = matches[match.value];
@@ -205,28 +199,24 @@ function onWinnerChange(){
   validate();
 }
 
-// 🔥 FINAL CLEAN VERSION
+// fill player
 function fillPlayers(id, team){
-
   let el = document.getElementById(id);
-  el.disabled = false;
+  el.disabled=false;
 
-  let t = data.teams.find(x => x.team_name === team);
+  let t = data.teams.find(x=>x.team_name===team);
 
-  t.members.forEach(p => {
-
+  t.members.forEach(p=>{
     let opt = document.createElement("option");
-
-    opt.value = p.game_id;   // ✔ ID tetap dikirim
-    opt.text  = p.game_nick; // ✔ hanya tampil nama
-
+    opt.value = p.game_id;
+    opt.text = p.game_nick;
     el.appendChild(opt);
   });
 
   el.onchange = validate;
 }
 
-// RESET
+// reset dropdown
 function reset(ids){
   ids.forEach(id=>{
     let el = document.getElementById(id);
@@ -235,7 +225,7 @@ function reset(ids){
   });
 }
 
-// VALIDATE
+// validate form
 function validate(){
   submitBtn.disabled = !(
     group.value &&
@@ -246,10 +236,28 @@ function validate(){
   );
 }
 
-// SUBMIT
+// reset form setelah submit
+function resetForm(){
+  group.value = "";
+  match.innerHTML = '<option value="">Pilih Match</option>';
+  winner.innerHTML = '<option value="">Pilih Winner</option>';
+  mvpWinner.innerHTML = '<option value="">MVP Winner</option>';
+  mvpLoser.innerHTML = '<option value="">MVP Loser</option>';
+
+  match.disabled = true;
+  winner.disabled = true;
+  mvpWinner.disabled = true;
+  mvpLoser.disabled = true;
+
+  note.value = "";
+
+  submitBtn.disabled = true;
+}
+
+// submit
 submitBtn.onclick = async function(){
 
-  debug("🔥 submit");
+  debugBox.innerText = "⏳ menyimpan...";
 
   let m = matches[match.value];
 
@@ -268,18 +276,18 @@ submitBtn.onclick = async function(){
     note: note.value
   };
 
-  debug("📦 " + JSON.stringify(payload));
-
   try{
     await fetch(SCRIPT_URL,{
       method:"POST",
       body:JSON.stringify(payload)
     });
 
-    debug("✅ tersimpan");
-    alert("Berhasil disimpan!");
+    debugBox.innerText = "✅ berhasil disimpan";
+
+    resetForm();
+
   }catch(e){
-    debug("❌ " + e);
+    debugBox.innerText = "❌ gagal menyimpan";
   }
 };
 
