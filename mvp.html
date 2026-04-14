@@ -934,6 +934,87 @@ body.is-capturing #captureBtn {
 }
 .player-name-link:hover { color: var(--bright) !important; text-decoration: underline; text-underline-offset: 3px; }
 
+/* ── mobile responsive ── */
+@media (max-width: 640px) {
+  .modal-panel {
+    max-width: 100%;
+    width: calc(100% - 16px);
+    max-height: 85vh;
+    margin: 0 8px;
+  }
+
+  .modal-header {
+    padding: 16px 14px;
+  }
+
+  .modal-player-info {
+    gap: 12px;
+  }
+
+  .modal-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+
+  .modal-player-name {
+    font-size: 14px;
+  }
+
+  .modal-player-meta {
+    font-size: 11px;
+  }
+
+  .modal-close {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 20px !important;
+  }
+
+  .modal-body {
+    max-height: calc(85vh - 160px);
+  }
+
+  .modal-table thead th {
+    padding: 8px 12px;
+    font-size: 8px;
+  }
+
+  .modal-table tbody td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .badge-mvp-win,
+  .badge-mvp-lose {
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+
+  .modal-pagination {
+    padding: 8px 14px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-page-info {
+    font-size: 10px;
+    order: 2;
+  }
+
+  .modal-page-btns {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-page-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
 </style>
 </head>
 
@@ -1235,6 +1316,24 @@ function showPlayerDetail(id){
   document.body.style.overflow = "hidden";
 }
 
+function formatDate(dateStr){
+  if(!dateStr) return "";
+  let d;
+
+  // coba parse YYYY-MM-DD format
+  if(dateStr.includes("-")){
+    const [y, m, day] = dateStr.split("-");
+    d = new Date(parseInt(y), parseInt(m) - 1, parseInt(day));
+  } else {
+    d = new Date(dateStr);
+  }
+
+  if(isNaN(d.getTime())) return dateStr; // fallback jika parse gagal
+
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
 function renderModalPage(){
   const total      = modalHistory.length;
   const totalPages = Math.max(1, Math.ceil(total / MODAL_PAGE_SIZE));
@@ -1246,7 +1345,7 @@ function renderModalPage(){
     const badge  = isWin ? `<span class="badge-mvp-win">MVP Win</span>` : `<span class="badge-mvp-lose">MVP Lose</span>`;
     const pts    = isWin ? `<span class="modal-pts-win">+2</span>` : `<span class="modal-pts-lose">+1</span>`;
     return `<tr>
-      <td style="white-space:nowrap;color:#6b7280;">${h.date}</td>
+      <td style="white-space:nowrap;color:#6b7280;">${formatDate(h.date)}</td>
       <td><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.18);">${h.group}</span></td>
       <td style="color:#94a3b8;">${h.match}</td>
       <td>${badge}</td>
