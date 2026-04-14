@@ -703,6 +703,237 @@ body.is-capturing #captureBtn {
   display: none !important;
 }
 
+/* ── player detail modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  animation: overlay-in .2s ease;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 540px;
+  background: #0d1525;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 40px 80px rgba(0,0,0,.75),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: modal-in .22s cubic-bezier(.22,.68,0,1.2);
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(.93) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 26px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.modal-player-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.modal-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.modal-player-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-player-meta {
+  font-size: 12px;
+  color: #4b5563;
+  margin-top: 3px;
+}
+
+.modal-player-meta .meta-pts {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: #4b5563;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+
+.modal-close:hover { background: rgba(255,255,255,.09); color: var(--bright); }
+
+.modal-body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+}
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-table thead th {
+  padding: 10px 22px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #4b5563;
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  white-space: nowrap;
+}
+
+.modal-table tbody td {
+  padding: 12px 22px;
+  font-size: 13px;
+  color: var(--dim);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  vertical-align: middle;
+}
+
+.modal-table tbody tr:last-child td { border-bottom: none; }
+.modal-table tbody tr:hover td { background: rgba(255,255,255,.02); }
+
+.badge-mvp-win {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(245,158,11,.15);
+  color: #fcd34d;
+  border: 1px solid rgba(245,158,11,.3);
+  white-space: nowrap;
+}
+
+.badge-mvp-lose {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(148,163,184,.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148,163,184,.2);
+  white-space: nowrap;
+}
+
+.modal-pts-win  { color: var(--gold); font-weight: 700; }
+.modal-pts-lose { color: #6b7280; font-weight: 600; }
+
+.modal-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 22px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.modal-page-info {
+  font-size: 11px;
+  color: #374151;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+
+.modal-page-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.modal-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: #4b5563;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+
+.modal-page-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,.09);
+  color: var(--bright);
+  border-color: rgba(255,255,255,.2);
+}
+
+.modal-page-btn:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+/* clickable player name */
+.player-name-link {
+  cursor: pointer;
+  transition: color .15s;
+}
+.player-name-link:hover { color: var(--bright) !important; text-decoration: underline; text-underline-offset: 3px; }
+
 </style>
 </head>
 
@@ -785,6 +1016,46 @@ body.is-capturing #captureBtn {
 
 </div>
 
+<!-- player detail modal -->
+<div class="modal-overlay" id="playerModal" style="display:none">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <div class="modal-player-info">
+        <div class="modal-avatar" id="modalAvatar"></div>
+        <div>
+          <div class="modal-player-name" id="modalName"></div>
+          <div class="modal-player-meta" id="modalMeta"></div>
+        </div>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Group</th>
+            <th>Match</th>
+            <th>Condition</th>
+            <th style="text-align:center">Pts</th>
+          </tr>
+        </thead>
+        <tbody id="modalTbody"></tbody>
+      </table>
+    </div>
+    <div class="modal-pagination" id="modalPagination" style="display:none;">
+      <span class="modal-page-info" id="modalPageInfo"></span>
+      <div class="modal-page-btns">
+        <button class="modal-page-btn" id="modalPrev" aria-label="Previous">&#8249;</button>
+        <button class="modal-page-btn" id="modalNext" aria-label="Next">&#8250;</button>
+      </div>
+    </div>
+    <div style="padding:11px 22px;border-top:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);flex-shrink:0;">
+      <span id="modalHistoryCount" style="font-size:11px;color:#374151;letter-spacing:.3px;"></span>
+    </div>
+  </div>
+</div>
+
 <script>
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6jyf6DSGJ3VP-F1eo8se235t39liUXyB6q--zNZE2T8UpNl4DA/exec";
@@ -810,9 +1081,7 @@ function loadData(){
       setStep("step-fetch", "done");
       setStep("step-calc", "active");
       const rows = Array.isArray(parsed) ? parsed : (parsed.data || []);
-      setTimeout(() => {
-        processData(rows, parsed.lastUpdate || "");
-      }, 80);
+      processData(rows, parsed.lastUpdate || "");
     })
     .catch(err => {
       if(err && err.type === "server"){
@@ -839,19 +1108,23 @@ function processData(rows, lastUpdate){
     const idL   = String(r["MVP Loser ID"]    ?? "").trim();
     const nickL = String(r["MVP Loser Nick"]  ?? "").trim();
 
+    const date = r["Tanggal"] || "";
+
     if(idW){
-      if(!players[idW]) players[idW] = { nick: nickW, group, team: winner, pts: 0 };
-      else if(nickW) players[idW].nick = nickW; // update nick if changed
+      if(!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
+      else if(nickW) players[idW].nick = nickW;
       players[idW].pts += 2;
+      players[idW].history.push({ date, group, match, condition: "win" });
     }
 
     // skip if loser MVP is empty (match recorded as "None" or left blank)
     if(idL){
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
-      if(!players[idL]) players[idL] = { nick: nickL, group, team: loserTeam, pts: 0 };
-      else if(nickL) players[idL].nick = nickL; // update nick if changed
+      if(!players[idL]) players[idL] = { id: idL, nick: nickL, group, team: loserTeam, pts: 0, history: [] };
+      else if(nickL) players[idL].nick = nickL;
       players[idL].pts += 1;
+      players[idL].history.push({ date, group, match, condition: "lose" });
     }
   });
 
@@ -865,9 +1138,7 @@ function processData(rows, lastUpdate){
   document.getElementById("lastUpdate").textContent =
     lastUpdate ? "Last updated: " + lastUpdate : "";
 
-  setTimeout(() => {
-    renderTab(activeTab);
-  }, 60);
+  renderTab(activeTab);
 }
 
 function renderTab(tab){
@@ -910,7 +1181,7 @@ function renderTab(tab){
       <td>
         <div class="player-cell">
           <div class="player-avatar" ${avatarStyle(p.nick)}>${initials(p.nick)}</div>
-          <span class="player-name">${p.nick}</span>
+          <span class="player-name player-name-link" data-player-id="${p.id}">${p.nick}</span>
         </div>
       </td>
       <td><span class="team-name">${p.team}</span></td>
@@ -921,6 +1192,103 @@ function renderTab(tab){
   tbody.innerHTML = html;
   setStep("step-render", "done");
 }
+
+// ── player detail modal ──────────────────────────────────────────
+const MODAL_PAGE_SIZE = 5;
+let modalHistory = [];
+let modalPage    = 0;
+
+document.getElementById("mainTable").addEventListener("click", e => {
+  const el = e.target.closest("[data-player-id]");
+  if(!el) return;
+  showPlayerDetail(el.dataset.playerId);
+});
+
+function showPlayerDetail(id){
+  const p = allRanked.find(x => x.id === id);
+  if(!p) return;
+
+  // avatar
+  let hash = 0;
+  for(const c of p.nick) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
+  const av = AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+  const avatarEl = document.getElementById("modalAvatar");
+  avatarEl.textContent = p.nick.trim().charAt(0).toUpperCase();
+  avatarEl.style.cssText = `width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;background:${av.bg};border:1px solid ${av.border};color:${av.color};`;
+
+  document.getElementById("modalName").textContent = p.nick;
+  document.getElementById("modalMeta").innerHTML =
+    `Group ${p.group} &nbsp;·&nbsp; ${p.team} &nbsp;·&nbsp; <span class="meta-pts">${p.pts} pts</span>`;
+
+  // store history and reset to page 0
+  modalHistory = [...p.history].reverse();
+  modalPage    = 0;
+  renderModalPage();
+
+  // summary footer
+  const wins   = modalHistory.filter(h => h.condition === "win").length;
+  const losses = modalHistory.filter(h => h.condition === "lose").length;
+  document.getElementById("modalHistoryCount").textContent =
+    `${modalHistory.length} match${modalHistory.length !== 1 ? "es" : ""} — ${wins} MVP Win · ${losses} MVP Lose`;
+
+  document.getElementById("playerModal").style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function renderModalPage(){
+  const total      = modalHistory.length;
+  const totalPages = Math.max(1, Math.ceil(total / MODAL_PAGE_SIZE));
+  const start      = modalPage * MODAL_PAGE_SIZE;
+  const pageItems  = modalHistory.slice(start, start + MODAL_PAGE_SIZE);
+
+  const rows = pageItems.map(h => {
+    const isWin  = h.condition === "win";
+    const badge  = isWin ? `<span class="badge-mvp-win">MVP Win</span>` : `<span class="badge-mvp-lose">MVP Lose</span>`;
+    const pts    = isWin ? `<span class="modal-pts-win">+2</span>` : `<span class="modal-pts-lose">+1</span>`;
+    return `<tr>
+      <td style="white-space:nowrap;color:#6b7280;">${h.date}</td>
+      <td><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.18);">${h.group}</span></td>
+      <td style="color:#94a3b8;">${h.match}</td>
+      <td>${badge}</td>
+      <td style="text-align:center;">${pts}</td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("modalTbody").innerHTML = rows ||
+    `<tr><td colspan="5" style="text-align:center;padding:36px;color:#374151;">No history yet.</td></tr>`;
+
+  // pagination controls
+  const pagEl = document.getElementById("modalPagination");
+  if(total > MODAL_PAGE_SIZE){
+    pagEl.style.display = "flex";
+    document.getElementById("modalPageInfo").textContent =
+      `Page ${modalPage + 1} of ${totalPages}`;
+    document.getElementById("modalPrev").disabled = modalPage === 0;
+    document.getElementById("modalNext").disabled = modalPage >= totalPages - 1;
+  } else {
+    pagEl.style.display = "none";
+  }
+}
+
+document.getElementById("modalPrev").addEventListener("click", () => {
+  if(modalPage > 0){ modalPage--; renderModalPage(); }
+});
+document.getElementById("modalNext").addEventListener("click", () => {
+  if((modalPage + 1) * MODAL_PAGE_SIZE < modalHistory.length){ modalPage++; renderModalPage(); }
+});
+
+function closeModal(){
+  document.getElementById("playerModal").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("playerModal").addEventListener("click", e => {
+  if(e.target === e.currentTarget) closeModal();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeModal();
+});
 
 document.getElementById("tabs").addEventListener("click", e => {
   const btn = e.target.closest(".tab");
@@ -1164,5 +1532,6 @@ document.getElementById("captureBtn").addEventListener("click", async function()
 });
 
 </script>
+
 </body>
 </html>
