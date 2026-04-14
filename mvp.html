@@ -1032,7 +1032,7 @@ body.is-capturing #captureBtn {
   </div>
 
   <div class="tabs" id="tabs">
-    <button class="tab active" data-tab="all">All</button>
+    <button class="tab active" data-tab="all">All (Top 15)</button>
     <button class="tab" data-tab="A">Group A</button>
     <button class="tab" data-tab="B">Group B</button>
     <button class="tab" data-tab="C">Group C</button>
@@ -1057,7 +1057,10 @@ body.is-capturing #captureBtn {
               <div class="loading-wrap">
                 <div class="spinner"></div>
                 <div class="loading-steps">
-                  <span class="loading-step active" id="step-fetch">
+                  <span class="loading-step active" id="step-init">
+                    <span class="step-dot"></span>Preparing..
+                  </span>
+                  <span class="loading-step" id="step-fetch">
                     <span class="step-dot"></span>Loading data..
                   </span>
                   <span class="loading-step" id="step-calc">
@@ -1147,6 +1150,8 @@ let activeTab = "all";
 
 function loadData(){
   showLoading();
+  setStep("step-init", "done");
+  setStep("step-fetch", "active");
 
   let httpOk = false;
 
@@ -1427,7 +1432,10 @@ function showLoading(){
       <div class="loading-wrap">
         <div class="spinner"></div>
         <div class="loading-steps">
-          <span class="loading-step active" id="step-fetch">
+          <span class="loading-step active" id="step-init">
+            <span class="step-dot"></span>Preparing..
+          </span>
+          <span class="loading-step" id="step-fetch">
             <span class="step-dot"></span>Loading data..
           </span>
           <span class="loading-step" id="step-calc">
