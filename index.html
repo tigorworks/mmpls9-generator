@@ -333,7 +333,7 @@ table.dataTable tbody td {
 }
 
 table.dataTable tbody tr {
-  background: transparent;
+  background: rgba(10, 14, 26, 0.75);
   border-bottom: 1px solid rgba(255,255,255,.05);
 }
 
@@ -478,6 +478,10 @@ table.dataTable tbody tr td.child {
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+#mvpTable {
+  min-height: 520px;
 }
 
 table {
@@ -1077,6 +1081,215 @@ tbody tr.rank-3 .pts {
   tbody td {
     padding: 10px 12px;
   }
+
+  .mvp-footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .mvp-footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-panel {
+    max-width: 100%;
+    width: calc(100% - 16px);
+    max-height: 85vh;
+    margin: 0 8px;
+  }
+
+  .modal-header {
+    padding: 16px 14px;
+  }
+
+  .modal-player-info {
+    gap: 12px;
+  }
+
+  .modal-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+
+  .modal-player-name {
+    font-size: 14px;
+  }
+
+  .modal-player-meta {
+    font-size: 11px;
+  }
+
+  .modal-close {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 20px !important;
+  }
+
+  .modal-body {
+    max-height: calc(85vh - 160px);
+  }
+
+  .modal-table thead th {
+    padding: 8px 12px;
+    font-size: 8px;
+  }
+
+  .modal-table tbody td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .badge-mvp-win,
+  .badge-mvp-lose {
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+
+  .modal-pagination {
+    padding: 8px 14px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-page-info {
+    font-size: 10px;
+    order: 2;
+  }
+
+  .modal-page-btns {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-page-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 24px 12px 48px;
+  }
+
+  .hero {
+    margin-bottom: 24px;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 32px);
+    letter-spacing: -.5px;
+  }
+
+  /* tabs — scrollable horizontal, tidak wrap */
+  .mvp-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding: 4px;
+    gap: 3px;
+    border-radius: 10px;
+    scrollbar-width: none;
+  }
+
+  .mvp-tabs::-webkit-scrollbar { display: none; }
+
+  .mvp-tab {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    font-size: 12px;
+    min-width: unset;
+    border-radius: 7px;
+  }
+
+  /* panel */
+  .panel {
+    border-radius: 14px;
+  }
+
+  /* table header */
+  thead th {
+    padding: 11px 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  thead th:first-child { width: 40px; }
+
+  /* table body */
+  tbody td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+
+  tbody td:first-child {
+    width: 40px;
+    font-size: 12px;
+  }
+
+  /* player */
+  .player-cell { gap: 8px; }
+
+  .player-avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  .player-name {
+    font-size: 13px;
+  }
+
+  .team-name-mvp {
+    font-size: 11px;
+  }
+
+  /* group badge */
+  .badge-group {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  /* points */
+  .pts {
+    font-size: 12px;
+    padding: 3px 8px;
+    min-width: 28px;
+  }
+
+  /* rank top 3 */
+  tbody tr.rank-1 td,
+  tbody tr.rank-2 td,
+  tbody tr.rank-3 td { font-size: 14px; }
+
+  tbody tr.rank-1 .player-name,
+  tbody tr.rank-2 .player-name,
+  tbody tr.rank-3 .player-name { font-size: 14px; }
+
+  tbody tr.rank-1 td:first-child,
+  tbody tr.rank-2 td:first-child,
+  tbody tr.rank-3 td:first-child { font-size: 14px; }
+
+  .rank-medal { font-size: 17px; }
+
+  /* mvp footer */
+  .mvp-footer-bar { padding: 10px 12px; }
 }
 
 </style>
@@ -1140,8 +1353,6 @@ tbody tr.rank-3 .pts {
             <th>Team Name</th>
             <th>Captain</th>
             <th>WhatsApp</th>
-            <th>Logo</th>
-            <th>ID Card</th>
             <th>Members</th>
           </tr>
         </thead>
@@ -1371,17 +1582,13 @@ async function loadTeamsData() {
         { width: "25%",  targets: 1 },
         { width: "20%",  targets: 2 },
         { width: "20%",  targets: 3 },
-        { width: "8%",   targets: 4, className: "dt-center" },
-        { width: "8%",   targets: 5, className: "dt-center" },
-        { width: "9%",   targets: 6, className: "dt-center" }
+        { width: "9%",   targets: 4, className: "dt-center" }
       ],
       columns: [
         { className: 'details-control', orderable: false, data: null, defaultContent: '<span class="expand-icon"></span>' },
         { data: 'team_name' },
         { data: 'captain_name' },
         { data: 'captain_whatsapp', render: d => renderWA(d) },
-        { data: 'logo',    render: d => renderStatus(d) },
-        { data: 'idcard',  render: d => renderStatus(d) },
         { data: 'members', render: d => d.length },
         { data: 'member_search', visible: false, searchable: true }
       ]
