@@ -406,6 +406,7 @@ table.dataTable tbody tr td.child {
   width: 100%;
   border-collapse: collapse;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  table-layout: fixed;
 }
 
 .child-table th {
@@ -418,6 +419,9 @@ table.dataTable tbody tr td.child {
   text-transform: uppercase;
   color: #4b5563;
   border-bottom: 1px solid rgba(255,255,255,.07);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .child-table td {
@@ -427,7 +431,19 @@ table.dataTable tbody tr td.child {
   color: #94a3b8;
   border-bottom: 1px solid #2b3142;
   text-align: left !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+.child-table th:nth-child(1),
+.child-table td:nth-child(1) { width: 50%; }
+
+.child-table th:nth-child(2),
+.child-table td:nth-child(2) { width: 25%; }
+
+.child-table th:nth-child(3),
+.child-table td:nth-child(3) { width: 25%; }
 
 .child-table tbody tr:hover td {
   background: rgba(255,255,255,.02);
@@ -1290,6 +1306,19 @@ tbody tr.rank-3 .pts {
 
   /* mvp footer */
   .mvp-footer-bar { padding: 10px 12px; }
+
+  /* child table column widths on small screens */
+  .child-table th:nth-child(1),
+  .child-table td:nth-child(1) { width: 45%; }
+
+  .child-table th:nth-child(2),
+  .child-table td:nth-child(2) { width: 22%; }
+
+  .child-table th:nth-child(3),
+  .child-table td:nth-child(3) { width: 33%; }
+
+  .child-table th,
+  .child-table td { padding: 8px 8px; font-size: 12px; }
 }
 
 </style>
