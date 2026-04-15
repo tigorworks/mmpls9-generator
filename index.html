@@ -1692,7 +1692,7 @@ function processMVPData(rows, lastUpdate) {
     const nickL  = String(r["MVP Loser Nick"]  ?? "").trim();
     const date   = r["Tanggal"] || "";
 
-    if (idW) {
+    if (idW && idW !== "none") {
       if (!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
       else if (nickW)    players[idW].nick = nickW;
       players[idW].pts += 2;
