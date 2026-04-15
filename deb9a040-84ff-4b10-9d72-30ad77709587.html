@@ -414,7 +414,14 @@ function onWinnerChange(){
 
 function fillPlayers(id, team){
   let el = document.getElementById(id);
+  el.innerHTML = "";
   el.disabled = false;
+
+  // None is first and default
+  let none = document.createElement("option");
+  none.value = "none";
+  none.text  = "— None —";
+  el.appendChild(none);
 
   let t = data.teams.find(x => x.team_name === team);
   t.members.forEach(p => {
@@ -423,14 +430,6 @@ function fillPlayers(id, team){
     opt.text = p.game_nick;
     el.appendChild(opt);
   });
-
-  // MVP Loser allows "None"
-  if(id === "mvpLoser"){
-    let none = document.createElement("option");
-    none.value = "none";
-    none.text  = "— None —";
-    el.appendChild(none);
-  }
 
   el.onchange = validate;
 }
@@ -444,10 +443,11 @@ function reset(ids){
 }
 
 function validate(){
-  const loserOk = mvpLoser.value !== "" ; // "none" or any player id counts
+  const winnerOk = mvpWinner.value !== ""; // "none" or any player id counts
+  const loserOk  = mvpLoser.value  !== ""; // "none" or any player id counts
   submitBtn.disabled = !(
     group.value && match.value !== "" &&
-    winner.value && mvpWinner.value && loserOk
+    winner.value && winnerOk && loserOk
   );
 }
 
@@ -455,8 +455,8 @@ function resetForm(){
   group.value = "";
   match.innerHTML  = '<option value="">Select Match</option>';
   winner.innerHTML = '<option value="">Select Winner</option>';
-  mvpWinner.innerHTML = '<option value="">Select Player</option>';
-  mvpLoser.innerHTML  = '<option value="">Select Player</option>';
+  mvpWinner.innerHTML = '<option value="">—</option>';
+  mvpLoser.innerHTML  = '<option value="">—</option>';
 
   [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
 
@@ -475,10 +475,10 @@ submitBtn.onclick = async function(){
     group: group.value,
     match: m.t1 + " vs " + m.t2,
     winner: winner.value,
-    mvp_winner_id: mvpWinner.value,
-    mvp_winner_name: mvpWinner.options[mvpWinner.selectedIndex].text,
-    mvp_loser_id:   mvpLoser.value === "none" ? "" : mvpLoser.value,
-    mvp_loser_name: mvpLoser.value === "none" ? "" : mvpLoser.options[mvpLoser.selectedIndex].text,
+    mvp_winner_id:   mvpWinner.value === "none" ? "" : mvpWinner.value,
+    mvp_winner_name: mvpWinner.value === "none" ? "" : mvpWinner.options[mvpWinner.selectedIndex].text,
+    mvp_loser_id:    mvpLoser.value  === "none" ? "" : mvpLoser.value,
+    mvp_loser_name:  mvpLoser.value  === "none" ? "" : mvpLoser.options[mvpLoser.selectedIndex].text,
     note: note.value
   };
 
