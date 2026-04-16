@@ -1697,11 +1697,9 @@ async function loadMVPData() {
   } catch (err) {
     clearTimeout(timer);
     console.error('Failed to load MVP:', err);
-    const msg = err.name === 'AbortError'
-      ? 'Request timed out. Check your connection and refresh.'
-      : 'Failed to load data. Please refresh.';
+    const msg = err.name === 'AbortError' ? 'Request timed out.' : 'Failed to load data.';
     document.getElementById('mvpTable').innerHTML =
-      `<tr class="state-row"><td colspan="5" style="color:#ef4444;">${msg}</td></tr>`;
+      `<tr class="state-row"><td colspan="5" style="color:#ef4444;">${msg} <a href="#" onclick="event.preventDefault();loadMVPData()" style="margin-left:6px;color:#f59e0b;text-decoration:underline;font-size:13px;">Retry</a></td></tr>`;
   }
 }
 
