@@ -1660,17 +1660,28 @@ async function loadMVPData() {
   setStep('step-init', 'done');
   setStep('step-fetch', 'active');
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+
   try {
-    const res    = await fetch(SCRIPT_URL);
+    const res    = await fetch(SCRIPT_URL, {
+      signal: controller.signal,
+      cache:  'no-store'
+    });
+    clearTimeout(timer);
     const parsed = await res.json();
     setStep('step-fetch', 'done');
     setStep('step-calc', 'active');
     const rows = Array.isArray(parsed) ? parsed : (parsed.data || []);
     processMVPData(rows, parsed.lastUpdate || '');
   } catch (err) {
+    clearTimeout(timer);
     console.error('Failed to load MVP:', err);
+    const msg = err.name === 'AbortError'
+      ? 'Request timed out. Check your connection and refresh.'
+      : 'Failed to load data. Please refresh.';
     document.getElementById('mvpTable').innerHTML =
-      '<tr class="state-row"><td colspan="5" style="color:#ef4444;">Failed to load data. Please refresh.</td></tr>';
+      `<tr class="state-row"><td colspan="5" style="color:#ef4444;">${msg}</td></tr>`;
   }
 }
 
@@ -1964,14 +1975,28 @@ document.getElementById('mvpDownloadBtn').addEventListener('click', async functi
 
 // ── NAVIGATION ───────────────────────────────────────
 
+function navigateTo(page) {
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector('[data-page="' + page + '"]');
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const section = document.getElementById(page);
+  if (section) section.classList.add('active');
+  history.replaceState(null, '', '#' + page);
+  if (page === 'mvp') loadMVPData();
+}
+
 document.querySelectorAll('[data-page]').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
-    document.querySelectorAll('[data-page]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(btn.dataset.page).classList.add('active');
+    navigateTo(btn.dataset.page);
   });
+});
+
+window.addEventListener('hashchange', () => {
+  const page = location.hash.replace('#', '') || 'home';
+  const valid = ['home', 'teams', 'mvp', 'about'];
+  navigateTo(valid.includes(page) ? page : 'home');
 });
 
 document.querySelectorAll('[data-tab]').forEach(btn => {
@@ -1987,7 +2012,9 @@ document.querySelectorAll('[data-tab]').forEach(btn => {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadTeamsData();
-  loadMVPData();
+  const initPage = location.hash.replace('#', '') || 'home';
+  const valid = ['home', 'teams', 'mvp', 'about'];
+  navigateTo(valid.includes(initPage) ? initPage : 'home');
 });
 
 </script>
