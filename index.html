@@ -1374,6 +1374,8 @@ tbody tr.rank-3 .pts {
       <h1>Season 9 Participants</h1>
     </div>
 
+    <div id="teamsStatus" style="display:none; text-align:center; padding:32px 0; color:#6b7280; font-size:14px;"></div>
+
     <div class="teams-table-wrap" style="margin-top: 36px;">
       <table id="teamTable" class="display">
         <thead>
@@ -1594,12 +1596,26 @@ function buildMemberSearch(members) {
 }
 
 async function loadTeamsData() {
+  const statusEl = document.getElementById('teamsStatus');
+  const tableWrap = document.querySelector('.teams-table-wrap');
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+
   try {
-    const res  = await fetch('mmpl.json?v=' + Date.now());
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Loading teams data…';
+    tableWrap.style.display = 'none';
+
+    const res  = await fetch('mmpl.json', { signal: controller.signal, cache: 'no-store' });
+    clearTimeout(timer);
     const data = await res.json();
     const teams = data.teams || [];
     teams.forEach(t => { t.member_search = buildMemberSearch(t.members || []); });
     document.getElementById('homeTeamCount').innerText = teams.length;
+
+    statusEl.style.display = 'none';
+    tableWrap.style.display = '';
 
     teamDT = $('#teamTable').DataTable({
       data: teams,
@@ -1638,6 +1654,10 @@ async function loadTeamsData() {
       }
     });
   } catch (err) {
+    clearTimeout(timer);
+    const msg = err.name === 'AbortError' ? 'Request timed out.' : 'Failed to load teams data.';
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = `${msg} <button onclick="loadTeamsData()" style="margin-left:8px;padding:4px 12px;border-radius:6px;border:1px solid #374151;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:13px;">Retry</button>`;
     console.error('Failed to load teams:', err);
   }
 }
