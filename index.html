@@ -1657,7 +1657,7 @@ async function loadTeamsData() {
     clearTimeout(timer);
     const msg = err.name === 'AbortError' ? 'Request timed out.' : 'Failed to load teams data.';
     statusEl.style.display = 'block';
-    statusEl.innerHTML = `${msg} <button onclick="loadTeamsData()" style="margin-left:8px;padding:4px 12px;border-radius:6px;border:1px solid #374151;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:13px;">Retry</button>`;
+    statusEl.innerHTML = `${msg} <a href="#" onclick="event.preventDefault();loadTeamsData()" style="margin-left:6px;color:#f59e0b;text-decoration:underline;font-size:13px;">Retry</a>`;
     console.error('Failed to load teams:', err);
   }
 }
