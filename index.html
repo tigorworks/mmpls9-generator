@@ -1067,6 +1067,50 @@ tbody tr.rank-3 .pts {
   color: rgba(241,245,249,.8);
 }
 
+/* ── INPUT CLEAR BUTTON ── */
+
+.input-clear-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.input-clear-wrap input {
+  padding-right: 28px !important;
+}
+
+.input-clear-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.12);
+  color: #6b7280;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+
+.input-clear-btn:hover {
+  background: rgba(239,68,68,.25);
+  color: #fca5a5;
+}
+
+.input-clear-btn.visible {
+  display: flex;
+}
+
 /* ── RESPONSIVE ── */
 
 @media (max-width: 768px) {
@@ -1573,6 +1617,37 @@ function avatarStyle(name) {
   return { bg: p.bg, border: p.border, color: p.color };
 }
 
+// ── INPUT CLEAR BUTTON ───────────────────────────────
+
+function addInputClearBtn(input, onClear) {
+  const wrap = document.createElement('span');
+  wrap.className = 'input-clear-wrap';
+  input.parentNode.insertBefore(wrap, input);
+  wrap.appendChild(input);
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'input-clear-btn';
+  btn.setAttribute('aria-label', 'Clear input');
+  btn.textContent = '✕';
+  wrap.appendChild(btn);
+
+  const sync = () => btn.classList.toggle('visible', input.value.length > 0);
+
+  input.addEventListener('input', sync);
+  input.addEventListener('keyup', sync);
+
+  btn.addEventListener('mousedown', e => e.preventDefault());
+  btn.addEventListener('click', () => {
+    input.value = '';
+    if (onClear) onClear();
+    sync();
+    input.focus();
+  });
+
+  sync();
+}
+
 // ── TEAMS ────────────────────────────────────────────
 
 function normalizePhone(number) {
@@ -1654,6 +1729,9 @@ async function loadTeamsData() {
         { data: 'member_search', visible: false, searchable: true }
       ]
     });
+
+    const dtSearchInput = document.querySelector('#teamTable_filter input');
+    if (dtSearchInput) addInputClearBtn(dtSearchInput, () => teamDT.search('').draw());
 
     $('#teamTable tbody').on('click', 'td.details-control', function () {
       const tr  = $(this).closest('tr');
