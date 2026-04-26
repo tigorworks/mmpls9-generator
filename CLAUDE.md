@@ -47,7 +47,6 @@ Google Apps Script endpoint
 | `index.html` | Main SPA: Home / Teams / MVP / About tabs via `navigateTo()` |
 | `mvp.html` | Standalone MVP leaderboard (duplicates MVP logic from `index.html`) |
 | `teams.html` | Standalone teams list |
-| `deb9a040-...html` | Password-protected MVP input form (password: `mvp9`) |
 
 **Important:** MVP scoring logic exists in both `index.html` and `mvp.html`. If point values change, update both files.
 
