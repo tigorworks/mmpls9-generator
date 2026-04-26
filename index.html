@@ -228,6 +228,10 @@ body::before {
   box-shadow: 0 0 20px rgba(245,158,11,.1);
 }
 
+.stat-card[data-page] {
+  cursor: pointer;
+}
+
 .stat-value {
   font-size: 40px;
   font-weight: 900;
@@ -1385,13 +1389,13 @@ tbody tr.rank-3 .pts {
 <!-- NAVIGATION -->
 <nav class="navbar">
   <div class="navbar-container">
-    <a href="#" class="navbar-brand">
+    <a href="#home" class="navbar-brand">
       <img src="bg.png" alt="MMPL Logo">
     </a>
     <ul class="nav-menu">
       <li><button class="nav-link active" data-page="home">Home</button></li>
       <li><button class="nav-link" data-page="teams">Teams</button></li>
-      <li><button class="nav-link" data-page="mvp">Our's MVP</button></li>
+      <li><button class="nav-link" data-page="mvp">Our MVP</button></li>
       <li><button class="nav-link" data-page="about">About</button></li>
     </ul>
   </div>
@@ -1408,16 +1412,16 @@ tbody tr.rank-3 .pts {
     </div>
 
     <div class="home-grid">
-      <div class="stat-card">
-        <div class="stat-value" id="homeTeamCount">37</div>
+      <div class="stat-card" data-page="teams">
+        <div class="stat-value" id="homeTeamCount">—</div>
         <div class="stat-label">Teams Registered</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">4</div>
         <div class="stat-label">Competition Groups</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">100+</div>
+      <div class="stat-card" data-page="mvp">
+        <div class="stat-value" id="homePlayerCount">—</div>
         <div class="stat-label">Professional Players</div>
       </div>
     </div>
@@ -1432,7 +1436,7 @@ tbody tr.rank-3 .pts {
 
     <div id="teamsStatus" style="display:none; text-align:center; padding:32px 0; color:#6b7280; font-size:14px;"></div>
 
-    <div class="teams-table-wrap" style="margin-top: 36px;">
+    <div class="teams-table-wrap" style="margin-top: 36px; display:none;">
       <table id="teamTable" class="display">
         <thead>
           <tr>
@@ -1452,7 +1456,7 @@ tbody tr.rank-3 .pts {
   <section id="mvp" class="section">
     <div class="hero">
       <div class="hero-eyebrow">Rankings</div>
-      <h1>Our's MVP Leaderboard</h1>
+      <h1>Our MVP Leaderboard</h1>
     </div>
 
     <div class="mvp-tabs">
@@ -1603,6 +1607,8 @@ const AVATAR_PALETTE = [
 ];
 
 let teamDT = null;
+let teamsData = null;
+let teamsTableReady = false;
 let allRanked = [];
 let activeMvpTab = 'all';
 let modalHistory = [];
@@ -1687,73 +1693,78 @@ function buildMemberSearch(members) {
 }
 
 async function loadTeamsData() {
-  const statusEl = document.getElementById('teamsStatus');
-  const tableWrap = document.querySelector('.teams-table-wrap');
-
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
-
   try {
-    statusEl.style.display = 'block';
-    statusEl.textContent = 'Loading teams data…';
-    tableWrap.style.display = 'none';
-
     const res  = await fetch('mmpl.json', { signal: controller.signal, cache: 'no-store' });
     clearTimeout(timer);
     const data = await res.json();
-    const teams = data.teams || [];
-    teams.forEach(t => { t.member_search = buildMemberSearch(t.members || []); });
-    document.getElementById('homeTeamCount').innerText = teams.length;
-
-    statusEl.style.display = 'none';
-    tableWrap.style.display = '';
-
-    teamDT = $('#teamTable').DataTable({
-      data: teams,
-      pageLength: 10,
-      autoWidth: false,
-      search: { smart: false },
-      columnDefs: [
-        { width: "40px", targets: 0 },
-        { width: "25%",  targets: 1 },
-        { width: "20%",  targets: 2 },
-        { width: "20%",  targets: 3 },
-        { width: "9%",   targets: 4, className: "dt-center" }
-      ],
-      columns: [
-        { className: 'details-control', orderable: false, data: null, defaultContent: '<span class="expand-icon"></span>' },
-        { data: 'team_name' },
-        { data: 'captain_name' },
-        { data: 'captain_whatsapp', render: d => renderWA(d) },
-        { data: 'members', render: d => d.length },
-        { data: 'member_search', visible: false, searchable: true }
-      ]
-    });
-
-    const dtSearchInput = document.querySelector('#teamTable_filter input');
-    if (dtSearchInput) addInputClearBtn(dtSearchInput, () => teamDT.search('').draw());
-
-    $('#teamTable tbody').on('click', 'td.details-control', function () {
-      const tr  = $(this).closest('tr');
-      const row = teamDT.row(tr);
-      if (row.child.isShown()) {
-        row.child.hide();
-        tr.removeClass('shown');
-      } else {
-        teamDT.rows().every(function () {
-          if (this.child.isShown()) { $(this.node()).removeClass('shown'); this.child.hide(); }
-        });
-        row.child(formatChildMembers(row.data().members)).show();
-        tr.addClass('shown');
-      }
-    });
+    teamsData = data.teams || [];
+    teamsData.forEach(t => { t.member_search = buildMemberSearch(t.members || []); });
+    document.getElementById('homeTeamCount').innerText = teamsData.length;
+    const totalPlayers = teamsData.reduce((sum, t) => sum + (t.members?.length || 0), 0);
+    document.getElementById('homePlayerCount').innerText = totalPlayers;
+    const currentPage = location.hash.replace('#', '') || 'home';
+    if (currentPage === 'teams') initTeamsTable();
   } catch (err) {
     clearTimeout(timer);
     const msg = err.name === 'AbortError' ? 'Request timed out.' : 'Failed to load teams data.';
+    const statusEl = document.getElementById('teamsStatus');
     statusEl.style.display = 'block';
     statusEl.innerHTML = `${msg} <a href="#" onclick="event.preventDefault();loadTeamsData()" style="margin-left:6px;color:#f59e0b;text-decoration:underline;font-size:13px;">Retry</a>`;
     console.error('Failed to load teams:', err);
   }
+}
+
+function initTeamsTable() {
+  if (teamsTableReady) return;
+  const statusEl = document.getElementById('teamsStatus');
+  const tableWrap = document.querySelector('.teams-table-wrap');
+  if (!teamsData) {
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Loading teams data…';
+    return;
+  }
+  statusEl.style.display = 'none';
+  tableWrap.style.display = '';
+  teamDT = $('#teamTable').DataTable({
+    data: teamsData,
+    pageLength: 10,
+    autoWidth: false,
+    search: { smart: false },
+    columnDefs: [
+      { width: "40px", targets: 0 },
+      { width: "25%",  targets: 1 },
+      { width: "20%",  targets: 2 },
+      { width: "20%",  targets: 3 },
+      { width: "9%",   targets: 4, className: "dt-center" }
+    ],
+    columns: [
+      { className: 'details-control', orderable: false, data: null, defaultContent: '<span class="expand-icon"></span>' },
+      { data: 'team_name' },
+      { data: 'captain_name' },
+      { data: 'captain_whatsapp', render: d => renderWA(d) },
+      { data: 'members', render: d => d.length },
+      { data: 'member_search', visible: false, searchable: true }
+    ]
+  });
+  const dtSearchInput = document.querySelector('#teamTable_filter input');
+  if (dtSearchInput) addInputClearBtn(dtSearchInput, () => teamDT.search('').draw());
+  $('#teamTable tbody').on('click', 'td.details-control', function () {
+    const tr  = $(this).closest('tr');
+    const row = teamDT.row(tr);
+    if (row.child.isShown()) {
+      row.child.hide();
+      tr.removeClass('shown');
+    } else {
+      teamDT.rows().every(function () {
+        if (this.child.isShown()) { $(this.node()).removeClass('shown'); this.child.hide(); }
+      });
+      row.child(formatChildMembers(row.data().members)).show();
+      tr.addClass('shown');
+    }
+  });
+  teamsTableReady = true;
 }
 
 // ── MVP DATA ─────────────────────────────────────────
@@ -2095,7 +2106,11 @@ function navigateTo(page) {
   const section = document.getElementById(page);
   if (section) section.classList.add('active');
   history.replaceState(null, '', '#' + page);
-  if (page === 'mvp') loadMVPData();
+  if (page === 'mvp') {
+    if (allRanked.length > 0) renderMVPTable(activeMvpTab);
+    else loadMVPData();
+  }
+  if (page === 'teams') initTeamsTable();
 }
 
 document.querySelectorAll('[data-page]').forEach(btn => {
@@ -2103,6 +2118,11 @@ document.querySelectorAll('[data-page]').forEach(btn => {
     e.preventDefault();
     navigateTo(btn.dataset.page);
   });
+});
+
+document.querySelector('.navbar-brand').addEventListener('click', e => {
+  e.preventDefault();
+  navigateTo('home');
 });
 
 window.addEventListener('hashchange', () => {
