@@ -4,6 +4,26 @@ Portal web untuk **Mandirian Mobile Legends Professional League (MMPL) Season 9*
 
 ---
 
+## Screenshots
+
+### Desktop
+
+| Home | Teams |
+|------|-------|
+| ![Home](screenshots/home.png) | ![Teams](screenshots/teams.png) |
+
+| MVP Leaderboard | About |
+|-----------------|-------|
+| ![MVP](screenshots/mvp.png) | ![About](screenshots/about.png) |
+
+### Mobile
+
+| Home | MVP Leaderboard |
+|------|-----------------|
+| ![Mobile Home](screenshots/mobile-home.png) | ![Mobile MVP](screenshots/mobile-mvp.png) |
+
+---
+
 ## Struktur File
 
 ```
@@ -28,7 +48,7 @@ Portal utama dengan 4 halaman (SPA):
 |---------|--------|
 | **Home** | Statistik umum: jumlah tim, grup, pemain |
 | **Teams** | Tabel tim lengkap dengan expand roster anggota |
-| **Our's MVP** | MVP leaderboard dengan filter per grup, downloadable sebagai PNG |
+| **Our MVP** | MVP leaderboard dengan filter per grup, downloadable sebagai PNG |
 | **About** | Deskripsi turnamen |
 
 Data diambil dari `mmpl.json`.
