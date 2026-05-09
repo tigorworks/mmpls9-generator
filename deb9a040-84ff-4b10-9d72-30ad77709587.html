@@ -171,36 +171,45 @@ textarea {
 #debug.loading { color: #6b7280; }
 
 /* ── Grand Final toggle ── */
-.gf-toggle {
-  display: flex;
+/* ── Grand Final toggle switch ── */
+.po-switch {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-  background: #0d1424;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
-  transition: border-color .15s, box-shadow .15s;
+  padding: 10px 0;
 }
-.gf-toggle:hover { border-color: #374151; }
-.gf-toggle.active {
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245,158,11,.12);
-  background: #111827;
-}
-.gf-toggle input[type="checkbox"] {
-  width: 15px; height: 15px;
-  accent-color: #f59e0b;
-  cursor: pointer;
+.po-switch input[type="checkbox"] { display: none; }
+.po-switch-track {
+  width: 40px;
+  height: 22px;
+  background: #1a2740;
+  border: 1px solid #2e4470;
+  border-radius: 11px;
+  position: relative;
+  transition: background .2s, border-color .2s;
   flex-shrink: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: none;
 }
-.gf-toggle span { font-size: 13px; color: #e2e8f0; font-weight: 600; }
-.gf-toggle small { margin-left: auto; font-size: 11px; color: #4b5563; font-weight: 400; }
+.po-switch-track::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  background: #4b5563;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform .2s, background .2s;
+}
+.po-switch input:checked ~ .po-switch-track {
+  background: rgba(245,158,11,.2);
+  border-color: rgba(245,158,11,.6);
+}
+.po-switch input:checked ~ .po-switch-track::after {
+  transform: translateX(18px);
+  background: #f59e0b;
+}
+.po-switch-label { font-size: 13px; color: #e2e8f0; font-weight: 600; line-height: 1.4; }
+.po-switch-label small { display: block; font-size: 11px; color: #4b5563; font-weight: 400; }
 
 /* ── Rating + points preview ── */
 .mvp-row {
@@ -504,11 +513,13 @@ textarea {
 
       <!-- Grand Final override (shown after match selected) -->
       <div class="field" id="po-gf-field" style="display:none">
-        <label>Grand Final</label>
-        <label class="gf-toggle" id="po-gfToggle">
+        <label>Grand Final Override</label>
+        <label class="po-switch" id="po-gfToggle">
           <input type="checkbox" id="po-grandFinal">
-          <span>Grand Final</span>
-          <small>override stage → 3 pts</small>
+          <span class="po-switch-track"></span>
+          <span class="po-switch-label">Grand Final
+            <small>override stage → +3 pts</small>
+          </span>
         </label>
       </div>
 
@@ -924,13 +935,10 @@ function onPoMatchChange() {
 
   // GF checkbox — show only when match is NOT already auto-detected as GF
   const gfField  = document.getElementById('po-gf-field');
-  const gfToggle = document.getElementById('po-gfToggle');
-  const gfCb     = document.getElementById('po-grandFinal');
+  const gfCb = document.getElementById('po-grandFinal');
   gfField.style.display = '';
   gfCb.checked = (m.bracketType === 'grand_final');
-  gfToggle.classList.toggle('active', gfCb.checked);
   gfCb.onchange = function() {
-    gfToggle.classList.toggle('active', this.checked);
     // Update badge
     const stage = getPoStage(m);
     badge.textContent = badgeMap[stage] || stage;
@@ -973,8 +981,6 @@ function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, m) {
   const roster = poRoster[teamName] || [];
   roster.forEach(p => sel.appendChild(new Option(p.game_nick, p.game_id)));
 
-  rating.disabled = false;
-
   const refresh = () => {
     const isNone = sel.value === 'none';
     rating.disabled = isNone;
@@ -985,6 +991,7 @@ function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, m) {
 
   sel.onchange   = refresh;
   rating.oninput = () => { updatePoPreview(m); validatePo(); };
+  refresh(); // apply initial state: disable rating until a player is chosen
 }
 
 function updatePoPreview(m) {
@@ -1045,7 +1052,7 @@ function resetPoDetails() {
   document.getElementById('po-stage-info').style.display = 'none';
   document.getElementById('po-gf-field').style.display   = 'none';
   const gfCb = document.getElementById('po-grandFinal');
-  if (gfCb) { gfCb.checked = false; document.getElementById('po-gfToggle').classList.remove('active'); }
+  if (gfCb) { gfCb.checked = false; }
   document.getElementById('po-submitBtn').disabled = true;
 }
 
