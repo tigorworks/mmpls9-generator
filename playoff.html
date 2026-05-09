@@ -367,11 +367,15 @@ body::before {
 
 /* Grand Final card special style */
 .match-card.grand-final {
-  border-color: rgba(245,158,11,.4);
-  background: rgba(245,158,11,.05);
+  border-color: rgba(245,158,11,.65);
+  background: rgba(245,158,11,.07);
+  box-shadow: 0 0 0 1px rgba(245,158,11,.2), 0 4px 24px rgba(245,158,11,.18);
 }
 
-.match-card.grand-final .match-id { color: var(--gold2); font-size: 11px; }
+.match-card.grand-final .match-id { color: var(--gold); font-size: 11px; font-weight: 800; letter-spacing:.5px; }
+.match-card.grand-final .match-meta { background: rgba(245,158,11,.1); border-bottom-color: rgba(245,158,11,.25); }
+.match-card.grand-final .team-row { border-bottom-color: rgba(245,158,11,.12); }
+.match-card.grand-final .team-row.winner .team-name { color: var(--gold); }
 
 
 /* ── ACTION BUTTONS ─────────────────────── */
@@ -463,7 +467,7 @@ body::before {
   <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
     <div class="action-bar">
-      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">⬇ Download PNG</button>
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">Download PNG</button>
       <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
     </div>
     <div id="bracketContent"></div>
@@ -570,6 +574,14 @@ function processBracket(data) {
 function renderFullBracket(uRounds, lRounds, ctx) {
   const el  = document.getElementById('bracketContent');
   const gfR = ctx.maxU; // Grand Final round = last upper round
+
+  // Keep only the first GF match (remove reset/match 23)
+  if (ctx.upper[gfR] && ctx.upper[gfR].length > 1) {
+    ctx.upper[gfR] = ctx.upper[gfR]
+      .sort((a, b) => (a.suggested_play_order || 0) - (b.suggested_play_order || 0))
+      .slice(0, 1);
+  }
+
   let html = '';
 
   // ── UPPER BRACKET + GRAND FINAL (inline as last column) ──
@@ -730,9 +742,9 @@ function renderStateBadge(state) {
   if (!el) return;
   const map = {
     group_stages_underway: ['group', 'Group Stage Underway'],
-    underway:              ['done',  'Berlangsung'],
+    underway:              ['done',  'Underway'],
     awaiting_review:       ['done',  'Awaiting Review'],
-    complete:              ['done',  'Selesai'],
+    complete:              ['done',  'Complete'],
   };
   const [cls, label] = map[state] || ['group', state];
   el.innerHTML = `<span class="state-badge ${cls}">${label}</span>`;
