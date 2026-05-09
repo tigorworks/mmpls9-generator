@@ -1089,19 +1089,18 @@ document.getElementById('po-submitBtn').onclick = async function() {
   const losDesc      = losIsNone ? '' : `${losRatingPts}(rating) + ${MVP_CONFIG.result.lose}(Lose) + ${stagePts}(${stageLabel})`;
 
   const payload = {
-    source:            'playoff',
-    tanggal:           val('po-tanggal'),
-    group:             'Playoff',
-    match:             `M${order}: ${m.p1 || 'TBD'} vs ${m.p2 || 'TBD'}`,
-    winner:            win,
-    stage:             stageKey,
-    mvp_winner_id:     winIsNone ? '' : val('po-mvpWinner'),
-    mvp_winner_name:   winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
-    mvp_winner_rating: winDesc,
+    source:          'playoff',
+    tanggal:         val('po-tanggal'),
+    group:           'Playoff',
+    match:           `M${order}: ${m.p1 || 'TBD'} vs ${m.p2 || 'TBD'}`,
+    winner:          win,
+    stage:           stageKey,
+    mvp_winner_id:   winIsNone ? '' : val('po-mvpWinner'),
+    mvp_winner_name: winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
+    mvp_loser_id:    losIsNone ? '' : val('po-mvpLoser'),
+    mvp_loser_name:  losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
+    note:            [winIsNone ? '' : `Winner: ${winDesc}`, losIsNone ? '' : `Loser: ${losDesc}`].filter(Boolean).join(' | '),
     mvp_winner_points: winTotal,
-    mvp_loser_id:      losIsNone ? '' : val('po-mvpLoser'),
-    mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
-    mvp_loser_rating:  losDesc,
     mvp_loser_points:  losTotal,
   };
 
