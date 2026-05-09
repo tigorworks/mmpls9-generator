@@ -1871,6 +1871,26 @@ function setStep(id, state) {
   if (el) el.className = 'loading-step ' + state;
 }
 
+// ── MVP Scoring Parameters ────────────────────────────
+// Edit values here to adjust point weights globally.
+const MVP_CONFIG = {
+  rating: [
+    { min: 8.0,  max: 9.5,  pts: 1 },
+    { min: 9.6,  max: 10.5, pts: 2 },
+    { min: 10.6, max: 15.0, pts: 3 }
+  ],
+  result: { win: 2, lose: 1 },
+  stage:  { upper: 2, lower: 1, grand_final: 3 }
+};
+
+function calcMVPPts(rating, isWin, stage) {
+  const r = parseFloat(rating);
+  const rPts   = isNaN(r) ? 0 : (MVP_CONFIG.rating.find(t => r >= t.min && r <= t.max)?.pts ?? 0);
+  const rRes   = isWin ? MVP_CONFIG.result.win : MVP_CONFIG.result.lose;
+  const rStage = MVP_CONFIG.stage[stage] ?? MVP_CONFIG.stage.lower;
+  return rPts + rRes + rStage;
+}
+
 function processMVPData(rows, lastUpdate) {
   const players = {};
 
@@ -1883,20 +1903,25 @@ function processMVPData(rows, lastUpdate) {
     const idL    = String(r["MVP Loser ID"]    ?? "").trim();
     const nickL  = String(r["MVP Loser Nick"]  ?? "").trim();
     const date   = r["Tanggal"] || "";
+    const stage  = (r["Stage"] || "lower").toLowerCase().replace(/\s+/g, "_");
+    const ratingW = r["MVP Winner Rating"] ?? "";
+    const ratingL = r["MVP Loser Rating"]  ?? "";
 
     if (idW && idW !== "none") {
+      const pts = calcMVPPts(ratingW, true, stage);
       if (!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
       else if (nickW)    players[idW].nick = nickW;
-      players[idW].pts += 2;
-      players[idW].history.push({ date, group, match, condition: 'win' });
+      players[idW].pts += pts;
+      players[idW].history.push({ date, group, match, condition: 'win', pts });
     }
     if (idL) {
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
+      const pts = calcMVPPts(ratingL, false, stage);
       if (!players[idL]) players[idL] = { id: idL, nick: nickL, group, team: loserTeam, pts: 0, history: [] };
       else if (nickL)    players[idL].nick = nickL;
-      players[idL].pts += 1;
-      players[idL].history.push({ date, group, match, condition: 'lose' });
+      players[idL].pts += pts;
+      players[idL].history.push({ date, group, match, condition: 'lose', pts });
     }
   });
 

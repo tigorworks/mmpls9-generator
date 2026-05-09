@@ -170,6 +170,68 @@ textarea {
 #debug.err { color: #f87171; }
 #debug.loading { color: #6b7280; }
 
+/* ── Grand Final toggle ── */
+.gf-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #0d1424;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.gf-toggle:hover { border-color: #374151; }
+.gf-toggle.active {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.12);
+  background: #111827;
+}
+.gf-toggle input[type="checkbox"] {
+  width: 15px; height: 15px;
+  accent-color: #f59e0b;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+}
+.gf-toggle span { font-size: 13px; color: #e2e8f0; font-weight: 600; }
+.gf-toggle small { margin-left: auto; font-size: 11px; color: #4b5563; font-weight: 400; }
+
+/* ── Rating + points preview ── */
+.mvp-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+.rating-input { margin-top: 8px; }
+.pts-preview {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  min-height: 18px;
+  transition: color .15s;
+}
+.pts-preview.ready { color: #f59e0b; font-weight: 600; }
+.pts-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(245,158,11,.12);
+  color: #f59e0b;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.pts-formula { color: #4b5563; font-size: 11px; }
+
 /* ── password gate ── */
 #gate {
   width: 100%;
@@ -288,6 +350,23 @@ textarea {
     </select>
   </div>
 
+  <div class="field">
+    <label>Stage</label>
+    <select id="stage">
+      <option value="lower">Lower Bracket</option>
+      <option value="upper">Upper Bracket</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Grand Final</label>
+    <label class="gf-toggle" id="gfToggle">
+      <input type="checkbox" id="grandFinal">
+      <span>Grand Final</span>
+      <small>override stage → 3 pts</small>
+    </label>
+  </div>
+
   <div class="divider"></div>
 
   <div class="field">
@@ -295,6 +374,8 @@ textarea {
     <select id="mvpWinner" disabled>
       <option value="">Select Player</option>
     </select>
+    <input type="number" id="ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (8.0 – 15.0)" disabled>
+    <div id="ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
   </div>
 
   <div class="field">
@@ -302,6 +383,8 @@ textarea {
     <select id="mvpLoser" disabled>
       <option value="">Select Player</option>
     </select>
+    <input type="number" id="ratingLoser" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (8.0 – 15.0)" disabled>
+    <div id="ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
   </div>
 
   <div class="field">
@@ -346,6 +429,32 @@ document.getElementById("gateInput").addEventListener("keydown", e => {
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6jyf6DSGJ3VP-F1eo8se235t39liUXyB6q--zNZE2T8UpNl4DA/exec";
 
+// ── MVP Scoring Parameters (harus sama dengan di index.html) ──────
+const MVP_CONFIG = {
+  rating: [
+    { min: 8.0,  max: 9.5,  pts: 1 },
+    { min: 9.6,  max: 10.5, pts: 2 },
+    { min: 10.6, max: 15.0, pts: 3 }
+  ],
+  result: { win: 2, lose: 1 },
+  stage:  { upper: 2, lower: 1, grand_final: 3 }
+};
+
+function calcMVPPts(rating, isWin, stage) {
+  const r = parseFloat(rating);
+  const rPts   = isNaN(r) ? 0 : (MVP_CONFIG.rating.find(t => r >= t.min && r <= t.max)?.pts ?? 0);
+  const rRes   = isWin ? MVP_CONFIG.result.win : MVP_CONFIG.result.lose;
+  const rStage = MVP_CONFIG.stage[stage] ?? MVP_CONFIG.stage.lower;
+  return rPts + rRes + rStage;
+}
+
+function getRatingPts(rating) {
+  const r = parseFloat(rating);
+  if (isNaN(r)) return null;
+  return MVP_CONFIG.rating.find(t => r >= t.min && r <= t.max)?.pts ?? null;
+}
+// ─────────────────────────────────────────────────────────────────
+
 let data = {};
 let matches = [];
 
@@ -359,6 +468,22 @@ const GROUP_MAP = {
 const debugBox = document.getElementById("debug");
 
 tanggal.value = new Date().toISOString().split('T')[0];
+
+// ── Grand Final toggle ──
+const gfToggle   = document.getElementById("gfToggle");
+const grandFinal = document.getElementById("grandFinal");
+const stageEl    = document.getElementById("stage");
+
+grandFinal.onchange = function() {
+  gfToggle.classList.toggle("active", this.checked);
+  stageEl.disabled = this.checked;
+  updatePtsPreview();
+};
+stageEl.onchange = updatePtsPreview;
+
+function getStage() {
+  return grandFinal.checked ? "grand_final" : stageEl.value;
+}
 
 fetch("mmpl.json")
   .then(r => r.json())
@@ -381,6 +506,7 @@ function genMatch(teams){
 
 function onGroupChange(){
   reset(["match","winner","mvpWinner","mvpLoser"]);
+  resetRating();
   if(!group.value) return;
 
   matches = genMatch(GROUP_MAP[group.value]);
@@ -391,6 +517,7 @@ function onGroupChange(){
 
 function onMatchChange(){
   reset(["winner","mvpWinner","mvpLoser"]);
+  resetRating();
   if(match.value === "") return;
 
   let m = matches[match.value];
@@ -402,6 +529,7 @@ function onMatchChange(){
 
 function onWinnerChange(){
   reset(["mvpWinner","mvpLoser"]);
+  resetRating();
   if(!winner.value) return;
 
   let m = matches[match.value];
@@ -417,7 +545,6 @@ function fillPlayers(id, team){
   el.innerHTML = "";
   el.disabled = false;
 
-  // None is first and default
   let none = document.createElement("option");
   none.value = "none";
   none.text  = "— None —";
@@ -431,7 +558,68 @@ function fillPlayers(id, team){
     el.appendChild(opt);
   });
 
-  el.onchange = validate;
+  el.onchange = () => {
+    const isNone = el.value === "none";
+    const ratingEl = document.getElementById(id === "mvpWinner" ? "ratingWinner" : "ratingLoser");
+    ratingEl.disabled = isNone;
+    if (isNone) ratingEl.value = "";
+    updatePtsPreview();
+    validate();
+  };
+
+  // enable rating input
+  const ratingId = id === "mvpWinner" ? "ratingWinner" : "ratingLoser";
+  const ratingEl = document.getElementById(ratingId);
+  ratingEl.disabled = false;
+  ratingEl.oninput = () => { updatePtsPreview(); validate(); };
+}
+
+function updatePtsPreview() {
+  const stage = getStage();
+  const stagePts = MVP_CONFIG.stage[stage] ?? MVP_CONFIG.stage.lower;
+  const stageLabel = stage === "grand_final" ? "GF" : stage === "upper" ? "UB" : "LB";
+
+  ["Winner","Loser"].forEach(side => {
+    const isWin = side === "Winner";
+    const ratingEl = document.getElementById("rating" + side);
+    const previewEl = document.getElementById("pts" + side);
+    const playerEl = document.getElementById("mvp" + side);
+
+    if (!playerEl || playerEl.value === "" || playerEl.value === "none") {
+      previewEl.className = "pts-preview";
+      previewEl.innerHTML = "— pilih player & masukkan rating";
+      return;
+    }
+
+    const rv = ratingEl.value;
+    const rPts = getRatingPts(rv);
+    const resPts = isWin ? MVP_CONFIG.result.win : MVP_CONFIG.result.lose;
+    const resLabel = isWin ? "Win" : "Lose";
+
+    if (rv === "" || rPts === null) {
+      previewEl.className = "pts-preview";
+      previewEl.innerHTML = `Masukkan rating valid (8.0 – 15.0)`;
+      return;
+    }
+
+    const total = rPts + resPts + stagePts;
+    previewEl.className = "pts-preview ready";
+    previewEl.innerHTML =
+      `<span class="pts-badge">${total} pts</span>` +
+      `<span class="pts-formula">${rPts}(rating) + ${resPts}(${resLabel}) + ${stagePts}(${stageLabel})</span>`;
+  });
+}
+
+function resetRating() {
+  ["ratingWinner","ratingLoser"].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = "";
+    el.disabled = true;
+  });
+  document.getElementById("ptsWinner").className = "pts-preview";
+  document.getElementById("ptsWinner").innerHTML = "— pilih player & masukkan rating";
+  document.getElementById("ptsLoser").className = "pts-preview";
+  document.getElementById("ptsLoser").innerHTML = "— pilih player & masukkan rating";
 }
 
 function reset(ids){
@@ -442,12 +630,20 @@ function reset(ids){
   });
 }
 
+function isRatingValid(playerEl, ratingEl) {
+  if (playerEl.value === "" || playerEl.value === "none") return true;
+  const r = parseFloat(ratingEl.value);
+  return !isNaN(r) && r >= 8.0 && r <= 15.0;
+}
+
 function validate(){
-  const winnerOk = mvpWinner.value !== ""; // "none" or any player id counts
-  const loserOk  = mvpLoser.value  !== ""; // "none" or any player id counts
+  const winnerOk = mvpWinner.value !== "";
+  const loserOk  = mvpLoser.value  !== "";
+  const ratingWOk = isRatingValid(mvpWinner, document.getElementById("ratingWinner"));
+  const ratingLOk = isRatingValid(mvpLoser,  document.getElementById("ratingLoser"));
   submitBtn.disabled = !(
     group.value && match.value !== "" &&
-    winner.value && winnerOk && loserOk
+    winner.value && winnerOk && loserOk && ratingWOk && ratingLOk
   );
 }
 
@@ -457,10 +653,13 @@ function resetForm(){
   winner.innerHTML = '<option value="">Select Winner</option>';
   mvpWinner.innerHTML = '<option value="">—</option>';
   mvpLoser.innerHTML  = '<option value="">—</option>';
-
   [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
-
+  grandFinal.checked = false;
+  gfToggle.classList.remove("active");
+  stageEl.disabled = false;
+  stageEl.value = "lower";
   note.value = "";
+  resetRating();
   submitBtn.disabled = true;
 }
 
@@ -469,16 +668,20 @@ submitBtn.onclick = async function(){
   debugBox.innerText = "Saving...";
 
   let m = matches[match.value];
+  const stage = getStage();
 
   let payload = {
     tanggal: tanggal.value,
     group: group.value,
     match: m.t1 + " vs " + m.t2,
     winner: winner.value,
-    mvp_winner_id:   mvpWinner.value === "none" ? "" : mvpWinner.value,
-    mvp_winner_name: mvpWinner.value === "none" ? "" : mvpWinner.options[mvpWinner.selectedIndex].text,
-    mvp_loser_id:    mvpLoser.value  === "none" ? "" : mvpLoser.value,
-    mvp_loser_name:  mvpLoser.value  === "none" ? "" : mvpLoser.options[mvpLoser.selectedIndex].text,
+    stage: stage,
+    mvp_winner_id:     mvpWinner.value === "none" ? "" : mvpWinner.value,
+    mvp_winner_name:   mvpWinner.value === "none" ? "" : mvpWinner.options[mvpWinner.selectedIndex].text,
+    mvp_winner_rating: mvpWinner.value === "none" ? "" : document.getElementById("ratingWinner").value,
+    mvp_loser_id:      mvpLoser.value  === "none" ? "" : mvpLoser.value,
+    mvp_loser_name:    mvpLoser.value  === "none" ? "" : mvpLoser.options[mvpLoser.selectedIndex].text,
+    mvp_loser_rating:  mvpLoser.value  === "none" ? "" : document.getElementById("ratingLoser").value,
     note: note.value
   };
 
