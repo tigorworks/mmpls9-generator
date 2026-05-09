@@ -580,9 +580,8 @@ function renderFullBracket(uRounds, lRounds, ctx) {
 
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  // Double rAF: first ensures new DOM is laid out, second safely reads heights
+  // Cards use natural flex layout; SVG connectors drawn between actual positions
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    repositionCards(ctx.mById);
     drawConnectors(ctx.mById);
   }));
 }
@@ -865,7 +864,7 @@ function relPos(el, container) {
 }
 
 window.addEventListener('resize', () => {
-  if (lastMById) requestAnimationFrame(() => { repositionCards(lastMById); drawConnectors(lastMById); });
+  if (lastMById) requestAnimationFrame(() => drawConnectors(lastMById));
 });
 
 // ── DOWNLOAD AS IMAGE ────────────────────────
