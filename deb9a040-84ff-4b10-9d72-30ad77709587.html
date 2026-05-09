@@ -1079,19 +1079,26 @@ document.getElementById('po-submitBtn').onclick = async function() {
   const g = (id) => document.getElementById(id);
   const val = (id) => g(id).value;
 
+  const stageKey  = getPoStage(m);
+  const stagePts  = MVP_CONFIG.stage[stageKey] ?? MVP_CONFIG.stage.lower;
+  const winIsNone = val('po-mvpWinner') === 'none';
+  const losIsNone = val('po-mvpLoser')  === 'none';
+
   const payload = {
     source:            'playoff',
     tanggal:           val('po-tanggal'),
     group:             'Playoff',
     match:             `M${order}: ${m.p1 || 'TBD'} vs ${m.p2 || 'TBD'}`,
     winner:            win,
-    stage:             getPoStage(m),
-    mvp_winner_id:     val('po-mvpWinner') === 'none' ? '' : val('po-mvpWinner'),
-    mvp_winner_name:   val('po-mvpWinner') === 'none' ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
-    mvp_winner_rating: val('po-mvpWinner') === 'none' ? '' : val('po-ratingWinner'),
-    mvp_loser_id:      val('po-mvpLoser')  === 'none' ? '' : val('po-mvpLoser'),
-    mvp_loser_name:    val('po-mvpLoser')  === 'none' ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
-    mvp_loser_rating:  val('po-mvpLoser')  === 'none' ? '' : val('po-ratingLoser'),
+    stage:             stageKey,
+    mvp_winner_id:     winIsNone ? '' : val('po-mvpWinner'),
+    mvp_winner_name:   winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
+    mvp_winner_rating: winIsNone ? '' : val('po-ratingWinner'),
+    mvp_winner_points: winIsNone ? '' : `${getRatingPts(val('po-ratingWinner')) ?? 0};${MVP_CONFIG.result.win};${stagePts}`,
+    mvp_loser_id:      losIsNone ? '' : val('po-mvpLoser'),
+    mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
+    mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
+    mvp_loser_points:  losIsNone ? '' : `${getRatingPts(val('po-ratingLoser')) ?? 0};${MVP_CONFIG.result.lose};${stagePts}`,
     note:              val('po-note'),
   };
 
