@@ -19,8 +19,8 @@
   --text:    #94a3b8;
   --bright:  #f1f5f9;
   --bg:      #07090f;
-  --card:    rgba(10,14,26,.75);
-  --border:  #1a2236;
+  --card:    rgba(12,18,35,.93);
+  --border:  #1f2f4a;
   --upper:   #3b82f6;
   --lower:   #8b5cf6;
   --gf:      #f59e0b;
@@ -282,9 +282,12 @@ body::before {
   border-radius: 4px;
 }
 
-.section-label.upper { background: rgba(59,130,246,.15); color: #60a5fa; }
-.section-label.lower { background: rgba(139,92,246,.15); color: #a78bfa; }
-.section-label.gf    { background: rgba(245,158,11,.15); color: var(--gold); }
+.section-label.upper { background: rgba(59,130,246,.18); color: #60a5fa; }
+.section-label.lower { background: rgba(139,92,246,.18); color: #a78bfa; }
+.section-label.gf    { background: rgba(245,158,11,.18); color: var(--gold); font-size: 12px; }
+
+.gf-section { margin-top: 8px; }
+.gf-section .match-card { border-color: rgba(245,158,11,.5); box-shadow: 0 0 20px rgba(245,158,11,.12); }
 
 .section-divider {
   flex: 1;
@@ -358,10 +361,11 @@ body::before {
   border-radius: 8px;
   overflow: hidden;
   transition: border-color .15s;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,.5);
 }
 
-.match-card:hover { border-color: #2a3a56; }
+.match-card:hover { border-color: #2e4470; }
 .match-card.state-underway { border-color: rgba(59,130,246,.5); }
 
 .match-meta {
@@ -577,34 +581,20 @@ body::before {
     <p>The bracket will be revealed after the Group Stage concludes. Stay tuned!</p>
   </div>
 
-  <!-- Bracket carousel -->
+  <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
-
-    <div class="slide-nav">
-      <button class="slide-arrow" onclick="prevSlide()">&#8592;</button>
-      <button class="slide-btn active" data-slide="0" onclick="goSlide(0)">
-        Playoffs Bracket <span class="slide-num">1/2</span>
-      </button>
-      <button class="slide-btn" data-slide="1" onclick="goSlide(1)">
-        Finals <span class="slide-num">2/2</span>
-      </button>
-      <button class="slide-arrow" onclick="nextSlide()">&#8594;</button>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:20px">
       <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
     </div>
-
-    <div id="slide-0" class="slide active"></div>
-    <div id="slide-1" class="slide"></div>
-
+    <div id="bracketContent"></div>
   </div>
 
 </main>
 
 <script>
 
-const DATA_URL        = `final_bracket.json?v=${Date.now()}`;
-const REFRESH_MS      = 60_000;
-let   currentSlide    = 0;
-let   refreshTimer    = null;
+const REFRESH_MS   = 60_000;
+let   refreshTimer = null;
 
 // ── LOAD DATA ───────────────────────────────
 async function loadData() {
@@ -680,22 +670,11 @@ function processBracket(data) {
   const maxU = upperRounds.at(-1) ?? 0;
   const maxL = lowerRounds.at(-1) ?? 0;
 
-  // Slide 2 = last 2 upper rounds + last 2 lower rounds
-  const uSplit = maxU - 1;  // rounds > uSplit  → slide 2
-  const lSplit = maxL - 2;  // rounds > lSplit  → slide 2 (unless only ≤2 lower rounds exist)
-
-  const upperSlide1 = upperRounds.filter(r => r <= uSplit);
-  const upperSlide2 = upperRounds.filter(r => r >  uSplit);
-  const lowerSlide1 = lowerRounds.filter(r => r <= lSplit);
-  const lowerSlide2 = lowerRounds.filter(r => r >  lSplit);
-
   const ctx = { pMap, mById, upper, lower, maxU, maxL };
 
-  renderSlide0(upperSlide1, lowerSlide1, ctx);
-  renderSlide1(upperSlide2, lowerSlide2, ctx);
+  renderFullBracket(upperRounds, lowerRounds, ctx);
 
   show('bracketPanel');
-  goSlide(currentSlide);
 
   // Auto-refresh when live
   clearTimeout(refreshTimer);
@@ -704,25 +683,30 @@ function processBracket(data) {
   }
 }
 
-// ── SLIDE 0: PLAYOFFS ───────────────────────
-function renderSlide0(uRounds, lRounds, ctx) {
-  const el = document.getElementById('slide-0');
+// ── FULL BRACKET: single page ────────────────
+function renderFullBracket(uRounds, lRounds, ctx) {
+  const el  = document.getElementById('bracketContent');
+  const gfR = ctx.maxU; // Grand Final round
+  const ubRounds = uRounds.filter(r => r < gfR);  // upper bracket (non-GF)
+  const gfRounds = uRounds.filter(r => r === gfR); // grand final round(s)
   let html = '';
 
-  if (uRounds.length) {
+  // ── UPPER BRACKET ──
+  if (ubRounds.length) {
     html += `<div class="bracket-section">
       <div class="section-header">
         <span class="section-label upper">Upper Bracket</span>
         <div class="section-divider"></div>
       </div>
       <div class="rounds-row">`;
-    uRounds.forEach((r, i) => {
+    ubRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.upper[r]);
       html += renderRoundCol(ctx.upper[r], r, ctx, 'upper');
     });
     html += `</div></div>`;
   }
 
+  // ── LOWER BRACKET ──
   if (lRounds.length) {
     html += `<div class="bracket-section">
       <div class="section-header">
@@ -732,58 +716,28 @@ function renderSlide0(uRounds, lRounds, ctx) {
       <div class="rounds-row">`;
     lRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.lower[r]);
-      html += renderRoundCol(ctx.lower[r], r, ctx, 'lower');
+      const isLF = (r === ctx.maxL);
+      html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower');
     });
     html += `</div></div>`;
   }
 
-  if (!html) html = '<div class="state-panel"><p>Playoffs data not yet available.</p></div>';
-  el.innerHTML = html;
-}
+  // ── GRAND FINAL ──
+  if (gfRounds.length) {
+    html += `<div class="bracket-section gf-section">
+      <div class="section-header">
+        <span class="section-label gf">Grand Final</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="rounds-row">`;
+    gfRounds.forEach((r, i) => {
+      if (i > 0) html += connectorHTML(ctx.upper[r]);
+      html += renderRoundCol(ctx.upper[r], r, ctx, 'gf');
+    });
+    html += `</div></div>`;
+  }
 
-// ── SLIDE 1: FINALS ─────────────────────────
-function renderSlide1(uRounds, lRounds, ctx) {
-  const el = document.getElementById('slide-1');
-  const grandFinalRound = ctx.maxU;
-  const upperFinalRound = ctx.maxU - 1;
-
-  let html = `<div class="finals-layout">`;
-
-  // Left: Upper Bracket Finals
-  html += `<div>`;
-  html += `<div class="bracket-section">
-    <div class="section-header">
-      <span class="section-label upper">Upper Bracket</span>
-      <div class="section-divider"></div>
-    </div>
-    <div class="rounds-row">`;
-  uRounds.forEach((r, i) => {
-    if (i > 0) html += connectorHTML(ctx.upper[r]);
-    const isGF = r === grandFinalRound;
-    html += renderRoundCol(ctx.upper[r], r, ctx, isGF ? 'gf' : 'upper');
-  });
-  html += `</div></div></div>`;
-
-  // Divider
-  html += `<div class="finals-divider"></div>`;
-
-  // Right: Lower Bracket Finals
-  html += `<div>`;
-  html += `<div class="bracket-section">
-    <div class="section-header">
-      <span class="section-label lower">Lower Bracket Finals</span>
-      <div class="section-divider"></div>
-    </div>
-    <div class="rounds-row">`;
-  lRounds.forEach((r, i) => {
-    if (i > 0) html += connectorHTML(ctx.lower[r]);
-    const isLF = r === ctx.maxL;
-    html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower');
-  });
-  html += `</div></div></div>`;
-
-  html += `</div>`; // finals-layout
-
+  if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
 }
 
@@ -922,20 +876,6 @@ function show(id) {
   ['loadingPanel','errorPanel','pendingPanel','bracketPanel']
     .forEach(pid => document.getElementById(pid).style.display = pid === id ? '' : 'none');
 }
-
-// ── CAROUSEL ────────────────────────────────
-function goSlide(n) {
-  currentSlide = n;
-  document.querySelectorAll('.slide').forEach((el, i) => {
-    el.classList.toggle('active', i === n);
-  });
-  document.querySelectorAll('.slide-btn').forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.slide) === n);
-  });
-}
-
-function nextSlide() { goSlide((currentSlide + 1) % 2); }
-function prevSlide() { goSlide((currentSlide + 1) % 2); }
 
 // ── INIT ─────────────────────────────────────
 loadData();
