@@ -1906,22 +1906,33 @@ function processMVPData(rows, lastUpdate) {
     const stage  = (r["Stage"] || "lower").toLowerCase().replace(/\s+/g, "_");
     const ratingW = r["MVP Winner Rating"] ?? "";
     const ratingL = r["MVP Loser Rating"]  ?? "";
+    const note   = r["Note"] || "";
+
+    // For playoff matches, read points from Note field (format: "winner;loser")
+    let ptsW, ptsL;
+    const isPlayoff = group === "Playoff";
+    if (isPlayoff && note) {
+      const [wStr, lStr] = note.split(';');
+      ptsW = parseInt(wStr) || 0;
+      ptsL = parseInt(lStr) || 0;
+    } else {
+      ptsW = calcMVPPts(ratingW, true, stage);
+      ptsL = calcMVPPts(ratingL, false, stage);
+    }
 
     if (idW && idW !== "none") {
-      const pts = calcMVPPts(ratingW, true, stage);
       if (!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
       else if (nickW)    players[idW].nick = nickW;
-      players[idW].pts += pts;
-      players[idW].history.push({ date, group, match, condition: 'win', pts });
+      players[idW].pts += ptsW;
+      players[idW].history.push({ date, group, match, condition: 'win', pts: ptsW });
     }
     if (idL) {
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
-      const pts = calcMVPPts(ratingL, false, stage);
       if (!players[idL]) players[idL] = { id: idL, nick: nickL, group, team: loserTeam, pts: 0, history: [] };
       else if (nickL)    players[idL].nick = nickL;
-      players[idL].pts += pts;
-      players[idL].history.push({ date, group, match, condition: 'lose', pts });
+      players[idL].pts += ptsL;
+      players[idL].history.push({ date, group, match, condition: 'lose', pts: ptsL });
     }
   });
 

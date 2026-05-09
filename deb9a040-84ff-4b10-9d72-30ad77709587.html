@@ -23,7 +23,7 @@ body {
 
 .card {
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   background: #111827;
   border: 1px solid #1e293b;
   border-radius: 16px;
@@ -170,37 +170,54 @@ textarea {
 #debug.err { color: #f87171; }
 #debug.loading { color: #6b7280; }
 
-/* ── Grand Final toggle ── */
-.gf-toggle {
+/* ── Grand Final toggle switch ── */
+.po-switch { display: block; cursor: pointer; user-select: none; }
+.po-switch input[type="checkbox"] { display: none; }
+.po-switch-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-  background: #0d1424;
-  cursor: pointer;
-  user-select: none;
-  transition: border-color .15s, box-shadow .15s;
+  background: #0d1829;
+  border: 1px solid #1f2f4a;
+  border-radius: 10px;
+  transition: background .2s, border-color .2s, box-shadow .25s;
 }
-.gf-toggle:hover { border-color: #374151; }
-.gf-toggle.active {
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245,158,11,.12);
-  background: #111827;
+.po-switch input:checked ~ .po-switch-pill {
+  background: rgba(245,158,11,.07);
+  border-color: rgba(245,158,11,.45);
+  box-shadow: 0 0 14px rgba(245,158,11,.1);
 }
-.gf-toggle input[type="checkbox"] {
-  width: 15px; height: 15px;
-  accent-color: #f59e0b;
-  cursor: pointer;
+.po-switch-track {
+  width: 42px; height: 24px;
+  background: #1f2f4a;
+  border: 1px solid #2e4470;
+  border-radius: 12px;
+  position: relative;
+  transition: background .2s, border-color .2s;
   flex-shrink: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: none;
 }
-.gf-toggle span { font-size: 13px; color: #e2e8f0; font-weight: 600; }
-.gf-toggle small { margin-left: auto; font-size: 11px; color: #4b5563; font-weight: 400; }
+.po-switch-track::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  background: #374151;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform .2s, background .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+.po-switch input:checked ~ .po-switch-pill .po-switch-track {
+  background: rgba(245,158,11,.22);
+  border-color: rgba(245,158,11,.55);
+}
+.po-switch input:checked ~ .po-switch-pill .po-switch-track::after {
+  transform: translateX(18px);
+  background: #f59e0b;
+}
+.po-switch-info { display: flex; flex-direction: column; gap: 2px; }
+.po-switch-title { font-size: 13px; font-weight: 600; color: #e2e8f0; line-height: 1.3; }
+.po-switch-desc { font-size: 11px; color: #4b5563; line-height: 1.3; }
 
 /* ── Rating + points preview ── */
 .mvp-row {
@@ -302,6 +319,83 @@ textarea {
   min-height: 18px;
 }
 
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: #0d1424;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 9px 8px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  transition: all .15s;
+}
+
+.tab-btn:hover:not(.active) { color: #94a3b8; }
+
+.tab-btn.active {
+  background: #f59e0b;
+  color: #0a0f1e;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── STAGE BADGE (playoff) ── */
+.stage-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stage-info label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.stage-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+
+.stage-badge.upper      { background: rgba(59,130,246,.15); color: #60a5fa; }
+.stage-badge.lower      { background: rgba(139,92,246,.15); color: #a78bfa; }
+.stage-badge.grand_final{ background: rgba(245,158,11,.15); color: #f59e0b; }
+
+/* ── PLAYOFF LOADING / ERROR ── */
+.po-state {
+  padding: 24px 0;
+  text-align: center;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.po-state.err { color: #f87171; }
+
 </style>
 </head>
 
@@ -324,77 +418,154 @@ textarea {
     <p>Fill in MVP data for each match</p>
   </div>
 
-  <div class="field">
-    <label>Date</label>
-    <input type="date" id="tanggal">
+  <!-- Tab navigation -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="group" onclick="switchTab('group')">Group Stage</button>
+    <button class="tab-btn"        data-tab="playoff" onclick="switchTab('playoff')">Playoff</button>
   </div>
 
-  <div class="field">
-    <label>Group</label>
-    <select id="group">
-      <option value="">Select Group</option>
-    </select>
-  </div>
+  <!-- ── TAB: GROUP STAGE ─────────────────────── -->
+  <div id="tab-group" class="tab-panel active">
 
-  <div class="field">
-    <label>Match</label>
-    <select id="match" disabled>
-      <option value="">Select Match</option>
-    </select>
-  </div>
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="tanggal">
+    </div>
 
-  <div class="field">
-    <label>Winner</label>
-    <select id="winner" disabled>
-      <option value="">Select Winner</option>
-    </select>
-  </div>
+    <div class="field">
+      <label>Group</label>
+      <select id="group">
+        <option value="">Select Group</option>
+      </select>
+    </div>
 
-  <div class="field">
-    <label>Stage</label>
-    <select id="stage">
-      <option value="lower">Lower Bracket</option>
-      <option value="upper">Upper Bracket</option>
-    </select>
-  </div>
+    <div class="field">
+      <label>Match</label>
+      <select id="match" disabled>
+        <option value="">Select Match</option>
+      </select>
+    </div>
 
-  <div class="field">
-    <label>Grand Final</label>
-    <label class="gf-toggle" id="gfToggle">
-      <input type="checkbox" id="grandFinal">
-      <span>Grand Final</span>
-      <small>override stage → 3 pts</small>
-    </label>
-  </div>
+    <div class="field">
+      <label>Winner</label>
+      <select id="winner" disabled>
+        <option value="">Select Winner</option>
+      </select>
+    </div>
 
-  <div class="divider"></div>
+    <div class="field">
+      <label>Stage</label>
+      <select id="stage">
+        <option value="lower">Lower Bracket</option>
+        <option value="upper">Upper Bracket</option>
+      </select>
+    </div>
 
-  <div class="field">
-    <label>MVP Winner</label>
-    <select id="mvpWinner" disabled>
-      <option value="">Select Player</option>
-    </select>
-    <input type="number" id="ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (8.0 – 15.0)" disabled>
-    <div id="ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
-  </div>
+    <div class="divider"></div>
 
-  <div class="field">
-    <label>MVP Loser</label>
-    <select id="mvpLoser" disabled>
-      <option value="">Select Player</option>
-    </select>
-    <input type="number" id="ratingLoser" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (8.0 – 15.0)" disabled>
-    <div id="ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
-  </div>
+    <div class="field">
+      <label>MVP Winner</label>
+      <select id="mvpWinner" disabled>
+        <option value="">Select Player</option>
+      </select>
+      <input type="number" id="ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (8.0 – 15.0)" disabled>
+      <div id="ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
+    </div>
 
-  <div class="field">
-    <label>Notes <span style="color:#374151;font-weight:400;text-transform:none">(optional)</span></label>
-    <textarea id="note" placeholder="Add a note..."></textarea>
-  </div>
+    <div class="field">
+      <label>MVP Loser</label>
+      <select id="mvpLoser" disabled>
+        <option value="">Select Player</option>
+      </select>
+      <input type="number" id="ratingLoser" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (8.0 – 15.0)" disabled>
+      <div id="ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
+    </div>
 
-  <button id="submitBtn" class="submit-btn" disabled>Submit</button>
+    <div class="field">
+      <label>Notes <span style="color:#374151;font-weight:400;text-transform:none">(optional)</span></label>
+      <textarea id="note" placeholder="Add a note..."></textarea>
+    </div>
 
-  <div id="debug"></div>
+    <button id="submitBtn" class="submit-btn" disabled>Submit</button>
+    <div id="debug"></div>
+
+  </div><!-- /tab-group -->
+
+  <!-- ── TAB: PLAYOFF ─────────────────────────── -->
+  <div id="tab-playoff" class="tab-panel">
+
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="po-tanggal">
+    </div>
+
+    <!-- Loading / error states -->
+    <div id="po-loading" class="po-state">Loading bracket data…</div>
+    <div id="po-error"   class="po-state err" style="display:none"></div>
+
+    <!-- Playoff form (shown after data loaded) -->
+    <div id="po-form" style="display:none">
+
+      <div class="field">
+        <label>Match</label>
+        <select id="po-match">
+          <option value="">Select Match</option>
+        </select>
+      </div>
+
+      <!-- Auto stage (shown after match selected) -->
+      <div class="stage-info" id="po-stage-info" style="display:none">
+        <label>Stage (auto)</label>
+        <span class="stage-badge" id="po-stage-badge"></span>
+      </div>
+
+      <!-- Grand Final override (shown after match selected) -->
+      <div class="field" id="po-gf-field" style="display:none">
+        <label class="po-switch" id="po-gfToggle">
+          <input type="checkbox" id="po-grandFinal">
+          <span class="po-switch-pill">
+            <span class="po-switch-track"></span>
+            <span class="po-switch-info">
+              <span class="po-switch-title">Grand Final</span>
+              <span class="po-switch-desc">override stage → +3 pts</span>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label>Winner</label>
+        <select id="po-winner" disabled>
+          <option value="">Select Winner</option>
+        </select>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>MVP Winner</label>
+        <select id="po-mvpWinner" disabled>
+          <option value="">Select Player</option>
+        </select>
+        <input type="number" id="po-ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (8.0 – 15.0)" disabled>
+        <div id="po-ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
+      </div>
+
+      <div class="field">
+        <label>MVP Loser</label>
+        <select id="po-mvpLoser" disabled>
+          <option value="">Select Player</option>
+        </select>
+        <input type="number" id="po-ratingLoser" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (8.0 – 15.0)" disabled>
+        <div id="po-ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
+      </div>
+
+      <button id="po-submitBtn" class="submit-btn" disabled>Submit</button>
+      <div id="po-debug"></div>
+
+    </div><!-- /po-form -->
+
+  </div><!-- /tab-playoff -->
 
 </div>
 
@@ -467,23 +638,15 @@ const GROUP_MAP = {
 
 const debugBox = document.getElementById("debug");
 
-tanggal.value = new Date().toISOString().split('T')[0];
+const TODAY = new Date().toISOString().split('T')[0];
+tanggal.value = TODAY;
+document.getElementById('po-tanggal').value = TODAY;
 
-// ── Grand Final toggle ──
-const gfToggle   = document.getElementById("gfToggle");
-const grandFinal = document.getElementById("grandFinal");
-const stageEl    = document.getElementById("stage");
-
-grandFinal.onchange = function() {
-  gfToggle.classList.toggle("active", this.checked);
-  stageEl.disabled = this.checked;
-  updatePtsPreview();
-};
+// ── Group Stage: stage dropdown only (no GF in group stage) ──
+const stageEl = document.getElementById("stage");
 stageEl.onchange = updatePtsPreview;
 
-function getStage() {
-  return grandFinal.checked ? "grand_final" : stageEl.value;
-}
+function getStage() { return stageEl.value; }
 
 fetch("mmpl.json")
   .then(r => r.json())
@@ -654,14 +817,305 @@ function resetForm(){
   mvpWinner.innerHTML = '<option value="">—</option>';
   mvpLoser.innerHTML  = '<option value="">—</option>';
   [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
-  grandFinal.checked = false;
-  gfToggle.classList.remove("active");
-  stageEl.disabled = false;
   stageEl.value = "lower";
   note.value = "";
   resetRating();
   submitBtn.disabled = true;
 }
+
+// ── TAB SWITCHER ─────────────────────────────────────
+let playoffInited = false;
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab)
+  );
+  document.querySelectorAll('.tab-panel').forEach(p =>
+    p.classList.toggle('active', p.id === 'tab-' + tab)
+  );
+  if (tab === 'playoff' && !playoffInited) {
+    playoffInited = true;
+    initPlayoffTab();
+  }
+}
+// ─────────────────────────────────────────────────────
+
+// ── PLAYOFF TAB ───────────────────────────────────────
+let poMatches = []; // final bracket matches (processed)
+let poRoster  = {}; // team_name → members[] (from mmpl.json)
+
+async function initPlayoffTab() {
+  try {
+    const [bracketResp, mmplResp] = await Promise.all([
+      fetch(`final_bracket.json?v=${Date.now()}`, { cache: 'no-store' }),
+      fetch(`mmpl.json?v=${Date.now()}`,           { cache: 'no-store' })
+    ]);
+
+    if (!bracketResp.ok) throw new Error(`final_bracket.json: HTTP ${bracketResp.status}. Jalankan sync terlebih dahulu.`);
+
+    const bracket  = await bracketResp.json();
+    const mmplData = await mmplResp.json();
+
+    // Roster lookup
+    (mmplData.teams || []).forEach(t => { poRoster[t.team_name] = t.members; });
+
+    // Participant map
+    const pMap = {};
+    (bracket.tournament.participants || []).forEach(({ participant: p }) => {
+      pMap[p.id] = p.display_name || p.name;
+    });
+
+    // Match lookup
+    const mById = {};
+    (bracket.tournament.matches || []).forEach(m => { mById[m.match.id] = m.match; });
+
+    // Final stage = group_id === null
+    const allM  = (bracket.tournament.matches || []).map(m => m.match);
+    const final = allM.filter(m => m.group_id === null);
+
+    if (!final.length) throw new Error('Final stage belum dimulai di Challonge. Coba lagi setelah group stage selesai.');
+
+    const maxU = Math.max(...final.filter(m => m.round > 0).map(m => m.round));
+
+    // Build processed match list (skip fully-pending = both players unknown, but always include GF)
+    poMatches = final
+      .filter(m => (m.player1_id || m.player2_id) || m.round === maxU)
+      .sort((a, b) => (a.suggested_play_order || 0) - (b.suggested_play_order || 0))
+      .map(m => ({
+        ...m,
+        p1: pMap[m.player1_id] || null,
+        p2: pMap[m.player2_id] || null,
+        bracketType: m.round < 0 ? 'lower' : (m.round === maxU ? 'grand_final' : 'upper'),
+      }));
+
+    if (!poMatches.length) throw new Error('Belum ada match final yang bisa dipilih.');
+
+    const sel = document.getElementById('po-match');
+    poMatches.forEach((m, i) => {
+      const order = m.suggested_play_order || (i + 1);
+      const type  = m.bracketType === 'grand_final' ? 'Grand Final'
+                  : m.bracketType === 'upper'       ? `Upper R${m.round}`
+                  : `Losers R${Math.abs(m.round)}`;
+      const t1 = m.p1 || 'TBD', t2 = m.p2 || 'TBD';
+      const status = m.state === 'complete' ? ' ✓' : m.state === 'underway' ? ' ●' : '';
+      sel.add(new Option(`M${order} · ${type} — ${t1} vs ${t2}${status}`, i));
+    });
+
+    sel.disabled = false;
+    sel.onchange = onPoMatchChange;
+
+    document.getElementById('po-loading').style.display = 'none';
+    document.getElementById('po-form').style.display = '';
+
+  } catch (err) {
+    document.getElementById('po-loading').style.display = 'none';
+    const errEl = document.getElementById('po-error');
+    errEl.textContent = err.message;
+    errEl.style.display = '';
+  }
+}
+
+function getPoStage(m) {
+  const gfEl = document.getElementById('po-grandFinal');
+  return (gfEl && gfEl.checked) ? 'grand_final' : m.bracketType;
+}
+
+function onPoMatchChange() {
+  const idx = document.getElementById('po-match').value;
+  resetPoDetails();
+  if (idx === '') return;
+
+  const m = poMatches[parseInt(idx)];
+
+  // Stage badge
+  const badgeMap = {
+    upper:       'Upper Bracket (+2 pts)',
+    lower:       'Lower Bracket (+1 pt)',
+    grand_final: 'Grand Final (+3 pts)',
+  };
+  const badge = document.getElementById('po-stage-badge');
+  badge.textContent = badgeMap[m.bracketType] || m.bracketType;
+  badge.className   = 'stage-badge ' + m.bracketType;
+  document.getElementById('po-stage-info').style.display = '';
+
+  // GF checkbox — show only when match is NOT already auto-detected as GF
+  const gfField  = document.getElementById('po-gf-field');
+  const gfCb = document.getElementById('po-grandFinal');
+  gfField.style.display = '';
+  gfCb.checked = (m.bracketType === 'grand_final');
+  gfCb.onchange = function() {
+    // Update badge
+    const stage = getPoStage(m);
+    badge.textContent = badgeMap[stage] || stage;
+    badge.className   = 'stage-badge ' + stage;
+    updatePoPreview(m);
+    validatePo();
+  };
+
+  // Winner
+  const poWinner = document.getElementById('po-winner');
+  if (m.state === 'complete' && m.winner_id) {
+    const winName = m.winner_id === m.player1_id ? m.p1 : m.p2;
+    poWinner.add(new Option(winName + ' (Challonge)', winName));
+    poWinner.value    = winName;
+    poWinner.disabled = true;
+    fillPoSides(m, winName);
+  } else {
+    if (m.p1) poWinner.add(new Option(m.p1, m.p1));
+    if (m.p2) poWinner.add(new Option(m.p2, m.p2));
+    poWinner.disabled = false;
+    poWinner.onchange = () => { if (poWinner.value) fillPoSides(m, poWinner.value); };
+  }
+  validatePo();
+}
+
+function fillPoSides(m, winnerName) {
+  const loserName = winnerName === m.p1 ? m.p2 : m.p1;
+  fillPoPlayers('po-mvpWinner', winnerName, 'po-ratingWinner', 'po-ptsWinner', true,  m);
+  fillPoPlayers('po-mvpLoser',  loserName,  'po-ratingLoser',  'po-ptsLoser',  false, m);
+}
+
+function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, m) {
+  const bracketType = m.bracketType; // kept for reference, actual stage from getPoStage(m)
+  const sel    = document.getElementById(selId);
+  const rating = document.getElementById(ratingId);
+  sel.innerHTML = '';
+  sel.disabled  = false;
+  sel.appendChild(new Option('— None —', 'none'));
+
+  const roster = poRoster[teamName] || [];
+  roster.forEach(p => sel.appendChild(new Option(p.game_nick, p.game_id)));
+
+  const refresh = () => {
+    const isNone = sel.value === 'none';
+    rating.disabled = isNone;
+    if (isNone) rating.value = '';
+    updatePoPreview(m);
+    validatePo();
+  };
+
+  sel.onchange   = refresh;
+  rating.oninput = () => { updatePoPreview(m); validatePo(); };
+  refresh(); // apply initial state: disable rating until a player is chosen
+}
+
+function updatePoPreview(m) {
+  const bracketType = getPoStage(m);
+  const stagePts  = MVP_CONFIG.stage[bracketType] ?? MVP_CONFIG.stage.lower;
+  const stageLabel = bracketType === 'grand_final' ? 'GF' : bracketType === 'upper' ? 'UB' : 'LB';
+
+  [['po-mvpWinner','po-ratingWinner','po-ptsWinner',true],
+   ['po-mvpLoser', 'po-ratingLoser', 'po-ptsLoser', false]].forEach(([sId, rId, pId, isWin]) => {
+    const sel     = document.getElementById(sId);
+    const ratingEl = document.getElementById(rId);
+    const preview  = document.getElementById(pId);
+
+    if (!sel || sel.value === '' || sel.value === 'none') {
+      preview.className = 'pts-preview';
+      preview.innerHTML = '— pilih player & masukkan rating';
+      return;
+    }
+    const rPts     = getRatingPts(ratingEl.value);
+    const resPts   = isWin ? MVP_CONFIG.result.win : MVP_CONFIG.result.lose;
+    const resLabel = isWin ? 'Win' : 'Lose';
+    if (!ratingEl.value || rPts === null) {
+      preview.className = 'pts-preview';
+      preview.innerHTML = 'Masukkan rating valid (8.0 – 15.0)';
+      return;
+    }
+    const total = rPts + resPts + stagePts;
+    preview.className = 'pts-preview ready';
+    preview.innerHTML = `<span class="pts-badge">${total} pts</span><span class="pts-formula">${rPts}(rating) + ${resPts}(${resLabel}) + ${stagePts}(${stageLabel})</span>`;
+  });
+}
+
+function validatePo() {
+  const ok =
+    document.getElementById('po-match').value !== '' &&
+    document.getElementById('po-winner').value !== '' &&
+    document.getElementById('po-mvpWinner').value !== '' &&
+    document.getElementById('po-mvpLoser').value  !== '' &&
+    isRatingValid(document.getElementById('po-mvpWinner'), document.getElementById('po-ratingWinner')) &&
+    isRatingValid(document.getElementById('po-mvpLoser'),  document.getElementById('po-ratingLoser'));
+  document.getElementById('po-submitBtn').disabled = !ok;
+}
+
+function resetPoDetails() {
+  ['po-winner','po-mvpWinner','po-mvpLoser'].forEach(id => {
+    const el = document.getElementById(id);
+    el.innerHTML = '<option value="">Select</option>';
+    el.disabled  = true;
+  });
+  ['po-ratingWinner','po-ratingLoser'].forEach(id => {
+    document.getElementById(id).value = '';
+    document.getElementById(id).disabled = true;
+  });
+  ['po-ptsWinner','po-ptsLoser'].forEach(id => {
+    document.getElementById(id).className = 'pts-preview';
+    document.getElementById(id).innerHTML = '— pilih player & masukkan rating';
+  });
+  document.getElementById('po-stage-info').style.display = 'none';
+  document.getElementById('po-gf-field').style.display   = 'none';
+  const gfCb = document.getElementById('po-grandFinal');
+  if (gfCb) { gfCb.checked = false; }
+  document.getElementById('po-submitBtn').disabled = true;
+}
+
+document.getElementById('po-submitBtn').onclick = async function() {
+  const dbg = document.getElementById('po-debug');
+  dbg.className  = 'loading';
+  dbg.innerText  = 'Saving...';
+
+  const idx = parseInt(document.getElementById('po-match').value);
+  const m   = poMatches[idx];
+  const win = document.getElementById('po-winner').value;
+  const order = m.suggested_play_order || (idx + 1);
+
+  const g = (id) => document.getElementById(id);
+  const val = (id) => g(id).value;
+
+  const stageKey  = getPoStage(m);
+  const stagePts  = MVP_CONFIG.stage[stageKey] ?? MVP_CONFIG.stage.lower;
+  const winIsNone = val('po-mvpWinner') === 'none';
+  const losIsNone = val('po-mvpLoser')  === 'none';
+
+  // Calculate total points for note field (format: "winner;loser")
+  const winnerTotal = winIsNone ? '' : (getRatingPts(val('po-ratingWinner')) ?? 0) + MVP_CONFIG.result.win + stagePts;
+  const loserTotal = losIsNone ? '' : (getRatingPts(val('po-ratingLoser')) ?? 0) + MVP_CONFIG.result.lose + stagePts;
+  const pointsNote = winnerTotal && loserTotal ? `${winnerTotal};${loserTotal}` : '';
+
+  const payload = {
+    source:            'playoff',
+    tanggal:           val('po-tanggal'),
+    group:             'Playoff',
+    match:             `M${order}: ${m.p1 || 'TBD'} vs ${m.p2 || 'TBD'}`,
+    winner:            win,
+    stage:             stageKey,
+    mvp_winner_id:     winIsNone ? '' : val('po-mvpWinner'),
+    mvp_winner_name:   winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
+    mvp_winner_rating: winIsNone ? '' : val('po-ratingWinner'),
+    mvp_winner_points: winIsNone ? '' : `${getRatingPts(val('po-ratingWinner')) ?? 0};${MVP_CONFIG.result.win};${stagePts}`,
+    mvp_loser_id:      losIsNone ? '' : val('po-mvpLoser'),
+    mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
+    mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
+    mvp_loser_points:  losIsNone ? '' : `${getRatingPts(val('po-ratingLoser')) ?? 0};${MVP_CONFIG.result.lose};${stagePts}`,
+    note:              pointsNote,
+  };
+
+  g('po-submitBtn').disabled = true;
+  try {
+    await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    dbg.className = 'ok';
+    dbg.innerText = 'Saved successfully';
+    g('po-match').value = '';
+    resetPoDetails();
+  } catch(e) {
+    dbg.className = 'err';
+    dbg.innerText = 'Failed to save, please try again';
+    g('po-submitBtn').disabled = false;
+  }
+};
+// ─────────────────────────────────────────────────────
 
 submitBtn.onclick = async function(){
   debugBox.className = "loading";
