@@ -467,7 +467,7 @@ body::before {
   <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
     <div class="action-bar">
-      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">Download PNG</button>
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">Download</button>
       <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
     </div>
     <div id="bracketContent"></div>
@@ -933,7 +933,7 @@ async function downloadBracket() {
   } catch (e) {
     alert('Download failed: ' + e.message);
   } finally {
-    btn.textContent = '⬇ Download';
+    btn.textContent = 'Download';
     btn.disabled = false;
   }
 }
