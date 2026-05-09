@@ -882,9 +882,9 @@ async function initPlayoffTab() {
 
     const maxU = Math.max(...final.filter(m => m.round > 0).map(m => m.round));
 
-    // Build processed match list (skip fully-pending = both players unknown)
+    // Build processed match list (skip fully-pending = both players unknown, but always include GF)
     poMatches = final
-      .filter(m => m.player1_id || m.player2_id)
+      .filter(m => (m.player1_id || m.player2_id) || m.round === maxU)
       .sort((a, b) => (a.suggested_play_order || 0) - (b.suggested_play_order || 0))
       .map(m => ({
         ...m,
