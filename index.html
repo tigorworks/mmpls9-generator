@@ -1931,9 +1931,9 @@ function processMVPData(rows, lastUpdate) {
     const parsePtStr = s => s ? s.split(';').reduce((sum, v) => sum + (parseInt(v) || 0), 0) : null;
 
     if (idW && idW !== "none") {
-      const isPlayoff = group === 'Playoff';
-      const pts = isPlayoff && ptStrW
-        ? (parseInt(ptStrW) || 0)
+      const storedW = ptStrW !== '' && !isNaN(Number(ptStrW)) ? Number(ptStrW) : null;
+      const pts = storedW !== null
+        ? storedW
         : (parsePtStr(ptStrW) ?? calcMVPPts(ratingW, true, stage));
       if (!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
       else if (nickW)    players[idW].nick = nickW;
@@ -1943,9 +1943,9 @@ function processMVPData(rows, lastUpdate) {
     if (idL) {
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
-      const isPlayoff = group === 'Playoff';
-      const pts = isPlayoff && ptStrL
-        ? (parseInt(ptStrL) || 0)
+      const storedL = ptStrL !== '' && !isNaN(Number(ptStrL)) ? Number(ptStrL) : null;
+      const pts = storedL !== null
+        ? storedL
         : (parsePtStr(ptStrL) ?? calcMVPPts(ratingL, false, stage));
       if (!players[idL]) players[idL] = { id: idL, nick: nickL, group, team: loserTeam, pts: 0, history: [] };
       else if (nickL)    players[idL].nick = nickL;
