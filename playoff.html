@@ -447,9 +447,9 @@ body::before {
 
   <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px">
-      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">&#8681; Download</button>
-      <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
+    <div style="display:flex;justify-content:flex-end;gap:3px;margin-bottom:20px">
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">⬇ Download</button>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
     </div>
     <div id="bracketContent"></div>
   </div>
@@ -742,11 +742,11 @@ function repositionRow(row, mById) {
   const sectionMids = new Set(allCards.map(({ m }) => m.id));
 
   // Measure ALL card heights first, before any DOM changes.
-  // Fallback to 90px if layout hasn't computed yet (shouldn't happen with double rAF).
+  // Fallback to 90px if card height is too small (incomplete render / header-only).
   const hMap = new Map();
   allCards.forEach(({ card, m }) => {
     const h = card.getBoundingClientRect().height;
-    hMap.set(m.id, h > 4 ? h : 90);
+    hMap.set(m.id, h > 75 ? h : 92);
   });
 
   const GAP = 16; // vertical gap between cards in first round
