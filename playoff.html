@@ -228,6 +228,7 @@ body::before {
 /* ── BRACKET OUTER SCROLL ───────────────── */
 .bracket-outer {
   overflow-x: auto;
+  overflow-y: visible;
   width: 100%;
   padding-bottom: 12px;
 }
@@ -269,12 +270,14 @@ body::before {
 }
 
 .round-matches {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: space-around;
-  flex: 1;
-  padding: 4px 0;
+  position: relative;
+  display: block;
+  min-height: 100px;
+}
+
+.card-wrap {
+  position: absolute;
+  width: 100%;
 }
 
 
@@ -590,6 +593,10 @@ function renderFullBracket(uRounds, lRounds, ctx) {
       .slice(0, 1);
   }
 
+  // Pre-compute vertical positions for each section (no DOM reads needed)
+  const uPos = computeSectionPositions(ctx.upper);
+  const lPos = computeSectionPositions(ctx.lower);
+
   let html = '<div class="bracket-outer">';
 
   // ── UPPER BRACKET + GRAND FINAL (inline as last column) ──
@@ -604,7 +611,7 @@ function renderFullBracket(uRounds, lRounds, ctx) {
     uRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.upper[r]);
       const type = (r === gfR) ? 'gf' : 'upper';
-      html += renderRoundCol(ctx.upper[r], r, ctx, type);
+      html += renderRoundCol(ctx.upper[r], r, ctx, type, uPos.posMap, uPos.totalH);
     });
     html += `</div></div>`;
   }
@@ -620,7 +627,7 @@ function renderFullBracket(uRounds, lRounds, ctx) {
     lRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.lower[r]);
       const isLF = (r === ctx.maxL);
-      html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower');
+      html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower', lPos.posMap, lPos.totalH);
     });
     html += `</div></div>`;
   }
@@ -628,19 +635,67 @@ function renderFullBracket(uRounds, lRounds, ctx) {
   html += '</div>'; // .bracket-outer
   if (html === '<div class="bracket-outer"></div>') html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  requestAnimationFrame(() => {
-    repositionCards(ctx.mById);
-    drawConnectors(ctx.mById);
+  // Positions already baked into inline styles — only need connectors after the panel is visible
+  requestAnimationFrame(() => drawConnectors(ctx.mById));
+}
+
+// ── BRACKET POSITION COMPUTATION ────────────
+const CARD_H = 100;
+const GAP    = 16;
+const SLOT   = CARD_H + GAP;
+
+function computeSectionPositions(ctxSection) {
+  const allMatches = Object.values(ctxSection).flat();
+  if (!allMatches.length) return { posMap: {}, totalH: SLOT };
+
+  const byRound = new Map();
+  allMatches.forEach(m => {
+    if (!byRound.has(m.round)) byRound.set(m.round, []);
+    byRound.get(m.round).push(m);
   });
+
+  const rounds   = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
+  const allMids  = new Set(allMatches.map(m => m.id));
+  const seedCount = byRound.get(rounds[0]).length;
+  const totalH   = seedCount * SLOT;
+  const midY     = totalH / 2;
+  const posMap   = {};
+
+  byRound.get(rounds[0]).forEach((m, i) => {
+    posMap[m.id] = i * SLOT + CARD_H / 2;
+  });
+
+  for (let ri = 1; ri < rounds.length; ri++) {
+    const r = rounds[ri];
+    byRound.get(r).forEach(m => {
+      const prereqs = [m.player1_prereq_match_id, m.player2_prereq_match_id]
+        .filter(pid => pid && allMids.has(pid) && posMap[pid] !== undefined);
+      if (prereqs.length > 0) {
+        posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
+      } else {
+        const prev = byRound.get(rounds[ri - 1]);
+        const cs = prev.map(pm => posMap[pm.id]).filter(v => v !== undefined);
+        posMap[m.id] = cs.length ? cs.reduce((s, v) => s + v, 0) / cs.length : midY;
+      }
+    });
+  }
+
+  return { posMap, totalH };
 }
 
 // ── ROUND COLUMN ────────────────────────────
-function renderRoundCol(matches, round, ctx, type) {
+function renderRoundCol(matches, round, ctx, type, posMap, totalH) {
   const label = getRoundLabel(round, type, ctx.maxU, ctx.maxL);
   let html = `<div class="round-col">
     <div class="round-label">${label}</div>
-    <div class="round-matches">`;
-  matches.forEach(m => { html += renderMatchCard(m, ctx); });
+    <div class="round-matches" style="height:${totalH}px;">`;
+  matches.forEach(m => {
+    const cy  = posMap[m.id] ?? (totalH / 2);
+    const top = Math.max(0, cy - CARD_H / 2);
+    html += `<div class="card-wrap" style="top:${top}px;">`;
+    html += renderMatchCard(m, ctx);
+    html += '</div>';
+  });
   html += `</div></div>`;
   return html;
 }
@@ -764,78 +819,6 @@ function show(id) {
     .forEach(pid => document.getElementById(pid).style.display = pid === id ? '' : 'none');
 }
 
-// ── BRACKET TREE POSITIONING ─────────────────
-function repositionCards(mById) {
-  document.querySelectorAll('.rounds-row').forEach(row => repositionRow(row, mById));
-}
-
-function repositionRow(row, mById) {
-  const allCards = [];
-  row.querySelectorAll('[data-mid]').forEach(card => {
-    const m = mById[+card.dataset.mid];
-    if (m) allCards.push({ card, m });
-  });
-  if (!allCards.length) return;
-
-  const byRound = new Map();
-  allCards.forEach(({ card, m }) => {
-    if (!byRound.has(m.round)) byRound.set(m.round, []);
-    byRound.get(m.round).push({ card, m });
-  });
-
-  const rounds = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
-  const sectionMids = new Set(allCards.map(({ m }) => m.id));
-
-  // Use a fixed slot grid (no DOM measurement) — same uniform spacing as Challonge.
-  // CARD_H matches the actual rendered card height (meta bar + 2 team rows ≈ 100px).
-  const CARD_H = 100;
-  const GAP    = 16;
-  const SLOT   = CARD_H + GAP;
-
-  const posMap = {};
-  const firstRound = rounds[0];
-  const seedCount  = byRound.get(firstRound).length;
-
-  // First round: evenly spaced from the top
-  byRound.get(firstRound).forEach(({ m }, i) => {
-    posMap[m.id] = i * SLOT + CARD_H / 2;
-  });
-
-  // Later rounds: center between in-section prereqs
-  const midY = (seedCount * SLOT) / 2;
-  for (let ri = 1; ri < rounds.length; ri++) {
-    const r = rounds[ri];
-    byRound.get(r).forEach(({ m }) => {
-      const prereqs = [m.player1_prereq_match_id, m.player2_prereq_match_id]
-        .filter(pid => pid && sectionMids.has(pid) && posMap[pid] !== undefined);
-      if (prereqs.length > 0) {
-        posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
-      } else {
-        const prev = byRound.get(rounds[ri - 1]);
-        const cs = prev.map(({ m: pm }) => posMap[pm.id]).filter(v => v !== undefined);
-        posMap[m.id] = cs.length ? cs.reduce((s, v) => s + v, 0) / cs.length : midY;
-      }
-    });
-  }
-
-  // Total column height = seedCount slots (gives padding at bottom too)
-  const totalH = seedCount * SLOT;
-
-  allCards.forEach(({ card, m }) => {
-    const cy = posMap[m.id] ?? midY;
-    card.style.position = 'absolute';
-    card.style.top      = `${Math.max(0, cy - CARD_H / 2)}px`;
-    card.style.width    = '100%';
-  });
-
-  row.querySelectorAll('.round-matches').forEach(rm => {
-    rm.style.position       = 'relative';
-    rm.style.height         = `${totalH}px`;
-    rm.style.justifyContent = 'unset';
-    rm.style.gap            = '0';
-  });
-}
-
 // ── SVG BRACKET CONNECTORS ───────────────────
 let lastMById = null;
 
@@ -902,10 +885,7 @@ function relPos(el, container) {
 }
 
 window.addEventListener('resize', () => {
-  if (lastMById) requestAnimationFrame(() => {
-    repositionCards(lastMById);
-    drawConnectors(lastMById);
-  });
+  if (lastMById) requestAnimationFrame(() => drawConnectors(lastMById));
 });
 
 // ── DOWNLOAD AS IMAGE ────────────────────────
