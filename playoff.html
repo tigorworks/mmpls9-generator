@@ -915,8 +915,11 @@ async function downloadBracket() {
   const btn = document.getElementById('downloadBtn');
   btn.textContent = 'Capturing…';
   btn.disabled = true;
+  const el = document.getElementById('bracketContent');
+  const rows = el.querySelectorAll('.rounds-row');
+  const origOverflow = Array.from(rows).map(r => r.style.overflowX);
+  rows.forEach(r => { r.style.overflowX = 'visible'; });
   try {
-    const el = document.getElementById('bracketContent');
     const canvas = await html2canvas(el, {
       backgroundColor: '#07090f',
       scale: 2,
@@ -933,6 +936,7 @@ async function downloadBracket() {
   } catch (e) {
     alert('Download failed: ' + e.message);
   } finally {
+    rows.forEach((r, i) => { r.style.overflowX = origOverflow[i]; });
     btn.textContent = 'Download';
     btn.disabled = false;
   }
