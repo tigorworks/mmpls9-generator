@@ -1097,11 +1097,13 @@ document.getElementById('po-submitBtn').onclick = async function() {
     stage:             stageKey,
     mvp_winner_id:     winIsNone ? '' : val('po-mvpWinner'),
     mvp_winner_name:   winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
-    mvp_winner_rating: winDesc,
+    mvp_winner_rating: winIsNone ? '' : val('po-ratingWinner'),
+    mvp_winner_desc:   winDesc,
     mvp_winner_points: winTotal,
     mvp_loser_id:      losIsNone ? '' : val('po-mvpLoser'),
     mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
-    mvp_loser_rating:  losDesc,
+    mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
+    mvp_loser_desc:    losDesc,
     mvp_loser_points:  losTotal,
   };
 
