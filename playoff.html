@@ -202,66 +202,6 @@ body::before {
   cursor: pointer;
 }
 
-/* ── SLIDE NAVIGATION ───────────────────── */
-.slide-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 28px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.slide-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .15s;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-.slide-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-.slide-btn.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #07090f;
-}
-
-.slide-num {
-  font-size: 11px;
-  font-weight: 600;
-  opacity: .7;
-}
-
-.slide-arrow {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 14px;
-  transition: all .15s;
-  font-family: inherit;
-}
-.slide-arrow:hover { border-color: var(--gold); color: var(--gold); }
-
-/* ── SLIDES ─────────────────────────────── */
-.slide { display: none; animation: fadeIn .2s ease; }
-.slide.active { display: block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── BRACKET SECTIONS ───────────────────── */
 .bracket-section { margin-bottom: 36px; }
@@ -302,6 +242,7 @@ body::before {
   overflow-x: auto;
   padding-bottom: 8px;
   align-items: flex-start;
+  position: relative;
 }
 
 .rounds-row::-webkit-scrollbar { height: 4px; }
@@ -338,21 +279,6 @@ body::before {
   padding: 4px 0;
 }
 
-/* ── CONNECTOR BETWEEN ROUNDS ───────────── */
-.round-connector {
-  width: 20px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 32px; /* offset for round label */
-}
-
-.connector-line {
-  width: 10px;
-  flex: 1;
-  border-right: 1px solid var(--border);
-}
 
 /* ── MATCH CARD ─────────────────────────── */
 .match-card {
@@ -394,17 +320,6 @@ body::before {
   text-overflow: ellipsis;
 }
 
-.match-live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 9px;
-  font-weight: 700;
-  color: #34d399;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  margin-left: auto;
-}
 
 .team-row {
   display: flex;
@@ -739,6 +654,7 @@ function renderFullBracket(uRounds, lRounds, ctx) {
 
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
+  requestAnimationFrame(() => drawConnectors(ctx.mById));
 }
 
 // ── ROUND COLUMN ────────────────────────────
@@ -753,19 +669,14 @@ function renderRoundCol(matches, round, ctx, type) {
 }
 
 // ── CONNECTOR ───────────────────────────────
-function connectorHTML(nextRoundMatches) {
-  const count = (nextRoundMatches || []).length;
-  // Simple visual spacer between rounds
-  return `<div class="round-connector">
-    ${Array(count * 2).fill('<div class="connector-line"></div>').join('')}
-  </div>`;
+function connectorHTML(_matches) {
+  return `<div style="width:28px;flex-shrink:0;"></div>`;
 }
 
 // ── MATCH CARD ──────────────────────────────
 function renderMatchCard(m, ctx) {
   const { pMap, mById } = ctx;
   const isComplete  = m.state === 'complete';
-  const isUnderway  = m.state === 'underway';
   const isGF        = m.round === ctx.maxU && m.round > 0;
 
   const p1Name  = resolveName(m.player1_id, m.player1_prereq_match_id, m.player1_is_prereq_match_loser, pMap, mById);
@@ -787,7 +698,6 @@ function renderMatchCard(m, ctx) {
   let metaHtml = `<div class="match-meta">
     <span class="match-id">${matchLabel}</span>`;
   if (dateStr) metaHtml += `<span class="match-date">${dateStr}</span>`;
-  if (isUnderway) metaHtml += `<span class="match-live-badge"><span class="live-dot"></span>LIVE</span>`;
   metaHtml += `</div>`;
 
   const p1Class = `team-row${p1Wins ? ' winner' : (isComplete && !p1Wins ? ' loser' : '')}`;
@@ -797,7 +707,7 @@ function renderMatchCard(m, ctx) {
   const p2ScoreHtml = isComplete ? `<span class="team-score">${s2}</span>` : `<span class="team-score" style="color:var(--border)">-</span>`;
 
   return `
-  <div class="${cardClass}">
+  <div class="${cardClass}" data-mid="${m.id}">
     ${metaHtml}
     <div class="${p1Class}">
       <span class="team-name${!p1Known ? ' tbd' : ''}">${escHtml(p1Name)}</span>
@@ -876,6 +786,73 @@ function show(id) {
   ['loadingPanel','errorPanel','pendingPanel','bracketPanel']
     .forEach(pid => document.getElementById(pid).style.display = pid === id ? '' : 'none');
 }
+
+// ── SVG BRACKET CONNECTORS ───────────────────
+let lastMById = null;
+
+function drawConnectors(mById) {
+  lastMById = mById;
+  document.querySelectorAll('.rounds-row').forEach(row => drawRowConnectors(row, mById));
+}
+
+function drawRowConnectors(row, mById) {
+  row.querySelector('.bracket-svg')?.remove();
+
+  const cardMap = {};
+  row.querySelectorAll('[data-mid]').forEach(card => {
+    cardMap[+card.dataset.mid] = card;
+  });
+  if (!Object.keys(cardMap).length) return;
+
+  const sw = row.scrollWidth;
+  const sh = row.scrollHeight;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('bracket-svg');
+  svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;overflow:visible;';
+  svg.setAttribute('width', sw);
+  svg.setAttribute('height', sh);
+  row.prepend(svg);
+
+  for (const midStr of Object.keys(cardMap)) {
+    const m = mById[+midStr];
+    if (!m) continue;
+    const toCard = cardMap[+midStr];
+    const toPos  = relPos(toCard, row);
+
+    for (const prereqId of [m.player1_prereq_match_id, m.player2_prereq_match_id]) {
+      if (!prereqId || !cardMap[prereqId]) continue;
+      const fromPos = relPos(cardMap[prereqId], row);
+
+      const x1 = fromPos.right;
+      const y1 = fromPos.top + fromPos.height / 2;
+      const x2 = toPos.left;
+      const y2 = toPos.top  + toPos.height  / 2;
+      const mx = (x1 + x2) / 2;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M${x1},${y1} H${mx} V${y2} H${x2}`);
+      path.setAttribute('stroke', '#2a3f5e');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+    }
+  }
+}
+
+function relPos(el, container) {
+  const elRect  = el.getBoundingClientRect();
+  const conRect = container.getBoundingClientRect();
+  const sl = container.scrollLeft || 0;
+  const st = container.scrollTop  || 0;
+  return {
+    top:    elRect.top    - conRect.top    + st,
+    left:   elRect.left   - conRect.left   + sl,
+    right:  elRect.right  - conRect.left   + sl,
+    height: elRect.height,
+  };
+}
+
+window.addEventListener('resize', () => { if (lastMById) drawConnectors(lastMById); });
 
 // ── INIT ─────────────────────────────────────
 loadData();
