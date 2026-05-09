@@ -142,16 +142,7 @@ body::before {
   border: 1px solid;
 }
 .state-badge.group   { color: #6b7280; border-color: #374151; }
-.state-badge.live    { color: #34d399; border-color: #34d399; }
 .state-badge.done    { color: var(--gold); border-color: var(--gold); }
-
-.live-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #34d399;
-  animation: pulse 1.4s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
 /* ── MAIN CONTENT ───────────────────────── */
 .content {
@@ -589,10 +580,11 @@ function renderFullBracket(uRounds, lRounds, ctx) {
 
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  requestAnimationFrame(() => {
+  // Double rAF: first ensures new DOM is laid out, second safely reads heights
+  requestAnimationFrame(() => requestAnimationFrame(() => {
     repositionCards(ctx.mById);
     drawConnectors(ctx.mById);
-  });
+  }));
 }
 
 // ── ROUND COLUMN ────────────────────────────
@@ -712,12 +704,12 @@ function renderStateBadge(state) {
   if (!el) return;
   const map = {
     group_stages_underway: ['group', 'Group Stage Underway'],
-    underway:              ['live',  '● Live'],
+    underway:              ['done',  'Berlangsung'],
     awaiting_review:       ['done',  'Awaiting Review'],
-    complete:              ['done',  'Tournament Complete'],
+    complete:              ['done',  'Selesai'],
   };
   const [cls, label] = map[state] || ['group', state];
-  el.innerHTML = `<span class="state-badge ${cls}">${cls === 'live' ? '<span class="live-dot"></span>' : ''}${label}</span>`;
+  el.innerHTML = `<span class="state-badge ${cls}">${label}</span>`;
 }
 
 function show(id) {
@@ -749,14 +741,22 @@ function repositionRow(row, mById) {
   const rounds = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
   const sectionMids = new Set(allCards.map(({ m }) => m.id));
 
-  const GAP = 14; // vertical gap between cards in first round
+  // Measure ALL card heights first, before any DOM changes.
+  // Fallback to 90px if layout hasn't computed yet (shouldn't happen with double rAF).
+  const hMap = new Map();
+  allCards.forEach(({ card, m }) => {
+    const h = card.getBoundingClientRect().height;
+    hMap.set(m.id, h > 4 ? h : 90);
+  });
+
+  const GAP = 16; // vertical gap between cards in first round
   const posMap = {}; // matchId → centerY
 
-  // First round: stack top-to-bottom using actual rendered heights
+  // First round: stack top-to-bottom
   const firstRound = rounds[0];
   let y = 0;
-  byRound.get(firstRound).forEach(({ card, m }) => {
-    const h = card.getBoundingClientRect().height;
+  byRound.get(firstRound).forEach(({ m }) => {
+    const h = hMap.get(m.id);
     posMap[m.id] = y + h / 2;
     y += h + GAP;
   });
@@ -770,7 +770,6 @@ function repositionRow(row, mById) {
       if (prereqs.length > 0) {
         posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
       } else {
-        // No in-section prereqs (e.g. GF from lower): mirror previous round center
         const prev = byRound.get(rounds[ri - 1]);
         const prevCenters = prev.map(({ m: pm }) => posMap[pm.id]).filter(v => v !== undefined);
         posMap[m.id] = prevCenters.length
@@ -780,23 +779,23 @@ function repositionRow(row, mById) {
     });
   }
 
-  // Apply absolute positions; track max bottom for container height
+  // Apply absolute positions using stored heights (no more DOM reads)
   let maxBottom = 0;
   allCards.forEach(({ card, m }) => {
-    const cy = posMap[m.id];
-    const h  = card.getBoundingClientRect().height;
+    const h  = hMap.get(m.id);
+    const cy = posMap[m.id] ?? 0;
     card.style.position = 'absolute';
     card.style.top      = `${cy - h / 2}px`;
     card.style.width    = '100%';
     maxBottom = Math.max(maxBottom, cy + h / 2);
   });
 
-  // Fix each .round-matches to be the positioning context with explicit height
+  // Set each .round-matches as positioning context with explicit height
   row.querySelectorAll('.round-matches').forEach(rm => {
-    rm.style.position      = 'relative';
-    rm.style.height        = `${maxBottom}px`;
+    rm.style.position       = 'relative';
+    rm.style.height         = `${maxBottom}px`;
     rm.style.justifyContent = 'unset';
-    rm.style.gap           = '0';
+    rm.style.gap            = '0';
   });
 }
 
@@ -866,7 +865,7 @@ function relPos(el, container) {
 }
 
 window.addEventListener('resize', () => {
-  if (lastMById) { repositionCards(lastMById); drawConnectors(lastMById); }
+  if (lastMById) requestAnimationFrame(() => { repositionCards(lastMById); drawConnectors(lastMById); });
 });
 
 // ── DOWNLOAD AS IMAGE ────────────────────────
