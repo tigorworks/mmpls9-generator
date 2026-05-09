@@ -801,7 +801,7 @@ function reset(ids){
 function isRatingValid(playerEl, ratingEl) {
   if (playerEl.value === "" || playerEl.value === "none") return true;
   const r = parseFloat(ratingEl.value);
-  return !isNaN(r) && r >= 8.0 && r <= 15.0;
+  return !isNaN(r) && r >= 3.0 && r <= 15.0;
 }
 
 function validate(){
