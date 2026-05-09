@@ -2,7 +2,7 @@ name: Sync Bracket MMPL S9
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # every 15 minutes during active final stage
+    - cron: "0 13,16 * * *"   # every 15 minutes during active final stage
   workflow_dispatch:           # allow manual trigger
 
 permissions:
