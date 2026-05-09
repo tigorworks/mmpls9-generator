@@ -1925,8 +1925,8 @@ function processMVPData(rows, lastUpdate) {
     const stage  = (r["Stage"] || "lower").toLowerCase().replace(/\s+/g, "_");
     const ratingW = r["MVP Winner Rating"] ?? "";
     const ratingL = r["MVP Loser Rating"]  ?? "";
-    const ptStrW  = String(r["MVP Winner Points"] ?? "").trim();
-    const ptStrL  = String(r["MVP Loser Points"]  ?? "").trim();
+    const ptStrW  = String(r["POWinner"] ?? r["MVP Winner Points"] ?? "").trim();
+    const ptStrL  = String(r["POLoser"]  ?? r["MVP Loser Points"]  ?? "").trim();
 
     const parsePtStr = s => s ? s.split(';').reduce((sum, v) => sum + (parseInt(v) || 0), 0) : null;
 
