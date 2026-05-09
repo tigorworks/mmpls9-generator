@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="bg.png">
 <link rel="apple-touch-icon" href="bg.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -226,8 +227,6 @@ body::before {
 .section-label.lower { background: rgba(139,92,246,.18); color: #a78bfa; }
 .section-label.gf    { background: rgba(245,158,11,.18); color: var(--gold); font-size: 12px; }
 
-.gf-section { margin-top: 8px; }
-.gf-section .match-card { border-color: rgba(245,158,11,.5); box-shadow: 0 0 20px rgba(245,158,11,.12); }
 
 .section-divider {
   flex: 1;
@@ -383,45 +382,6 @@ body::before {
 
 .match-card.grand-final .match-id { color: var(--gold2); font-size: 11px; }
 
-/* ── GRAND FINAL SECTION ────────────────── */
-.gf-section {
-  margin-bottom: 36px;
-}
-
-.gf-wrapper {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.gf-col {
-  flex: 0 0 auto;
-}
-
-.gf-col .round-label {
-  text-align: left;
-  border: none;
-  padding: 0 0 8px 2px;
-  color: var(--gold);
-  font-size: 11px;
-  letter-spacing: 1.5px;
-}
-
-/* ── FINALS LAYOUT ──────────────────────── */
-.finals-layout {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.finals-divider {
-  width: 1px;
-  background: var(--border);
-  min-height: 200px;
-  margin-top: 32px;
-}
 
 /* ── REFRESH BTN ────────────────────────── */
 .refresh-btn {
@@ -445,8 +405,6 @@ body::before {
   .page-header img { width: 48px; height: 48px; }
   .round-col { min-width: 170px; }
   .team-name { font-size: 11px; }
-  .finals-layout { grid-template-columns: 1fr; }
-  .finals-divider { display: none; }
   .navbar { padding: 0 14px; }
   .navbar-title { font-size: 11px; }
 }
@@ -498,7 +456,8 @@ body::before {
 
   <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
-    <div style="display:flex;justify-content:flex-end;margin-bottom:20px">
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px">
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">&#8681; Download</button>
       <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
     </div>
     <div id="bracketContent"></div>
@@ -507,9 +466,6 @@ body::before {
 </main>
 
 <script>
-
-const REFRESH_MS   = 60_000;
-let   refreshTimer = null;
 
 // ── LOAD DATA ───────────────────────────────
 async function loadData() {
@@ -590,33 +546,27 @@ function processBracket(data) {
   renderFullBracket(upperRounds, lowerRounds, ctx);
 
   show('bracketPanel');
-
-  // Auto-refresh when live
-  clearTimeout(refreshTimer);
-  if (t.state === 'underway') {
-    refreshTimer = setTimeout(loadData, REFRESH_MS);
-  }
 }
 
 // ── FULL BRACKET: single page ────────────────
 function renderFullBracket(uRounds, lRounds, ctx) {
   const el  = document.getElementById('bracketContent');
-  const gfR = ctx.maxU; // Grand Final round
-  const ubRounds = uRounds.filter(r => r < gfR);  // upper bracket (non-GF)
-  const gfRounds = uRounds.filter(r => r === gfR); // grand final round(s)
+  const gfR = ctx.maxU; // Grand Final round = last upper round
   let html = '';
 
-  // ── UPPER BRACKET ──
-  if (ubRounds.length) {
+  // ── UPPER BRACKET + GRAND FINAL (inline as last column) ──
+  if (uRounds.length) {
     html += `<div class="bracket-section">
       <div class="section-header">
         <span class="section-label upper">Upper Bracket</span>
         <div class="section-divider"></div>
+        <span class="section-label gf" style="flex-shrink:0">Grand Final</span>
       </div>
       <div class="rounds-row">`;
-    ubRounds.forEach((r, i) => {
+    uRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.upper[r]);
-      html += renderRoundCol(ctx.upper[r], r, ctx, 'upper');
+      const type = (r === gfR) ? 'gf' : 'upper';
+      html += renderRoundCol(ctx.upper[r], r, ctx, type);
     });
     html += `</div></div>`;
   }
@@ -637,24 +587,12 @@ function renderFullBracket(uRounds, lRounds, ctx) {
     html += `</div></div>`;
   }
 
-  // ── GRAND FINAL ──
-  if (gfRounds.length) {
-    html += `<div class="bracket-section gf-section">
-      <div class="section-header">
-        <span class="section-label gf">Grand Final</span>
-        <div class="section-divider"></div>
-      </div>
-      <div class="rounds-row">`;
-    gfRounds.forEach((r, i) => {
-      if (i > 0) html += connectorHTML(ctx.upper[r]);
-      html += renderRoundCol(ctx.upper[r], r, ctx, 'gf');
-    });
-    html += `</div></div>`;
-  }
-
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  requestAnimationFrame(() => drawConnectors(ctx.mById));
+  requestAnimationFrame(() => {
+    repositionCards(ctx.mById);
+    drawConnectors(ctx.mById);
+  });
 }
 
 // ── ROUND COLUMN ────────────────────────────
@@ -787,6 +725,81 @@ function show(id) {
     .forEach(pid => document.getElementById(pid).style.display = pid === id ? '' : 'none');
 }
 
+// ── BRACKET TREE POSITIONING ─────────────────
+function repositionCards(mById) {
+  document.querySelectorAll('.rounds-row').forEach(row => repositionRow(row, mById));
+}
+
+function repositionRow(row, mById) {
+  const allCards = [];
+  row.querySelectorAll('[data-mid]').forEach(card => {
+    const m = mById[+card.dataset.mid];
+    if (m) allCards.push({ card, m });
+  });
+  if (!allCards.length) return;
+
+  // Group by round
+  const byRound = new Map();
+  allCards.forEach(({ card, m }) => {
+    if (!byRound.has(m.round)) byRound.set(m.round, []);
+    byRound.get(m.round).push({ card, m });
+  });
+
+  // Sort rounds by absolute value (works for both positive upper and negative lower)
+  const rounds = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
+  const sectionMids = new Set(allCards.map(({ m }) => m.id));
+
+  const GAP = 14; // vertical gap between cards in first round
+  const posMap = {}; // matchId → centerY
+
+  // First round: stack top-to-bottom using actual rendered heights
+  const firstRound = rounds[0];
+  let y = 0;
+  byRound.get(firstRound).forEach(({ card, m }) => {
+    const h = card.getBoundingClientRect().height;
+    posMap[m.id] = y + h / 2;
+    y += h + GAP;
+  });
+
+  // Later rounds: center between in-section prereqs
+  for (let ri = 1; ri < rounds.length; ri++) {
+    const r = rounds[ri];
+    byRound.get(r).forEach(({ m }) => {
+      const prereqs = [m.player1_prereq_match_id, m.player2_prereq_match_id]
+        .filter(pid => pid && sectionMids.has(pid) && posMap[pid] !== undefined);
+      if (prereqs.length > 0) {
+        posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
+      } else {
+        // No in-section prereqs (e.g. GF from lower): mirror previous round center
+        const prev = byRound.get(rounds[ri - 1]);
+        const prevCenters = prev.map(({ m: pm }) => posMap[pm.id]).filter(v => v !== undefined);
+        posMap[m.id] = prevCenters.length
+          ? prevCenters.reduce((s, v) => s + v, 0) / prevCenters.length
+          : y / 2;
+      }
+    });
+  }
+
+  // Apply absolute positions; track max bottom for container height
+  let maxBottom = 0;
+  allCards.forEach(({ card, m }) => {
+    const cy = posMap[m.id];
+    const h  = card.getBoundingClientRect().height;
+    card.style.position = 'absolute';
+    card.style.top      = `${cy - h / 2}px`;
+    card.style.width    = '100%';
+    maxBottom = Math.max(maxBottom, cy + h / 2);
+  });
+
+  // Fix each .round-matches to be the positioning context with explicit height
+  row.querySelectorAll('.round-matches').forEach(rm => {
+    rm.style.position      = 'relative';
+    rm.style.height        = `${maxBottom}px`;
+    rm.style.justifyContent = 'unset';
+    rm.style.gap           = '0';
+  });
+}
+
 // ── SVG BRACKET CONNECTORS ───────────────────
 let lastMById = null;
 
@@ -852,7 +865,41 @@ function relPos(el, container) {
   };
 }
 
-window.addEventListener('resize', () => { if (lastMById) drawConnectors(lastMById); });
+window.addEventListener('resize', () => {
+  if (lastMById) { repositionCards(lastMById); drawConnectors(lastMById); }
+});
+
+// ── DOWNLOAD AS IMAGE ────────────────────────
+async function downloadBracket() {
+  if (typeof html2canvas === 'undefined') {
+    alert('html2canvas not loaded yet. Please try again.');
+    return;
+  }
+  const btn = document.getElementById('downloadBtn');
+  btn.textContent = 'Capturing…';
+  btn.disabled = true;
+  try {
+    const el = document.getElementById('bracketContent');
+    const canvas = await html2canvas(el, {
+      backgroundColor: '#07090f',
+      scale: 2,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      width:  el.scrollWidth,
+      height: el.scrollHeight,
+    });
+    const a = document.createElement('a');
+    a.download = 'mmpl-s9-playoff.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  } catch (e) {
+    alert('Download failed: ' + e.message);
+  } finally {
+    btn.textContent = '⬇ Download';
+    btn.disabled = false;
+  }
+}
 
 // ── INIT ─────────────────────────────────────
 loadData();
