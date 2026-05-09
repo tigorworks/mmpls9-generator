@@ -468,7 +468,7 @@ textarea {
       <select id="mvpWinner" disabled>
         <option value="">Select Player</option>
       </select>
-      <input type="number" id="ratingWinner" class="rating-input" min="3.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (3.0 – 15.0)" disabled>
+      <input type="number" id="ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (3.0 – 15.0)" disabled>
       <div id="ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
     </div>
 
@@ -477,7 +477,7 @@ textarea {
       <select id="mvpLoser" disabled>
         <option value="">Select Player</option>
       </select>
-      <input type="number" id="ratingLoser" class="rating-input" min="3.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (3.0 – 15.0)" disabled>
+      <input type="number" id="ratingLoser" class="rating-input" min="5.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (3.0 – 15.0)" disabled>
       <div id="ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
     </div>
 
@@ -547,7 +547,7 @@ textarea {
         <select id="po-mvpWinner" disabled>
           <option value="">Select Player</option>
         </select>
-        <input type="number" id="po-ratingWinner" class="rating-input" min="3.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (3.0 – 15.0)" disabled>
+        <input type="number" id="po-ratingWinner" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Winner (3.0 – 15.0)" disabled>
         <div id="po-ptsWinner" class="pts-preview">— pilih player & masukkan rating</div>
       </div>
 
@@ -556,8 +556,13 @@ textarea {
         <select id="po-mvpLoser" disabled>
           <option value="">Select Player</option>
         </select>
-        <input type="number" id="po-ratingLoser" class="rating-input" min="3.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (3.0 – 15.0)" disabled>
+        <input type="number" id="po-ratingLoser" class="rating-input" min="8.0" max="15.0" step="0.1" placeholder="Rating MVP Loser (3.0 – 15.0)" disabled>
         <div id="po-ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
+      </div>
+
+      <div class="field">
+        <label>Notes <span style="color:#374151;font-weight:400;text-transform:none">(optional)</span></label>
+        <textarea id="po-note" placeholder="Add a note..."></textarea>
       </div>
 
       <button id="po-submitBtn" class="submit-btn" disabled>Submit</button>
@@ -1079,11 +1084,6 @@ document.getElementById('po-submitBtn').onclick = async function() {
   const winIsNone = val('po-mvpWinner') === 'none';
   const losIsNone = val('po-mvpLoser')  === 'none';
 
-  // Calculate total points for note field (format: "winner;loser")
-  const winnerTotal = winIsNone ? '' : (getRatingPts(val('po-ratingWinner')) ?? 0) + MVP_CONFIG.result.win + stagePts;
-  const loserTotal = losIsNone ? '' : (getRatingPts(val('po-ratingLoser')) ?? 0) + MVP_CONFIG.result.lose + stagePts;
-  const pointsNote = winnerTotal && loserTotal ? `${winnerTotal};${loserTotal}` : '';
-
   const payload = {
     source:            'playoff',
     tanggal:           val('po-tanggal'),
@@ -1099,7 +1099,6 @@ document.getElementById('po-submitBtn').onclick = async function() {
     mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
     mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
     mvp_loser_points:  losIsNone ? '' : `${getRatingPts(val('po-ratingLoser')) ?? 0};${MVP_CONFIG.result.lose};${stagePts}`,
-    note:              pointsNote,
     note:              val('po-note'),
   };
 
