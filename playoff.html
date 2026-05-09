@@ -619,8 +619,8 @@ function renderFullBracket(uRounds, lRounds, ctx) {
 
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  // Cards use natural flex layout; SVG connectors drawn between actual positions
   requestAnimationFrame(() => requestAnimationFrame(() => {
+    repositionCards(ctx.mById);
     drawConnectors(ctx.mById);
   }));
 }
@@ -903,7 +903,10 @@ function relPos(el, container) {
 }
 
 window.addEventListener('resize', () => {
-  if (lastMById) requestAnimationFrame(() => drawConnectors(lastMById));
+  if (lastMById) requestAnimationFrame(() => {
+    repositionCards(lastMById);
+    drawConnectors(lastMById);
+  });
 });
 
 // ── DOWNLOAD AS IMAGE ────────────────────────
