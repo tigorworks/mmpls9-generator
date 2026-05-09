@@ -619,10 +619,10 @@ function renderFullBracket(uRounds, lRounds, ctx) {
 
   if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
-  requestAnimationFrame(() => requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
     repositionCards(ctx.mById);
     drawConnectors(ctx.mById);
-  }));
+  });
 }
 
 // ── ROUND COLUMN ────────────────────────────
@@ -768,38 +768,32 @@ function repositionRow(row, mById) {
   });
   if (!allCards.length) return;
 
-  // Group by round
   const byRound = new Map();
   allCards.forEach(({ card, m }) => {
     if (!byRound.has(m.round)) byRound.set(m.round, []);
     byRound.get(m.round).push({ card, m });
   });
 
-  // Sort rounds by absolute value (works for both positive upper and negative lower)
   const rounds = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
   const sectionMids = new Set(allCards.map(({ m }) => m.id));
 
-  // Measure ALL card heights first, before any DOM changes.
-  // Fallback to 90px if card height is too small (incomplete render / header-only).
-  const hMap = new Map();
-  allCards.forEach(({ card, m }) => {
-    const h = card.getBoundingClientRect().height;
-    hMap.set(m.id, h > 75 ? h : 92);
-  });
+  // Use a fixed slot grid (no DOM measurement) — same uniform spacing as Challonge.
+  // CARD_H matches the actual rendered card height (meta bar + 2 team rows ≈ 100px).
+  const CARD_H = 100;
+  const GAP    = 16;
+  const SLOT   = CARD_H + GAP;
 
-  const GAP = 16; // vertical gap between cards in first round
-  const posMap = {}; // matchId → centerY
-
-  // First round: stack top-to-bottom
+  const posMap = {};
   const firstRound = rounds[0];
-  let y = 0;
-  byRound.get(firstRound).forEach(({ m }) => {
-    const h = hMap.get(m.id);
-    posMap[m.id] = y + h / 2;
-    y += h + GAP;
+  const seedCount  = byRound.get(firstRound).length;
+
+  // First round: evenly spaced from the top
+  byRound.get(firstRound).forEach(({ m }, i) => {
+    posMap[m.id] = i * SLOT + CARD_H / 2;
   });
 
   // Later rounds: center between in-section prereqs
+  const midY = (seedCount * SLOT) / 2;
   for (let ri = 1; ri < rounds.length; ri++) {
     const r = rounds[ri];
     byRound.get(r).forEach(({ m }) => {
@@ -809,29 +803,25 @@ function repositionRow(row, mById) {
         posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
       } else {
         const prev = byRound.get(rounds[ri - 1]);
-        const prevCenters = prev.map(({ m: pm }) => posMap[pm.id]).filter(v => v !== undefined);
-        posMap[m.id] = prevCenters.length
-          ? prevCenters.reduce((s, v) => s + v, 0) / prevCenters.length
-          : y / 2;
+        const cs = prev.map(({ m: pm }) => posMap[pm.id]).filter(v => v !== undefined);
+        posMap[m.id] = cs.length ? cs.reduce((s, v) => s + v, 0) / cs.length : midY;
       }
     });
   }
 
-  // Apply absolute positions using stored heights (no more DOM reads)
-  let maxBottom = 0;
+  // Total column height = seedCount slots (gives padding at bottom too)
+  const totalH = seedCount * SLOT;
+
   allCards.forEach(({ card, m }) => {
-    const h  = hMap.get(m.id);
-    const cy = posMap[m.id] ?? 0;
+    const cy = posMap[m.id] ?? midY;
     card.style.position = 'absolute';
-    card.style.top      = `${cy - h / 2}px`;
+    card.style.top      = `${Math.max(0, cy - CARD_H / 2)}px`;
     card.style.width    = '100%';
-    maxBottom = Math.max(maxBottom, cy + h / 2);
   });
 
-  // Set each .round-matches as positioning context with explicit height
   row.querySelectorAll('.round-matches').forEach(rm => {
     rm.style.position       = 'relative';
-    rm.style.height         = `${maxBottom}px`;
+    rm.style.height         = `${totalH}px`;
     rm.style.justifyContent = 'unset';
     rm.style.gap            = '0';
   });
