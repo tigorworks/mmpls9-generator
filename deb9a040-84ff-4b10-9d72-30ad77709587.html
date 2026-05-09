@@ -603,7 +603,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXcrSvLxCGpM5zgTYE6
 // ── MVP Scoring Parameters (harus sama dengan di index.html) ──────
 const MVP_CONFIG = {
   rating: [
-    { min: 8.0,  max: 9.5,  pts: 1 },
+    { min: 3.0,  max: 9.5,  pts: 1 },
     { min: 9.6,  max: 10.5, pts: 2 },
     { min: 10.6, max: 15.0, pts: 3 }
   ],
@@ -796,7 +796,7 @@ function reset(ids){
 function isRatingValid(playerEl, ratingEl) {
   if (playerEl.value === "" || playerEl.value === "none") return true;
   const r = parseFloat(ratingEl.value);
-  return !isNaN(r) && r >= 8.0 && r <= 15.0;
+  return !isNaN(r) && r >= 3.0 && r <= 15.0;
 }
 
 function validate(){
@@ -1100,6 +1100,7 @@ document.getElementById('po-submitBtn').onclick = async function() {
     mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
     mvp_loser_points:  losIsNone ? '' : `${getRatingPts(val('po-ratingLoser')) ?? 0};${MVP_CONFIG.result.lose};${stagePts}`,
     note:              pointsNote,
+    note:              val('po-note'),
   };
 
   g('po-submitBtn').disabled = true;

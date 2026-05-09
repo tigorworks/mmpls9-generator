@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="bg.png">
 <link rel="apple-touch-icon" href="bg.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,8 +20,8 @@
   --text:    #94a3b8;
   --bright:  #f1f5f9;
   --bg:      #07090f;
-  --card:    rgba(10,14,26,.75);
-  --border:  #1a2236;
+  --card:    rgba(12,18,35,.93);
+  --border:  #1f2f4a;
   --upper:   #3b82f6;
   --lower:   #8b5cf6;
   --gf:      #f59e0b;
@@ -141,16 +142,7 @@ body::before {
   border: 1px solid;
 }
 .state-badge.group   { color: #6b7280; border-color: #374151; }
-.state-badge.live    { color: #34d399; border-color: #34d399; }
 .state-badge.done    { color: var(--gold); border-color: var(--gold); }
-
-.live-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #34d399;
-  animation: pulse 1.4s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
 /* ── MAIN CONTENT ───────────────────────── */
 .content {
@@ -202,66 +194,6 @@ body::before {
   cursor: pointer;
 }
 
-/* ── SLIDE NAVIGATION ───────────────────── */
-.slide-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 28px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.slide-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .15s;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-.slide-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-.slide-btn.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #07090f;
-}
-
-.slide-num {
-  font-size: 11px;
-  font-weight: 600;
-  opacity: .7;
-}
-
-.slide-arrow {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 14px;
-  transition: all .15s;
-  font-family: inherit;
-}
-.slide-arrow:hover { border-color: var(--gold); color: var(--gold); }
-
-/* ── SLIDES ─────────────────────────────── */
-.slide { display: none; animation: fadeIn .2s ease; }
-.slide.active { display: block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── BRACKET SECTIONS ───────────────────── */
 .bracket-section { margin-bottom: 36px; }
@@ -282,9 +214,10 @@ body::before {
   border-radius: 4px;
 }
 
-.section-label.upper { background: rgba(59,130,246,.15); color: #60a5fa; }
-.section-label.lower { background: rgba(139,92,246,.15); color: #a78bfa; }
-.section-label.gf    { background: rgba(245,158,11,.15); color: var(--gold); }
+.section-label.upper { background: rgba(59,130,246,.18); color: #60a5fa; }
+.section-label.lower { background: rgba(139,92,246,.18); color: #a78bfa; }
+.section-label.gf    { background: rgba(245,158,11,.18); color: var(--gold); font-size: 12px; }
+
 
 .section-divider {
   flex: 1;
@@ -292,18 +225,28 @@ body::before {
   background: var(--border);
 }
 
+/* ── BRACKET OUTER SCROLL ───────────────── */
+.bracket-outer {
+  overflow-x: auto;
+  overflow-y: visible;
+  width: 100%;
+  padding-bottom: 12px;
+}
+
+.bracket-outer::-webkit-scrollbar { height: 4px; }
+.bracket-outer::-webkit-scrollbar-track { background: transparent; }
+.bracket-outer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
 /* ── ROUNDS ROW ─────────────────────────── */
 .rounds-row {
   display: flex;
   gap: 0;
-  overflow-x: auto;
+  overflow-x: visible;
+  min-width: max-content;
   padding-bottom: 8px;
   align-items: flex-start;
+  position: relative;
 }
-
-.rounds-row::-webkit-scrollbar { height: 4px; }
-.rounds-row::-webkit-scrollbar-track { background: transparent; }
-.rounds-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* ── ROUND COLUMN ───────────────────────── */
 .round-col {
@@ -327,29 +270,16 @@ body::before {
 }
 
 .round-matches {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: space-around;
-  flex: 1;
-  padding: 4px 0;
+  position: relative;
+  display: block;
+  min-height: 100px;
 }
 
-/* ── CONNECTOR BETWEEN ROUNDS ───────────── */
-.round-connector {
-  width: 20px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 32px; /* offset for round label */
+.card-wrap {
+  position: absolute;
+  width: 100%;
 }
 
-.connector-line {
-  width: 10px;
-  flex: 1;
-  border-right: 1px solid var(--border);
-}
 
 /* ── MATCH CARD ─────────────────────────── */
 .match-card {
@@ -358,10 +288,11 @@ body::before {
   border-radius: 8px;
   overflow: hidden;
   transition: border-color .15s;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,.5);
 }
 
-.match-card:hover { border-color: #2a3a56; }
+.match-card:hover { border-color: #2e4470; }
 .match-card.state-underway { border-color: rgba(59,130,246,.5); }
 
 .match-meta {
@@ -390,17 +321,6 @@ body::before {
   text-overflow: ellipsis;
 }
 
-.match-live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 9px;
-  font-weight: 700;
-  color: #34d399;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  margin-left: auto;
-}
 
 .team-row {
   display: flex;
@@ -458,67 +378,47 @@ body::before {
 
 /* Grand Final card special style */
 .match-card.grand-final {
-  border-color: rgba(245,158,11,.4);
-  background: rgba(245,158,11,.05);
+  border-color: rgba(245,158,11,.65);
+  background: rgba(245,158,11,.07);
+  box-shadow: 0 0 0 1px rgba(245,158,11,.2), 0 4px 24px rgba(245,158,11,.18);
 }
 
-.match-card.grand-final .match-id { color: var(--gold2); font-size: 11px; }
+.match-card.grand-final .match-id { color: var(--gold); font-size: 11px; font-weight: 800; letter-spacing:.5px; }
+.match-card.grand-final .match-meta { background: rgba(245,158,11,.1); border-bottom-color: rgba(245,158,11,.25); }
+.match-card.grand-final .team-row { border-bottom-color: rgba(245,158,11,.12); }
+.match-card.grand-final .team-row.winner .team-name { color: var(--gold); }
 
-/* ── GRAND FINAL SECTION ────────────────── */
-.gf-section {
-  margin-bottom: 36px;
-}
 
-.gf-wrapper {
+/* ── ACTION BUTTONS ─────────────────────── */
+.action-bar {
   display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
 }
-
-.gf-col {
-  flex: 0 0 auto;
-}
-
-.gf-col .round-label {
-  text-align: left;
-  border: none;
-  padding: 0 0 8px 2px;
-  color: var(--gold);
-  font-size: 11px;
-  letter-spacing: 1.5px;
-}
-
-/* ── FINALS LAYOUT ──────────────────────── */
-.finals-layout {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.finals-divider {
-  width: 1px;
-  background: var(--border);
-  min-height: 200px;
-  margin-top: 32px;
-}
-
-/* ── REFRESH BTN ────────────────────────── */
 .refresh-btn {
-  padding: 6px 14px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border-radius: 7px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: rgba(255,255,255,.03);
   color: var(--dim);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all .15s;
   font-family: inherit;
-  margin-left: auto;
+  letter-spacing: .2px;
 }
-.refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+.refresh-btn:hover {
+  border-color: rgba(245,158,11,.5);
+  color: var(--gold);
+  background: rgba(245,158,11,.06);
+}
+.refresh-btn:active { transform: scale(.97); }
 
 /* ── RESPONSIVE ─────────────────────────── */
 @media (max-width: 640px) {
@@ -526,8 +426,6 @@ body::before {
   .page-header img { width: 48px; height: 48px; }
   .round-col { min-width: 170px; }
   .team-name { font-size: 11px; }
-  .finals-layout { grid-template-columns: 1fr; }
-  .finals-divider { display: none; }
   .navbar { padding: 0 14px; }
   .navbar-title { font-size: 11px; }
 }
@@ -577,34 +475,30 @@ body::before {
     <p>The bracket will be revealed after the Group Stage concludes. Stay tuned!</p>
   </div>
 
-  <!-- Bracket carousel -->
+  <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
-
-    <div class="slide-nav">
-      <button class="slide-arrow" onclick="prevSlide()">&#8592;</button>
-      <button class="slide-btn active" data-slide="0" onclick="goSlide(0)">
-        Playoffs Bracket <span class="slide-num">1/2</span>
-      </button>
-      <button class="slide-btn" data-slide="1" onclick="goSlide(1)">
-        Finals <span class="slide-num">2/2</span>
-      </button>
-      <button class="slide-arrow" onclick="nextSlide()">&#8594;</button>
-      <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
+    <div class="action-bar">
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">Download</button>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
     </div>
-
-    <div id="slide-0" class="slide active"></div>
-    <div id="slide-1" class="slide"></div>
-
+    <div id="bracketContent"></div>
   </div>
 
 </main>
 
 <script>
 
-const DATA_URL        = `final_bracket.json?v=${Date.now()}`;
-const REFRESH_MS      = 60_000;
-let   currentSlide    = 0;
-let   refreshTimer    = null;
+// ── IFRAME EMBED MODE ────────────────────────
+if (window.self !== window.top) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('.navbar');
+    const hdr = document.querySelector('.page-header');
+    if (nav) nav.style.display = 'none';
+    if (hdr) hdr.style.display = 'none';
+    const content = document.querySelector('.content');
+    if (content) content.style.paddingTop = '16px';
+  });
+}
 
 // ── LOAD DATA ───────────────────────────────
 async function loadData() {
@@ -680,49 +574,49 @@ function processBracket(data) {
   const maxU = upperRounds.at(-1) ?? 0;
   const maxL = lowerRounds.at(-1) ?? 0;
 
-  // Slide 2 = last 2 upper rounds + last 2 lower rounds
-  const uSplit = maxU - 1;  // rounds > uSplit  → slide 2
-  const lSplit = maxL - 2;  // rounds > lSplit  → slide 2 (unless only ≤2 lower rounds exist)
-
-  const upperSlide1 = upperRounds.filter(r => r <= uSplit);
-  const upperSlide2 = upperRounds.filter(r => r >  uSplit);
-  const lowerSlide1 = lowerRounds.filter(r => r <= lSplit);
-  const lowerSlide2 = lowerRounds.filter(r => r >  lSplit);
-
   const ctx = { pMap, mById, upper, lower, maxU, maxL };
 
-  renderSlide0(upperSlide1, lowerSlide1, ctx);
-  renderSlide1(upperSlide2, lowerSlide2, ctx);
+  renderFullBracket(upperRounds, lowerRounds, ctx);
 
   show('bracketPanel');
-  goSlide(currentSlide);
-
-  // Auto-refresh when live
-  clearTimeout(refreshTimer);
-  if (t.state === 'underway') {
-    refreshTimer = setTimeout(loadData, REFRESH_MS);
-  }
 }
 
-// ── SLIDE 0: PLAYOFFS ───────────────────────
-function renderSlide0(uRounds, lRounds, ctx) {
-  const el = document.getElementById('slide-0');
-  let html = '';
+// ── FULL BRACKET: single page ────────────────
+function renderFullBracket(uRounds, lRounds, ctx) {
+  const el  = document.getElementById('bracketContent');
+  const gfR = ctx.maxU; // Grand Final round = last upper round
 
+  // Keep only the first GF match (remove reset/match 23)
+  if (ctx.upper[gfR] && ctx.upper[gfR].length > 1) {
+    ctx.upper[gfR] = ctx.upper[gfR]
+      .sort((a, b) => (a.suggested_play_order || 0) - (b.suggested_play_order || 0))
+      .slice(0, 1);
+  }
+
+  // Pre-compute vertical positions for each section (no DOM reads needed)
+  const uPos = computeSectionPositions(ctx.upper);
+  const lPos = computeSectionPositions(ctx.lower);
+
+  let html = '<div class="bracket-outer">';
+
+  // ── UPPER BRACKET + GRAND FINAL (inline as last column) ──
   if (uRounds.length) {
     html += `<div class="bracket-section">
       <div class="section-header">
         <span class="section-label upper">Upper Bracket</span>
         <div class="section-divider"></div>
+        <span class="section-label gf" style="flex-shrink:0">Grand Final</span>
       </div>
       <div class="rounds-row">`;
     uRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.upper[r]);
-      html += renderRoundCol(ctx.upper[r], r, ctx, 'upper');
+      const type = (r === gfR) ? 'gf' : 'upper';
+      html += renderRoundCol(ctx.upper[r], r, ctx, type, uPos.posMap, uPos.totalH);
     });
     html += `</div></div>`;
   }
 
+  // ── LOWER BRACKET ──
   if (lRounds.length) {
     html += `<div class="bracket-section">
       <div class="section-header">
@@ -732,86 +626,89 @@ function renderSlide0(uRounds, lRounds, ctx) {
       <div class="rounds-row">`;
     lRounds.forEach((r, i) => {
       if (i > 0) html += connectorHTML(ctx.lower[r]);
-      html += renderRoundCol(ctx.lower[r], r, ctx, 'lower');
+      const isLF = (r === ctx.maxL);
+      html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower', lPos.posMap, lPos.totalH);
     });
     html += `</div></div>`;
   }
 
-  if (!html) html = '<div class="state-panel"><p>Playoffs data not yet available.</p></div>';
+  html += '</div>'; // .bracket-outer
+  if (html === '<div class="bracket-outer"></div>') html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
+  // Positions already baked into inline styles — only need connectors after the panel is visible
+  requestAnimationFrame(() => drawConnectors(ctx.mById));
 }
 
-// ── SLIDE 1: FINALS ─────────────────────────
-function renderSlide1(uRounds, lRounds, ctx) {
-  const el = document.getElementById('slide-1');
-  const grandFinalRound = ctx.maxU;
-  const upperFinalRound = ctx.maxU - 1;
+// ── BRACKET POSITION COMPUTATION ────────────
+const CARD_H = 100;
+const GAP    = 16;
+const SLOT   = CARD_H + GAP;
 
-  let html = `<div class="finals-layout">`;
+function computeSectionPositions(ctxSection) {
+  const allMatches = Object.values(ctxSection).flat();
+  if (!allMatches.length) return { posMap: {}, totalH: SLOT };
 
-  // Left: Upper Bracket Finals
-  html += `<div>`;
-  html += `<div class="bracket-section">
-    <div class="section-header">
-      <span class="section-label upper">Upper Bracket</span>
-      <div class="section-divider"></div>
-    </div>
-    <div class="rounds-row">`;
-  uRounds.forEach((r, i) => {
-    if (i > 0) html += connectorHTML(ctx.upper[r]);
-    const isGF = r === grandFinalRound;
-    html += renderRoundCol(ctx.upper[r], r, ctx, isGF ? 'gf' : 'upper');
+  const byRound = new Map();
+  allMatches.forEach(m => {
+    if (!byRound.has(m.round)) byRound.set(m.round, []);
+    byRound.get(m.round).push(m);
   });
-  html += `</div></div></div>`;
 
-  // Divider
-  html += `<div class="finals-divider"></div>`;
+  const rounds   = [...byRound.keys()].sort((a, b) => Math.abs(a) - Math.abs(b));
+  const allMids  = new Set(allMatches.map(m => m.id));
+  const seedCount = byRound.get(rounds[0]).length;
+  const totalH   = seedCount * SLOT;
+  const midY     = totalH / 2;
+  const posMap   = {};
 
-  // Right: Lower Bracket Finals
-  html += `<div>`;
-  html += `<div class="bracket-section">
-    <div class="section-header">
-      <span class="section-label lower">Lower Bracket Finals</span>
-      <div class="section-divider"></div>
-    </div>
-    <div class="rounds-row">`;
-  lRounds.forEach((r, i) => {
-    if (i > 0) html += connectorHTML(ctx.lower[r]);
-    const isLF = r === ctx.maxL;
-    html += renderRoundCol(ctx.lower[r], r, ctx, isLF ? 'lower-final' : 'lower');
+  byRound.get(rounds[0]).forEach((m, i) => {
+    posMap[m.id] = i * SLOT + CARD_H / 2;
   });
-  html += `</div></div></div>`;
 
-  html += `</div>`; // finals-layout
+  for (let ri = 1; ri < rounds.length; ri++) {
+    const r = rounds[ri];
+    byRound.get(r).forEach(m => {
+      const prereqs = [m.player1_prereq_match_id, m.player2_prereq_match_id]
+        .filter(pid => pid && allMids.has(pid) && posMap[pid] !== undefined);
+      if (prereqs.length > 0) {
+        posMap[m.id] = prereqs.reduce((s, pid) => s + posMap[pid], 0) / prereqs.length;
+      } else {
+        const prev = byRound.get(rounds[ri - 1]);
+        const cs = prev.map(pm => posMap[pm.id]).filter(v => v !== undefined);
+        posMap[m.id] = cs.length ? cs.reduce((s, v) => s + v, 0) / cs.length : midY;
+      }
+    });
+  }
 
-  el.innerHTML = html;
+  return { posMap, totalH };
 }
 
 // ── ROUND COLUMN ────────────────────────────
-function renderRoundCol(matches, round, ctx, type) {
+function renderRoundCol(matches, round, ctx, type, posMap, totalH) {
   const label = getRoundLabel(round, type, ctx.maxU, ctx.maxL);
   let html = `<div class="round-col">
     <div class="round-label">${label}</div>
-    <div class="round-matches">`;
-  matches.forEach(m => { html += renderMatchCard(m, ctx); });
+    <div class="round-matches" style="height:${totalH}px;">`;
+  matches.forEach(m => {
+    const cy  = posMap[m.id] ?? (totalH / 2);
+    const top = Math.max(0, cy - CARD_H / 2);
+    html += `<div class="card-wrap" style="top:${top}px;">`;
+    html += renderMatchCard(m, ctx);
+    html += '</div>';
+  });
   html += `</div></div>`;
   return html;
 }
 
 // ── CONNECTOR ───────────────────────────────
-function connectorHTML(nextRoundMatches) {
-  const count = (nextRoundMatches || []).length;
-  // Simple visual spacer between rounds
-  return `<div class="round-connector">
-    ${Array(count * 2).fill('<div class="connector-line"></div>').join('')}
-  </div>`;
+function connectorHTML(_matches) {
+  return `<div style="width:28px;flex-shrink:0;"></div>`;
 }
 
 // ── MATCH CARD ──────────────────────────────
 function renderMatchCard(m, ctx) {
   const { pMap, mById } = ctx;
   const isComplete  = m.state === 'complete';
-  const isUnderway  = m.state === 'underway';
   const isGF        = m.round === ctx.maxU && m.round > 0;
 
   const p1Name  = resolveName(m.player1_id, m.player1_prereq_match_id, m.player1_is_prereq_match_loser, pMap, mById);
@@ -833,7 +730,6 @@ function renderMatchCard(m, ctx) {
   let metaHtml = `<div class="match-meta">
     <span class="match-id">${matchLabel}</span>`;
   if (dateStr) metaHtml += `<span class="match-date">${dateStr}</span>`;
-  if (isUnderway) metaHtml += `<span class="match-live-badge"><span class="live-dot"></span>LIVE</span>`;
   metaHtml += `</div>`;
 
   const p1Class = `team-row${p1Wins ? ' winner' : (isComplete && !p1Wins ? ' loser' : '')}`;
@@ -843,7 +739,7 @@ function renderMatchCard(m, ctx) {
   const p2ScoreHtml = isComplete ? `<span class="team-score">${s2}</span>` : `<span class="team-score" style="color:var(--border)">-</span>`;
 
   return `
-  <div class="${cardClass}">
+  <div class="${cardClass}" data-mid="${m.id}">
     ${metaHtml}
     <div class="${p1Class}">
       <span class="team-name${!p1Known ? ' tbd' : ''}">${escHtml(p1Name)}</span>
@@ -910,12 +806,12 @@ function renderStateBadge(state) {
   if (!el) return;
   const map = {
     group_stages_underway: ['group', 'Group Stage Underway'],
-    underway:              ['live',  '● Live'],
+    underway:              ['done',  'Underway'],
     awaiting_review:       ['done',  'Awaiting Review'],
-    complete:              ['done',  'Tournament Complete'],
+    complete:              ['done',  'Complete'],
   };
   const [cls, label] = map[state] || ['group', state];
-  el.innerHTML = `<span class="state-badge ${cls}">${cls === 'live' ? '<span class="live-dot"></span>' : ''}${label}</span>`;
+  el.innerHTML = `<span class="state-badge ${cls}">${label}</span>`;
 }
 
 function show(id) {
@@ -923,19 +819,110 @@ function show(id) {
     .forEach(pid => document.getElementById(pid).style.display = pid === id ? '' : 'none');
 }
 
-// ── CAROUSEL ────────────────────────────────
-function goSlide(n) {
-  currentSlide = n;
-  document.querySelectorAll('.slide').forEach((el, i) => {
-    el.classList.toggle('active', i === n);
-  });
-  document.querySelectorAll('.slide-btn').forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.slide) === n);
-  });
+// ── SVG BRACKET CONNECTORS ───────────────────
+let lastMById = null;
+
+function drawConnectors(mById) {
+  lastMById = mById;
+  document.querySelectorAll('.rounds-row').forEach(row => drawRowConnectors(row, mById));
 }
 
-function nextSlide() { goSlide((currentSlide + 1) % 2); }
-function prevSlide() { goSlide((currentSlide + 1) % 2); }
+function drawRowConnectors(row, mById) {
+  row.querySelector('.bracket-svg')?.remove();
+
+  const cardMap = {};
+  row.querySelectorAll('[data-mid]').forEach(card => {
+    cardMap[+card.dataset.mid] = card;
+  });
+  if (!Object.keys(cardMap).length) return;
+
+  const sw = row.scrollWidth;
+  const sh = row.scrollHeight;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('bracket-svg');
+  svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;overflow:visible;';
+  svg.setAttribute('width', sw);
+  svg.setAttribute('height', sh);
+  row.prepend(svg);
+
+  for (const midStr of Object.keys(cardMap)) {
+    const m = mById[+midStr];
+    if (!m) continue;
+    const toCard = cardMap[+midStr];
+    const toPos  = relPos(toCard, row);
+
+    for (const prereqId of [m.player1_prereq_match_id, m.player2_prereq_match_id]) {
+      if (!prereqId || !cardMap[prereqId]) continue;
+      const fromPos = relPos(cardMap[prereqId], row);
+
+      const x1 = fromPos.right;
+      const y1 = fromPos.top + fromPos.height / 2;
+      const x2 = toPos.left;
+      const y2 = toPos.top  + toPos.height  / 2;
+      const mx = (x1 + x2) / 2;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M${x1},${y1} H${mx} V${y2} H${x2}`);
+      path.setAttribute('stroke', '#2a3f5e');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+    }
+  }
+}
+
+function relPos(el, container) {
+  const elRect  = el.getBoundingClientRect();
+  const conRect = container.getBoundingClientRect();
+  const sl = container.scrollLeft || 0;
+  const st = container.scrollTop  || 0;
+  return {
+    top:    elRect.top    - conRect.top    + st,
+    left:   elRect.left   - conRect.left   + sl,
+    right:  elRect.right  - conRect.left   + sl,
+    height: elRect.height,
+  };
+}
+
+window.addEventListener('resize', () => {
+  if (lastMById) requestAnimationFrame(() => drawConnectors(lastMById));
+});
+
+// ── DOWNLOAD AS IMAGE ────────────────────────
+async function downloadBracket() {
+  if (typeof html2canvas === 'undefined') {
+    alert('html2canvas not loaded yet. Please try again.');
+    return;
+  }
+  const btn = document.getElementById('downloadBtn');
+  btn.textContent = 'Capturing…';
+  btn.disabled = true;
+  const el = document.getElementById('bracketContent');
+  const outer = el.querySelector('.bracket-outer');
+  const origOuter = outer ? outer.style.overflowX : '';
+  if (outer) outer.style.overflowX = 'visible';
+  try {
+    const canvas = await html2canvas(el, {
+      backgroundColor: '#07090f',
+      scale: 2,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      width:  el.scrollWidth,
+      height: el.scrollHeight,
+    });
+    const a = document.createElement('a');
+    a.download = 'mmpl-s9-playoff.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  } catch (e) {
+    alert('Download failed: ' + e.message);
+  } finally {
+    if (outer) outer.style.overflowX = origOuter;
+    btn.textContent = 'Download';
+    btn.disabled = false;
+  }
+}
 
 // ── INIT ─────────────────────────────────────
 loadData();
