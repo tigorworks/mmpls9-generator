@@ -560,11 +560,6 @@ textarea {
         <div id="po-ptsLoser" class="pts-preview">— pilih player & masukkan rating</div>
       </div>
 
-      <div class="field">
-        <label>Notes <span style="color:#374151;font-weight:400;text-transform:none">(optional)</span></label>
-        <textarea id="po-note" placeholder="Add a note..."></textarea>
-      </div>
-
       <button id="po-submitBtn" class="submit-btn" disabled>Submit</button>
       <div id="po-debug"></div>
 
@@ -1079,10 +1074,19 @@ document.getElementById('po-submitBtn').onclick = async function() {
   const g = (id) => document.getElementById(id);
   const val = (id) => g(id).value;
 
-  const stageKey  = getPoStage(m);
-  const stagePts  = MVP_CONFIG.stage[stageKey] ?? MVP_CONFIG.stage.lower;
-  const winIsNone = val('po-mvpWinner') === 'none';
-  const losIsNone = val('po-mvpLoser')  === 'none';
+  const stageKey   = getPoStage(m);
+  const stagePts   = MVP_CONFIG.stage[stageKey] ?? MVP_CONFIG.stage.lower;
+  const stageLabel = stageKey === 'grand_final' ? 'GF' : stageKey === 'upper' ? 'UB' : 'LB';
+  const winIsNone  = val('po-mvpWinner') === 'none';
+  const losIsNone  = val('po-mvpLoser')  === 'none';
+
+  const winRatingPts = winIsNone ? 0 : (getRatingPts(val('po-ratingWinner')) ?? 0);
+  const winTotal     = winIsNone ? '' : winRatingPts + MVP_CONFIG.result.win + stagePts;
+  const winDesc      = winIsNone ? '' : `${winRatingPts}(rating) + ${MVP_CONFIG.result.win}(Win) + ${stagePts}(${stageLabel})`;
+
+  const losRatingPts = losIsNone ? 0 : (getRatingPts(val('po-ratingLoser')) ?? 0);
+  const losTotal     = losIsNone ? '' : losRatingPts + MVP_CONFIG.result.lose + stagePts;
+  const losDesc      = losIsNone ? '' : `${losRatingPts}(rating) + ${MVP_CONFIG.result.lose}(Lose) + ${stagePts}(${stageLabel})`;
 
   const payload = {
     source:            'playoff',
@@ -1093,13 +1097,12 @@ document.getElementById('po-submitBtn').onclick = async function() {
     stage:             stageKey,
     mvp_winner_id:     winIsNone ? '' : val('po-mvpWinner'),
     mvp_winner_name:   winIsNone ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
-    mvp_winner_rating: winIsNone ? '' : val('po-ratingWinner'),
-    mvp_winner_points: winIsNone ? '' : `${getRatingPts(val('po-ratingWinner')) ?? 0};${MVP_CONFIG.result.win};${stagePts}`,
+    mvp_winner_rating: winDesc,
+    mvp_winner_points: winTotal,
     mvp_loser_id:      losIsNone ? '' : val('po-mvpLoser'),
     mvp_loser_name:    losIsNone ? '' : g('po-mvpLoser').options[g('po-mvpLoser').selectedIndex].text,
-    mvp_loser_rating:  losIsNone ? '' : val('po-ratingLoser'),
-    mvp_loser_points:  losIsNone ? '' : `${getRatingPts(val('po-ratingLoser')) ?? 0};${MVP_CONFIG.result.lose};${stagePts}`,
-    note:              val('po-note'),
+    mvp_loser_rating:  losDesc,
+    mvp_loser_points:  losTotal,
   };
 
   g('po-submitBtn').disabled = true;
