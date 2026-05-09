@@ -186,6 +186,24 @@ body::before {
   display: block;
 }
 
+/* ── PLAYOFF EMBED ── */
+#playoff.active {
+  position: fixed;
+  top: 70px;
+  left: 0; right: 0; bottom: 0;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+  background: #07090f;
+  animation: none;
+}
+#playoff iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1454,6 +1472,7 @@ tbody tr.rank-3 .pts {
       <li><button class="nav-link active" data-page="home">Home</button></li>
       <li><button class="nav-link" data-page="teams">Teams</button></li>
       <li><button class="nav-link" data-page="mvp">Our MVP</button></li>
+      <li><button class="nav-link" data-page="playoff">Playoff</button></li>
       <li><button class="nav-link" data-page="about">About</button></li>
     </ul>
   </div>
@@ -1592,6 +1611,9 @@ tbody tr.rank-3 .pts {
       </div>
     </div>
   </section>
+
+  <!-- PLAYOFF PAGE -->
+  <section id="playoff" class="section"></section>
 
 </div>
 
@@ -1906,9 +1928,13 @@ function processMVPData(rows, lastUpdate) {
     const stage  = (r["Stage"] || "lower").toLowerCase().replace(/\s+/g, "_");
     const ratingW = r["MVP Winner Rating"] ?? "";
     const ratingL = r["MVP Loser Rating"]  ?? "";
+    const ptStrW  = String(r["MVP Winner Points"] ?? "").trim();
+    const ptStrL  = String(r["MVP Loser Points"]  ?? "").trim();
+
+    const parsePtStr = s => s ? s.split(';').reduce((sum, v) => sum + (parseInt(v) || 0), 0) : null;
 
     if (idW && idW !== "none") {
-      const pts = calcMVPPts(ratingW, true, stage);
+      const pts = parsePtStr(ptStrW) ?? calcMVPPts(ratingW, true, stage);
       if (!players[idW]) players[idW] = { id: idW, nick: nickW, group, team: winner, pts: 0, history: [] };
       else if (nickW)    players[idW].nick = nickW;
       players[idW].pts += pts;
@@ -1917,7 +1943,7 @@ function processMVPData(rows, lastUpdate) {
     if (idL) {
       const parts     = match.split(VS_RE);
       const loserTeam = parts.find(t => t.trim() !== winner) || "-";
-      const pts = calcMVPPts(ratingL, false, stage);
+      const pts = parsePtStr(ptStrL) ?? calcMVPPts(ratingL, false, stage);
       if (!players[idL]) players[idL] = { id: idL, nick: nickL, group, team: loserTeam, pts: 0, history: [] };
       else if (nickL)    players[idL].nick = nickL;
       players[idL].pts += pts;
@@ -2041,12 +2067,16 @@ function renderModalPage() {
   document.getElementById('modalTbody').innerHTML = items.length
     ? items.map(h => {
         const isWin = h.condition === 'win';
+        const isPO  = h.group === 'Playoff';
+        const groupBadge = isPO
+          ? `<span style="display:inline-flex;align-items:center;justify-content:center;padding:0 6px;height:22px;border-radius:5px;font-size:10px;font-weight:800;background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.3);">PO</span>`
+          : `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.18);">${h.group}</span>`;
         return `<tr>
           <td style="white-space:nowrap;color:#6b7280;">${formatDate(h.date)}</td>
-          <td><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.18);">${h.group}</span></td>
+          <td>${groupBadge}</td>
           <td style="color:#94a3b8;">${h.match}</td>
           <td>${isWin ? '<span class="badge-mvp-win">MVP Win</span>' : '<span class="badge-mvp-lose">MVP Lose</span>'}</td>
-          <td style="text-align:center;">${isWin ? '<span class="modal-pts-win">+2</span>' : '<span class="modal-pts-lose">+1</span>'}</td>
+          <td style="text-align:center;"><span class="${isWin ? 'modal-pts-win' : 'modal-pts-lose'}">+${h.pts}</span></td>
         </tr>`;
       }).join('')
     : `<tr><td colspan="5" style="text-align:center;padding:36px;color:#374151;">No history yet.</td></tr>`;
@@ -2194,6 +2224,16 @@ function navigateTo(page) {
     else loadMVPData();
   }
   if (page === 'teams') initTeamsTable();
+  if (page === 'playoff') {
+    const sec = document.getElementById('playoff');
+    if (sec && !sec.querySelector('iframe')) {
+      const frame = document.createElement('iframe');
+      frame.src   = 'playoff.html';
+      frame.title = 'Playoff Bracket';
+      frame.loading = 'lazy';
+      sec.appendChild(frame);
+    }
+  }
 }
 
 document.querySelectorAll('[data-page]').forEach(btn => {
@@ -2210,7 +2250,7 @@ document.querySelector('.navbar-brand').addEventListener('click', e => {
 
 window.addEventListener('hashchange', () => {
   const page = location.hash.replace('#', '') || 'home';
-  const valid = ['home', 'teams', 'mvp', 'about'];
+  const valid = ['home', 'teams', 'mvp', 'playoff', 'about'];
   navigateTo(valid.includes(page) ? page : 'home');
 });
 

@@ -374,21 +374,36 @@ body::before {
 .match-card.grand-final .match-id { color: var(--gold2); font-size: 11px; }
 
 
-/* ── REFRESH BTN ────────────────────────── */
+/* ── ACTION BUTTONS ─────────────────────── */
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
 .refresh-btn {
-  padding: 6px 14px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border-radius: 7px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: rgba(255,255,255,.03);
   color: var(--dim);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all .15s;
   font-family: inherit;
-  margin-left: auto;
+  letter-spacing: .2px;
 }
-.refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+.refresh-btn:hover {
+  border-color: rgba(245,158,11,.5);
+  color: var(--gold);
+  background: rgba(245,158,11,.06);
+}
+.refresh-btn:active { transform: scale(.97); }
 
 /* ── RESPONSIVE ─────────────────────────── */
 @media (max-width: 640px) {
@@ -447,8 +462,8 @@ body::before {
 
   <!-- Bracket -->
   <div id="bracketPanel" style="display:none">
-    <div style="display:flex;justify-content:flex-end;gap:3px;margin-bottom:20px">
-      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">⬇ Download</button>
+    <div class="action-bar">
+      <button class="refresh-btn" id="downloadBtn" onclick="downloadBracket()">⬇ Download PNG</button>
       <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
     </div>
     <div id="bracketContent"></div>
@@ -457,6 +472,18 @@ body::before {
 </main>
 
 <script>
+
+// ── IFRAME EMBED MODE ────────────────────────
+if (window.self !== window.top) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('.navbar');
+    const hdr = document.querySelector('.page-header');
+    if (nav) nav.style.display = 'none';
+    if (hdr) hdr.style.display = 'none';
+    const content = document.querySelector('.content');
+    if (content) content.style.paddingTop = '16px';
+  });
+}
 
 // ── LOAD DATA ───────────────────────────────
 async function loadData() {
