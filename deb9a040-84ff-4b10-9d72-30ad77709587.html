@@ -444,15 +444,6 @@ textarea {
       </select>
     </div>
 
-    <div class="field">
-      <label>Grand Final</label>
-      <label class="gf-toggle" id="gfToggle">
-        <input type="checkbox" id="grandFinal">
-        <span>Grand Final</span>
-        <small>override stage → 3 pts</small>
-      </label>
-    </div>
-
     <div class="divider"></div>
 
     <div class="field">
@@ -509,6 +500,16 @@ textarea {
       <div class="stage-info" id="po-stage-info" style="display:none">
         <label>Stage (auto)</label>
         <span class="stage-badge" id="po-stage-badge"></span>
+      </div>
+
+      <!-- Grand Final override (shown after match selected) -->
+      <div class="field" id="po-gf-field" style="display:none">
+        <label>Grand Final</label>
+        <label class="gf-toggle" id="po-gfToggle">
+          <input type="checkbox" id="po-grandFinal">
+          <span>Grand Final</span>
+          <small>override stage → 3 pts</small>
+        </label>
       </div>
 
       <div class="field">
@@ -625,21 +626,11 @@ const TODAY = new Date().toISOString().split('T')[0];
 tanggal.value = TODAY;
 document.getElementById('po-tanggal').value = TODAY;
 
-// ── Grand Final toggle ──
-const gfToggle   = document.getElementById("gfToggle");
-const grandFinal = document.getElementById("grandFinal");
-const stageEl    = document.getElementById("stage");
-
-grandFinal.onchange = function() {
-  gfToggle.classList.toggle("active", this.checked);
-  stageEl.disabled = this.checked;
-  updatePtsPreview();
-};
+// ── Group Stage: stage dropdown only (no GF in group stage) ──
+const stageEl = document.getElementById("stage");
 stageEl.onchange = updatePtsPreview;
 
-function getStage() {
-  return grandFinal.checked ? "grand_final" : stageEl.value;
-}
+function getStage() { return stageEl.value; }
 
 fetch("mmpl.json")
   .then(r => r.json())
@@ -810,9 +801,6 @@ function resetForm(){
   mvpWinner.innerHTML = '<option value="">—</option>';
   mvpLoser.innerHTML  = '<option value="">—</option>';
   [match, winner, mvpWinner, mvpLoser].forEach(el => el.disabled = true);
-  grandFinal.checked = false;
-  gfToggle.classList.remove("active");
-  stageEl.disabled = false;
   stageEl.value = "lower";
   note.value = "";
   resetRating();
@@ -911,6 +899,11 @@ async function initPlayoffTab() {
   }
 }
 
+function getPoStage(m) {
+  const gfEl = document.getElementById('po-grandFinal');
+  return (gfEl && gfEl.checked) ? 'grand_final' : m.bracketType;
+}
+
 function onPoMatchChange() {
   const idx = document.getElementById('po-match').value;
   resetPoDetails();
@@ -928,6 +921,23 @@ function onPoMatchChange() {
   badge.textContent = badgeMap[m.bracketType] || m.bracketType;
   badge.className   = 'stage-badge ' + m.bracketType;
   document.getElementById('po-stage-info').style.display = '';
+
+  // GF checkbox — show only when match is NOT already auto-detected as GF
+  const gfField  = document.getElementById('po-gf-field');
+  const gfToggle = document.getElementById('po-gfToggle');
+  const gfCb     = document.getElementById('po-grandFinal');
+  gfField.style.display = '';
+  gfCb.checked = (m.bracketType === 'grand_final');
+  gfToggle.classList.toggle('active', gfCb.checked);
+  gfCb.onchange = function() {
+    gfToggle.classList.toggle('active', this.checked);
+    // Update badge
+    const stage = getPoStage(m);
+    badge.textContent = badgeMap[stage] || stage;
+    badge.className   = 'stage-badge ' + stage;
+    updatePoPreview(m);
+    validatePo();
+  };
 
   // Winner
   const poWinner = document.getElementById('po-winner');
@@ -948,11 +958,12 @@ function onPoMatchChange() {
 
 function fillPoSides(m, winnerName) {
   const loserName = winnerName === m.p1 ? m.p2 : m.p1;
-  fillPoPlayers('po-mvpWinner', winnerName, 'po-ratingWinner', 'po-ptsWinner', true,  m.bracketType);
-  fillPoPlayers('po-mvpLoser',  loserName,  'po-ratingLoser',  'po-ptsLoser',  false, m.bracketType);
+  fillPoPlayers('po-mvpWinner', winnerName, 'po-ratingWinner', 'po-ptsWinner', true,  m);
+  fillPoPlayers('po-mvpLoser',  loserName,  'po-ratingLoser',  'po-ptsLoser',  false, m);
 }
 
-function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, bracketType) {
+function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, m) {
+  const bracketType = m.bracketType; // kept for reference, actual stage from getPoStage(m)
   const sel    = document.getElementById(selId);
   const rating = document.getElementById(ratingId);
   sel.innerHTML = '';
@@ -968,15 +979,16 @@ function fillPoPlayers(selId, teamName, ratingId, previewId, isWin, bracketType)
     const isNone = sel.value === 'none';
     rating.disabled = isNone;
     if (isNone) rating.value = '';
-    updatePoPreview(bracketType);
+    updatePoPreview(m);
     validatePo();
   };
 
   sel.onchange   = refresh;
-  rating.oninput = () => { updatePoPreview(bracketType); validatePo(); };
+  rating.oninput = () => { updatePoPreview(m); validatePo(); };
 }
 
-function updatePoPreview(bracketType) {
+function updatePoPreview(m) {
+  const bracketType = getPoStage(m);
   const stagePts  = MVP_CONFIG.stage[bracketType] ?? MVP_CONFIG.stage.lower;
   const stageLabel = bracketType === 'grand_final' ? 'GF' : bracketType === 'upper' ? 'UB' : 'LB';
 
@@ -1031,6 +1043,9 @@ function resetPoDetails() {
     document.getElementById(id).innerHTML = '— pilih player & masukkan rating';
   });
   document.getElementById('po-stage-info').style.display = 'none';
+  document.getElementById('po-gf-field').style.display   = 'none';
+  const gfCb = document.getElementById('po-grandFinal');
+  if (gfCb) { gfCb.checked = false; document.getElementById('po-gfToggle').classList.remove('active'); }
   document.getElementById('po-submitBtn').disabled = true;
 }
 
@@ -1053,7 +1068,7 @@ document.getElementById('po-submitBtn').onclick = async function() {
     group:             'Playoff',
     match:             `M${order}: ${m.p1 || 'TBD'} vs ${m.p2 || 'TBD'}`,
     winner:            win,
-    stage:             m.bracketType,
+    stage:             getPoStage(m),
     mvp_winner_id:     val('po-mvpWinner') === 'none' ? '' : val('po-mvpWinner'),
     mvp_winner_name:   val('po-mvpWinner') === 'none' ? '' : g('po-mvpWinner').options[g('po-mvpWinner').selectedIndex].text,
     mvp_winner_rating: val('po-mvpWinner') === 'none' ? '' : val('po-ratingWinner'),
