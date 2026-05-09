@@ -225,19 +225,27 @@ body::before {
   background: var(--border);
 }
 
+/* ── BRACKET OUTER SCROLL ───────────────── */
+.bracket-outer {
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 12px;
+}
+
+.bracket-outer::-webkit-scrollbar { height: 4px; }
+.bracket-outer::-webkit-scrollbar-track { background: transparent; }
+.bracket-outer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
 /* ── ROUNDS ROW ─────────────────────────── */
 .rounds-row {
   display: flex;
   gap: 0;
-  overflow-x: auto;
+  overflow-x: visible;
+  min-width: max-content;
   padding-bottom: 8px;
   align-items: flex-start;
   position: relative;
 }
-
-.rounds-row::-webkit-scrollbar { height: 4px; }
-.rounds-row::-webkit-scrollbar-track { background: transparent; }
-.rounds-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* ── ROUND COLUMN ───────────────────────── */
 .round-col {
@@ -582,7 +590,7 @@ function renderFullBracket(uRounds, lRounds, ctx) {
       .slice(0, 1);
   }
 
-  let html = '';
+  let html = '<div class="bracket-outer">';
 
   // ── UPPER BRACKET + GRAND FINAL (inline as last column) ──
   if (uRounds.length) {
@@ -617,7 +625,8 @@ function renderFullBracket(uRounds, lRounds, ctx) {
     html += `</div></div>`;
   }
 
-  if (!html) html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
+  html += '</div>'; // .bracket-outer
+  if (html === '<div class="bracket-outer"></div>') html = '<div class="state-panel"><p>Bracket data not yet available.</p></div>';
   el.innerHTML = html;
   requestAnimationFrame(() => {
     repositionCards(ctx.mById);
@@ -909,9 +918,9 @@ async function downloadBracket() {
   btn.textContent = 'Capturing…';
   btn.disabled = true;
   const el = document.getElementById('bracketContent');
-  const rows = el.querySelectorAll('.rounds-row');
-  const origOverflow = Array.from(rows).map(r => r.style.overflowX);
-  rows.forEach(r => { r.style.overflowX = 'visible'; });
+  const outer = el.querySelector('.bracket-outer');
+  const origOuter = outer ? outer.style.overflowX : '';
+  if (outer) outer.style.overflowX = 'visible';
   try {
     const canvas = await html2canvas(el, {
       backgroundColor: '#07090f',
@@ -929,7 +938,7 @@ async function downloadBracket() {
   } catch (e) {
     alert('Download failed: ' + e.message);
   } finally {
-    rows.forEach((r, i) => { r.style.overflowX = origOverflow[i]; });
+    if (outer) outer.style.overflowX = origOuter;
     btn.textContent = 'Download';
     btn.disabled = false;
   }
