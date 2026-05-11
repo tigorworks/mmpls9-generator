@@ -765,6 +765,17 @@ function resolveName(pid, prereqId, isLoser, pMap, mById) {
 
 function parseScores(csv) {
   if (!csv) return { s1: '-', s2: '-' };
+  // Per-game format: "0-1,1-0,1-0" → sum each player's game wins
+  if (csv.includes(',')) {
+    let sum1 = 0, sum2 = 0;
+    for (const game of csv.split(',')) {
+      const p = game.trim().split('-');
+      const g1 = Number(p[0]), g2 = Number(p[1]);
+      if (!isNaN(g1)) sum1 += g1;
+      if (!isNaN(g2)) sum2 += g2;
+    }
+    return { s1: String(sum1), s2: String(sum2) };
+  }
   const parts = csv.split('-');
   return { s1: parts[0] ?? '-', s2: parts[1] ?? '-' };
 }
